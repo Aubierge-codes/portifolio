@@ -160,12 +160,8 @@ function ProjectScene({
   if (id === "umucocore") return <UmucoScene />;
   if (id === "gwiza") return <GwizaScene />;
   if (id === "eco-girls") return <EcoScene />;
-  if (id === "zero-bite") {
-    return isMobile ? <ZeroBiteScene /> : <ZeroBiteCanvas />;
-  }
-  if (id === "kinetiq") {
-    return isMobile ? <KinetiqScene /> : <KinetiqCanvas />;
-  }
+  if (id === "zero-bite") return <ZeroBiteCanvas />;
+  if (id === "kinetiq") return <KinetiqCanvas />;
   if (id === "velora") return <VeloraScene />;
   if (id === "weather") return <WeatherScene />;
   if (id === "bookstore") return <BookstoreScene />;
