@@ -47,21 +47,39 @@ export function ContactSection({ t }: ContactSectionProps) {
             </RevealItem>
           </div>
           <RevealItem>
-            <form className="border-2 border-paper p-5" aria-label="Contact form">
+            <div className="mb-5 grid gap-3 border-l-2 border-paper pl-4 text-sm font-medium">
+              <a href="mailto:aubierge7557@gmail.com" className="underline-offset-4 hover:underline">
+                {t("contact.emailLabel")} · aubierge7557@gmail.com
+              </a>
+              <a href={githubUrl} className="underline-offset-4 hover:underline">
+                {t("contact.githubLabel")} · github.com/Aubierge-codes
+              </a>
+              <p className="text-paper/72">{t("contact.linkedinPending")}</p>
+            </div>
+            <form className="border-2 border-paper p-5" aria-label={t("form.aria")}>
               <label className="mb-4 block">
                 <span className="mb-2 block text-sm font-medium">{t("form.name")}</span>
-                <input className="min-h-12 w-full border border-paper bg-transparent px-3 text-paper placeholder:text-paper/55" />
+                <input
+                  name="name"
+                  className="min-h-12 w-full border border-paper bg-transparent px-3 text-paper placeholder:text-paper/55"
+                  autoComplete="name"
+                />
               </label>
               <label className="mb-4 block">
                 <span className="mb-2 block text-sm font-medium">{t("form.email")}</span>
                 <input
+                  name="email"
                   type="email"
                   className="min-h-12 w-full border border-paper bg-transparent px-3 text-paper placeholder:text-paper/55"
+                  autoComplete="email"
                 />
               </label>
               <label className="mb-5 block">
                 <span className="mb-2 block text-sm font-medium">{t("form.message")}</span>
-                <textarea className="min-h-32 w-full resize-y border border-paper bg-transparent px-3 py-3 text-paper" />
+                <textarea
+                  name="message"
+                  className="min-h-32 w-full resize-y border border-paper bg-transparent px-3 py-3 text-paper"
+                />
               </label>
               <button
                 type="button"

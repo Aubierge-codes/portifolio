@@ -32,7 +32,7 @@ export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
             title={t("footer.connect")}
             links={[
               { label: "GitHub", href: githubUrl },
-              { label: "LinkedIn", href: "https://www.linkedin.com/" }
+              { label: "Email", href: "mailto:aubierge7557@gmail.com" }
             ]}
           />
           <div>

@@ -72,6 +72,10 @@ export const translations: Record<Locale, TranslationBundle> = {
     "form.message": "Message",
     "form.send": "Send",
     "form.note": "This form is prepared for a future email service. Email is the fastest path today.",
+    "form.aria": "Contact form",
+    "contact.emailLabel": "Email",
+    "contact.githubLabel": "GitHub",
+    "contact.linkedinPending": "LinkedIn profile can be added when public.",
     credibility: [
       "Rwanda Coding Academy",
       "Technovation 2026 Semifinalist",
@@ -209,6 +213,10 @@ export const translations: Record<Locale, TranslationBundle> = {
     "form.message": "Message",
     "form.send": "Envoyer",
     "form.note": "Ce formulaire est pret pour un futur service email. Aujourd'hui, l'email reste le chemin le plus rapide.",
+    "form.aria": "Formulaire de contact",
+    "contact.emailLabel": "Email",
+    "contact.githubLabel": "GitHub",
+    "contact.linkedinPending": "Le profil LinkedIn pourra etre ajoute quand il sera public.",
     credibility: [
       "Rwanda Coding Academy",
       "Demi-finaliste Technovation 2026",
@@ -346,6 +354,10 @@ export const translations: Record<Locale, TranslationBundle> = {
     "form.message": "Mensaje",
     "form.send": "Enviar",
     "form.note": "Este formulario queda preparado para un futuro servicio de correo. Hoy, el email es el camino mas rapido.",
+    "form.aria": "Formulario de contacto",
+    "contact.emailLabel": "Email",
+    "contact.githubLabel": "GitHub",
+    "contact.linkedinPending": "El perfil de LinkedIn se puede anadir cuando sea publico.",
     credibility: [
       "Rwanda Coding Academy",
       "Semifinalista Technovation 2026",

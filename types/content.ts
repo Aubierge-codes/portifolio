@@ -51,7 +51,11 @@ export type TranslationKey =
   | "form.email"
   | "form.message"
   | "form.send"
-  | "form.note";
+  | "form.note"
+  | "form.aria"
+  | "contact.emailLabel"
+  | "contact.githubLabel"
+  | "contact.linkedinPending";
 
 export type ProjectSize = "feature" | "large" | "medium" | "small";
 
