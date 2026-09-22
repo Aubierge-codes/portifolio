@@ -40,7 +40,8 @@ export function Navigation({ locale, setLocale, t }: NavigationProps) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 24 }}
     >
-      <nav className="section-shell flex items-center justify-between gap-4" aria-label="Primary">
+      <nav className="section-shell" aria-label="Primary">
+        <div className="flex items-center justify-between gap-4">
         <a className="font-heading text-2xl font-medium leading-none" href="#top">
           {t("brand")}
         </a>
@@ -82,6 +83,18 @@ export function Navigation({ locale, setLocale, t }: NavigationProps) {
               </button>
             ))}
           </div>
+        </div>
+        </div>
+        <div className="mt-3 flex items-center gap-4 overflow-x-auto pb-1 md:hidden">
+          {links.map((link) => (
+            <a
+              key={link.href}
+              className="shrink-0 text-sm font-medium text-ink/75 underline-offset-4 transition hover:text-maroon hover:underline"
+              href={link.href}
+            >
+              {t(link.key)}
+            </a>
+          ))}
         </div>
       </nav>
     </motion.header>
