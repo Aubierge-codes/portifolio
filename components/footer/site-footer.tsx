@@ -16,8 +16,12 @@ export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
       <div className="section-shell">
         <div className="grid gap-10 md:grid-cols-4">
           <div>
-            <p className="font-heading text-3xl font-medium">Aubierge Umurerwa</p>
-            <p className="mt-3 text-sm leading-6 text-ink/65">{t("footer.role")}</p>
+            <p className="font-heading text-3xl font-medium">
+              Aubierge Umurerwa
+            </p>
+            <p className="mt-3 text-sm leading-6 text-ink/65">
+              {t("footer.role")}
+            </p>
           </div>
           <FooterColumn
             title={t("footer.explore")}
@@ -72,7 +76,9 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="mb-4 text-sm font-medium uppercase tracking-[0.12em] text-maroon">{title}</p>
+      <p className="mb-4 text-sm font-medium uppercase tracking-[0.12em] text-maroon">
+        {title}
+      </p>
       <div className="grid gap-2">
         {links.map((link) => (
           <a

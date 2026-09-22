@@ -14,11 +14,20 @@ export function ContactSection({ t }: ContactSectionProps) {
   return (
     <section id="contact" className="bg-maroon py-24 text-paper md:py-32">
       <div className="section-shell">
-        <Reveal stagger className="grid gap-10 lg:grid-cols-[0.72fr_0.42fr] lg:items-start">
+        <Reveal
+          stagger
+          className="grid gap-10 lg:grid-cols-[0.72fr_0.42fr] lg:items-start"
+        >
           <div>
             <RevealItem>
-              <p className="eyebrow mb-4 text-paper/70">{t("contact.eyebrow")}</p>
-              <AnimatedText value={t("contact.title")} as="h2" className="heading-xl text-paper" />
+              <p className="eyebrow mb-4 text-paper/70">
+                {t("contact.eyebrow")}
+              </p>
+              <AnimatedText
+                value={t("contact.title")}
+                as="h2"
+                className="heading-xl text-paper"
+              />
             </RevealItem>
             <RevealItem>
               <AnimatedText
@@ -48,17 +57,28 @@ export function ContactSection({ t }: ContactSectionProps) {
           </div>
           <RevealItem>
             <div className="mb-5 grid gap-3 border-l-2 border-paper pl-4 text-sm font-medium">
-              <a href="mailto:aubierge7557@gmail.com" className="underline-offset-4 hover:underline">
+              <a
+                href="mailto:aubierge7557@gmail.com"
+                className="underline-offset-4 hover:underline"
+              >
                 {t("contact.emailLabel")} · aubierge7557@gmail.com
               </a>
-              <a href={githubUrl} className="underline-offset-4 hover:underline">
+              <a
+                href={githubUrl}
+                className="underline-offset-4 hover:underline"
+              >
                 {t("contact.githubLabel")} · github.com/Aubierge-codes
               </a>
               <p className="text-paper/72">{t("contact.linkedinPending")}</p>
             </div>
-            <form className="border-2 border-paper p-5" aria-label={t("form.aria")}>
+            <form
+              className="border-2 border-paper p-5"
+              aria-label={t("form.aria")}
+            >
               <label className="mb-4 block">
-                <span className="mb-2 block text-sm font-medium">{t("form.name")}</span>
+                <span className="mb-2 block text-sm font-medium">
+                  {t("form.name")}
+                </span>
                 <input
                   name="name"
                   className="min-h-12 w-full border border-paper bg-transparent px-3 text-paper placeholder:text-paper/55"
@@ -66,7 +86,9 @@ export function ContactSection({ t }: ContactSectionProps) {
                 />
               </label>
               <label className="mb-4 block">
-                <span className="mb-2 block text-sm font-medium">{t("form.email")}</span>
+                <span className="mb-2 block text-sm font-medium">
+                  {t("form.email")}
+                </span>
                 <input
                   name="email"
                   type="email"
@@ -75,7 +97,9 @@ export function ContactSection({ t }: ContactSectionProps) {
                 />
               </label>
               <label className="mb-5 block">
-                <span className="mb-2 block text-sm font-medium">{t("form.message")}</span>
+                <span className="mb-2 block text-sm font-medium">
+                  {t("form.message")}
+                </span>
                 <textarea
                   name="message"
                   className="min-h-32 w-full resize-y border border-paper bg-transparent px-3 py-3 text-paper"
@@ -87,7 +111,9 @@ export function ContactSection({ t }: ContactSectionProps) {
               >
                 {t("form.send")}
               </button>
-              <p className="mt-4 text-sm leading-6 text-paper/70">{t("form.note")}</p>
+              <p className="mt-4 text-sm leading-6 text-paper/70">
+                {t("form.note")}
+              </p>
             </form>
           </RevealItem>
         </Reveal>

@@ -42,48 +42,55 @@ export function Navigation({ locale, setLocale, t }: NavigationProps) {
     >
       <nav className="section-shell" aria-label="Primary">
         <div className="flex items-center justify-between gap-4">
-        <a className="font-heading text-2xl font-medium leading-none" href="#top">
-          {t("brand")}
-        </a>
-        <div className="hidden items-center gap-6 md:flex">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              className="text-sm font-medium text-ink/75 underline-offset-4 transition hover:text-maroon hover:underline"
-              href={link.href}
-            >
-              {t(link.key)}
-            </a>
-          ))}
-        </div>
-        <div className="flex items-center gap-3">
-          <MotionButton href="#work" variant="secondary" className="hidden sm:inline-flex">
-            {t("nav.viewWork")}
-          </MotionButton>
-          <div
-            className="flex min-h-11 items-center border border-ink bg-paper"
-            role="group"
-            aria-label={t("language.label")}
+          <a
+            className="font-heading text-2xl font-medium leading-none"
+            href="#top"
           >
-            {languages.map((language) => (
-              <button
-                key={language.code}
-                type="button"
-                className={cn(
-                  "min-h-11 px-2.5 text-xs font-medium transition",
-                  locale === language.code
-                    ? "bg-maroon text-paper"
-                    : "bg-paper text-ink hover:text-maroon"
-                )}
-                aria-pressed={locale === language.code}
-                aria-label={language.label}
-                onClick={() => setLocale(language.code)}
+            {t("brand")}
+          </a>
+          <div className="hidden items-center gap-6 md:flex">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                className="text-sm font-medium text-ink/75 underline-offset-4 transition hover:text-maroon hover:underline"
+                href={link.href}
               >
-                {language.short}
-              </button>
+                {t(link.key)}
+              </a>
             ))}
           </div>
-        </div>
+          <div className="flex items-center gap-3">
+            <MotionButton
+              href="#work"
+              variant="secondary"
+              className="hidden sm:inline-flex"
+            >
+              {t("nav.viewWork")}
+            </MotionButton>
+            <div
+              className="flex min-h-11 items-center border border-ink bg-paper"
+              role="group"
+              aria-label={t("language.label")}
+            >
+              {languages.map((language) => (
+                <button
+                  key={language.code}
+                  type="button"
+                  className={cn(
+                    "min-h-11 px-2.5 text-xs font-medium transition",
+                    locale === language.code
+                      ? "bg-maroon text-paper"
+                      : "bg-paper text-ink hover:text-maroon"
+                  )}
+                  aria-pressed={locale === language.code}
+                  aria-label={language.label}
+                  onClick={() => setLocale(language.code)}
+                >
+                  {language.short}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="mt-3 flex items-center gap-4 overflow-x-auto pb-1 md:hidden">
           {links.map((link) => (

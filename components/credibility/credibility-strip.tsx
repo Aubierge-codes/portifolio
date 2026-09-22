@@ -9,8 +9,14 @@ type CredibilityStripProps = {
 
 export function CredibilityStrip({ title, items }: CredibilityStripProps) {
   return (
-    <section className="section-shell border-y border-ink py-6" aria-label={title}>
-      <Reveal stagger className="grid gap-4 md:grid-cols-[0.24fr_1fr] md:items-center">
+    <section
+      className="section-shell border-y border-ink py-6"
+      aria-label={title}
+    >
+      <Reveal
+        stagger
+        className="grid gap-4 md:grid-cols-[0.24fr_1fr] md:items-center"
+      >
         <RevealItem>
           <p className="eyebrow text-maroon">{title}</p>
         </RevealItem>

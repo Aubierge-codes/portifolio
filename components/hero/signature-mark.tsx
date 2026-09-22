@@ -13,7 +13,11 @@ export function SignatureMark() {
     >
       <motion.div
         className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 border-2 border-ink bg-paper md:h-36 md:w-36"
-        initial={reduceMotion ? { opacity: 0 } : { scaleX: 0.55, scaleY: 1.18, rotate: -8 }}
+        initial={
+          reduceMotion
+            ? { opacity: 0 }
+            : { scaleX: 0.55, scaleY: 1.18, rotate: -8 }
+        }
         animate={
           reduceMotion
             ? { opacity: 1 }
@@ -40,12 +44,16 @@ export function SignatureMark() {
       />
       <motion.div
         className="absolute left-[18%] top-[56%] h-10 w-10 border-2 border-ink bg-paper"
-        animate={reduceMotion ? undefined : { y: [0, -10, 0], rotate: [0, 7, 0] }}
+        animate={
+          reduceMotion ? undefined : { y: [0, -10, 0], rotate: [0, 7, 0] }
+        }
         transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute right-[18%] top-[18%] h-8 w-8 bg-maroon"
-        animate={reduceMotion ? undefined : { y: [0, 8, 0], scale: [1, 0.94, 1] }}
+        animate={
+          reduceMotion ? undefined : { y: [0, 8, 0], scale: [1, 0.94, 1] }
+        }
         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
       />
       <div className="absolute inset-x-8 bottom-8 h-px bg-ink/25" />

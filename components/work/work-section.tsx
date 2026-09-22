@@ -16,13 +16,24 @@ export function WorkSection({ t, locale }: WorkSectionProps) {
 
   return (
     <section id="work" className="section-shell py-24 md:py-32">
-      <Reveal stagger className="mb-12 grid gap-6 lg:grid-cols-[0.74fr_0.46fr] lg:items-end">
+      <Reveal
+        stagger
+        className="mb-12 grid gap-6 lg:grid-cols-[0.74fr_0.46fr] lg:items-end"
+      >
         <RevealItem>
           <p className="eyebrow mb-4 text-maroon">{t("work.eyebrow")}</p>
-          <AnimatedText value={t("work.title")} as="h2" className="heading-lg max-w-[820px]" />
+          <AnimatedText
+            value={t("work.title")}
+            as="h2"
+            className="heading-lg max-w-[820px]"
+          />
         </RevealItem>
         <RevealItem>
-          <AnimatedText value={t("work.copy")} as="p" className="body-large text-ink/70" />
+          <AnimatedText
+            value={t("work.copy")}
+            as="p"
+            className="body-large text-ink/70"
+          />
         </RevealItem>
       </Reveal>
       <Reveal stagger className="grid auto-rows-fr gap-5 lg:grid-cols-12">

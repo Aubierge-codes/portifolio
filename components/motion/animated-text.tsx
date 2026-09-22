@@ -20,9 +20,13 @@ export function AnimatedText({
     <AnimatePresence mode="popLayout" initial={false}>
       <motion.span
         key={value}
-        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.985 }}
+        initial={
+          reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.985 }
+        }
         animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
-        exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.99 }}
+        exit={
+          reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.99 }
+        }
         transition={reduceMotion ? { duration: 0.12 } : spring}
         className="block"
       >

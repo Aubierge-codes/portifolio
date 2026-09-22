@@ -3,7 +3,16 @@ import type { Locale, Project } from "@/types/content";
 export const githubUrl = "https://github.com/Aubierge-codes/";
 
 const sharedTech = {
-  heringress: ["React", "Vite", "Node.js", "Express", "MongoDB", "OpenAI API", "Swagger", "Web scraping"],
+  heringress: [
+    "React",
+    "Vite",
+    "Node.js",
+    "Express",
+    "MongoDB",
+    "OpenAI API",
+    "Swagger",
+    "Web scraping"
+  ],
   umuco: [
     "React 18",
     "Vite",
@@ -42,8 +51,7 @@ const enProjects: Project[] = [
     size: "feature",
     problem:
       "Education, programs, competitions, and development opportunities are scattered across websites, making consistent discovery difficult for young people.",
-    role:
-      "Frontend and full-stack development, product thinking, API integration, and AI interaction design with Team Dev Girls.",
+    role: "Frontend and full-stack development, product thinking, API integration, and AI interaction design with Team Dev Girls.",
     decision:
       "Shape the experience around an AI-powered assistant that helps users navigate opportunity information instead of only browsing static lists.",
     outcome:
@@ -58,11 +66,11 @@ const enProjects: Project[] = [
     size: "feature",
     problem:
       "Rwandan cultural learning can feel fragmented when stories, places, maps, and exploration tools live in separate experiences.",
-    role:
-      "Full-stack product development for a multilingual cultural web experience centered on learning and exploration.",
+    role: "Full-stack product development for a multilingual cultural web experience centered on learning and exploration.",
     decision:
       "Blend structured cultural content with maps, interactive experiences, and an AI guide concept while keeping the interface modern and restrained.",
-    outcome: "A product concept that contrasts technology and culture without relying on visual cliches.",
+    outcome:
+      "A product concept that contrasts technology and culture without relying on visual cliches.",
     technologies: sharedTech.umuco
   },
   {
@@ -73,13 +81,20 @@ const enProjects: Project[] = [
     problem:
       "Recruitment experiences need structure so people and opportunities can meet through clearer digital workflows.",
     role: "Product ecosystem development across a public frontend and backend codebase.",
-    decision: "Treat the project as more than a single page by separating frontend and backend repositories.",
+    decision:
+      "Treat the project as more than a single page by separating frontend and backend repositories.",
     outcome:
       "Public repositories verify a frontend/backend product direction while leaving unverified features out of the portfolio copy.",
     technologies: ["Frontend app", "Backend API", "Full-stack architecture"],
     links: [
-      { label: "Frontend repo", href: "https://github.com/Aubierge-codes/Gwiza-frontend" },
-      { label: "Backend repo", href: "https://github.com/Aubierge-codes/Gwiza-backend" }
+      {
+        label: "Frontend repo",
+        href: "https://github.com/Aubierge-codes/Gwiza-frontend"
+      },
+      {
+        label: "Backend repo",
+        href: "https://github.com/Aubierge-codes/Gwiza-backend"
+      }
     ]
   },
   {
@@ -92,8 +107,16 @@ const enProjects: Project[] = [
     role: "Frontend development through the Velora Internship Dev Community.",
     decision:
       "Use a typed Next.js direction with Tailwind CSS, formatting, linting, and component structure to support maintainability.",
-    outcome: "Demonstrates frontend architecture and delivery habits beyond static page assembly.",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "ESLint", "Prettier", "Inter"]
+    outcome:
+      "Demonstrates frontend architecture and delivery habits beyond static page assembly.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "ESLint",
+      "Prettier",
+      "Inter"
+    ]
   },
   {
     id: "eco-girls",
@@ -103,13 +126,19 @@ const enProjects: Project[] = [
     size: "medium",
     problem:
       "Flooding, blocked drainage, and waste disposal can affect communities and shape the education and leadership conditions around girls.",
-    role:
-      "Technology and product contribution through the Girl in Bloom Global Ambassador Program 2026 with Team Gender Avengers.",
+    role: "Technology and product contribution through the Girl in Bloom Global Ambassador Program 2026 with Team Gender Avengers.",
     decision:
       "Frame the platform as dashboard-oriented documentation and understanding, connected to community action rather than software alone.",
     outcome:
       "A project direction that connects climate awareness, girls' leadership, and usable web systems.",
-    technologies: ["Next.js", "NestJS", "Prisma", "PostgreSQL", "Vercel", "Supabase"]
+    technologies: [
+      "Next.js",
+      "NestJS",
+      "Prisma",
+      "PostgreSQL",
+      "Vercel",
+      "Supabase"
+    ]
   },
   {
     id: "zero-bite",
@@ -118,9 +147,9 @@ const enProjects: Project[] = [
     size: "medium",
     problem:
       "Malaria risk work in Gisagara District benefits from careful exploration of environmental and contextual data without overstating medical certainty.",
-    role:
-      "Software and systems exploration across data collection, prediction tooling, and communication channels.",
-    decision: "Connect machine-learning experiments with real-world data sources and hardware-aware system thinking.",
+    role: "Software and systems exploration across data collection, prediction tooling, and communication channels.",
+    decision:
+      "Connect machine-learning experiments with real-world data sources and hardware-aware system thinking.",
     outcome:
       "Shows ability to work beyond traditional websites while avoiding unverified medical claims.",
     technologies: sharedTech.zeroBite
@@ -133,10 +162,11 @@ const enProjects: Project[] = [
     size: "small",
     problem:
       "Energy-focused prototypes need a bridge between physical hardware, measurement, and understandable data.",
-    role:
-      "Data Analyst on a team spanning hardware leadership, UI/UX, frontend, backend, and data analysis.",
-    decision: "Use piezoelectric hardware and Streamlit reporting to make prototype signals easier to inspect.",
-    outcome: "An engineering prototype connecting physical components, software, and data interpretation.",
+    role: "Data Analyst on a team spanning hardware leadership, UI/UX, frontend, backend, and data analysis.",
+    decision:
+      "Use piezoelectric hardware and Streamlit reporting to make prototype signals easier to inspect.",
+    outcome:
+      "An engineering prototype connecting physical components, software, and data interpretation.",
     technologies: ["Piezoelectric discs", "NodeMCU ESP-12E", "Streamlit"]
   },
   {
@@ -144,10 +174,13 @@ const enProjects: Project[] = [
     name: "My Weather App",
     category: "Frontend · API Integration",
     size: "small",
-    problem: "Weather interfaces must respond to asynchronous data and communicate changing conditions clearly.",
+    problem:
+      "Weather interfaces must respond to asynchronous data and communicate changing conditions clearly.",
     role: "Frontend implementation focused on API integration and dynamic presentation.",
-    decision: "Use real-time weather data and dynamic imagery so the interface changes with state.",
-    outcome: "A compact project demonstrating API calls, responsive UI, state changes, and asynchronous behavior.",
+    decision:
+      "Use real-time weather data and dynamic imagery so the interface changes with state.",
+    outcome:
+      "A compact project demonstrating API calls, responsive UI, state changes, and asynchronous behavior.",
     technologies: ["JavaScript", "OpenWeatherMap API", "Dynamic imagery"]
   },
   {
@@ -155,10 +188,13 @@ const enProjects: Project[] = [
     name: "Mugisha's Book Store",
     category: "Backend · REST API · Database",
     size: "small",
-    problem: "A bookstore needs reliable create, read, update, and delete operations around book information.",
+    problem:
+      "A bookstore needs reliable create, read, update, and delete operations around book information.",
     role: "Backend development and database modeling for a REST API.",
-    decision: "Use Express routes with MongoDB and Mongoose to keep the API structure clear.",
-    outcome: "Evidence of backend architecture fundamentals and CRUD workflow understanding.",
+    decision:
+      "Use Express routes with MongoDB and Mongoose to keep the API structure clear.",
+    outcome:
+      "Evidence of backend architecture fundamentals and CRUD workflow understanding.",
     technologies: ["Node.js", "Express", "MongoDB", "Mongoose"]
   },
   {
@@ -167,7 +203,8 @@ const enProjects: Project[] = [
     alsoKnownAs: "Student Management System · Save-Wise",
     category: "Software Engineering Fundamentals",
     size: "small",
-    problem: "Stronger software engineering fundamentals require projects that are not only visual interfaces.",
+    problem:
+      "Stronger software engineering fundamentals require projects that are not only visual interfaces.",
     role: "Java development focused on object-oriented thinking and project organization.",
     decision:
       "Use student-management and personal saving logic to practice abstraction, interfaces, repositories, inheritance, and exception handling.",
@@ -192,8 +229,7 @@ const frProjects: Project[] = [
     category: "IA · Full-Stack · Recherche d'opportunites",
     problem:
       "Les formations, programmes, concours et opportunites de developpement sont disperses sur plusieurs sites, ce qui les rend difficiles a suivre.",
-    role:
-      "Frontend, full-stack, pensee produit, integration d'API et design d'interaction IA avec Team Dev Girls.",
+    role: "Frontend, full-stack, pensee produit, integration d'API et design d'interaction IA avec Team Dev Girls.",
     decision:
       "Organiser l'experience autour d'une assistante IA qui aide a explorer les opportunites au lieu de seulement parcourir des listes statiques.",
     outcome:
@@ -204,8 +240,7 @@ const frProjects: Project[] = [
     category: "Full-Stack · Culture · Web interactif",
     problem:
       "L'apprentissage culturel rwandais peut sembler fragmente quand les histoires, lieux, cartes et outils d'exploration sont separes.",
-    role:
-      "Developpement full-stack d'une experience culturelle multilingue centree sur l'apprentissage et l'exploration.",
+    role: "Developpement full-stack d'une experience culturelle multilingue centree sur l'apprentissage et l'exploration.",
     decision:
       "Associer contenu culturel structure, cartes, experiences interactives et concept de guide IA dans une interface moderne et sobre.",
     outcome:
@@ -222,8 +257,14 @@ const frProjects: Project[] = [
     outcome:
       "Les depots publics confirment une direction frontend/backend sans inventer de fonctionnalites non verifiees.",
     links: [
-      { label: "Depot frontend", href: "https://github.com/Aubierge-codes/Gwiza-frontend" },
-      { label: "Depot backend", href: "https://github.com/Aubierge-codes/Gwiza-backend" }
+      {
+        label: "Depot frontend",
+        href: "https://github.com/Aubierge-codes/Gwiza-frontend"
+      },
+      {
+        label: "Depot backend",
+        href: "https://github.com/Aubierge-codes/Gwiza-backend"
+      }
     ]
   },
   {
@@ -242,19 +283,18 @@ const frProjects: Project[] = [
     category: "Climate Tech · Communaute · Plateforme web",
     problem:
       "Les inondations, caniveaux bloques et dechets peuvent affecter les communautes et les conditions d'education et de leadership des filles.",
-    role:
-      "Contribution technologie et produit via le Girl in Bloom Global Ambassador Program 2026 avec Team Gender Avengers.",
+    role: "Contribution technologie et produit via le Girl in Bloom Global Ambassador Program 2026 avec Team Gender Avengers.",
     decision:
       "Penser la plateforme comme un tableau de bord de documentation relie a l'action communautaire, pas seulement comme un logiciel.",
-    outcome: "Une direction qui relie climat, leadership des filles et systemes web utilisables."
+    outcome:
+      "Une direction qui relie climat, leadership des filles et systemes web utilisables."
   },
   {
     ...enProjects[5],
     category: "IA · Data · Technologie sante · Systemes embarques",
     problem:
       "Le travail sur le risque de malaria a Gisagara demande une exploration prudente des donnees environnementales et contextuelles.",
-    role:
-      "Exploration logicielle et systeme autour de la collecte de donnees, d'outils predictifs et de canaux de communication.",
+    role: "Exploration logicielle et systeme autour de la collecte de donnees, d'outils predictifs et de canaux de communication.",
     decision:
       "Relier des experiences de machine learning a des sources de donnees reelles et a une pensee systeme proche du materiel.",
     outcome:
@@ -265,11 +305,11 @@ const frProjects: Project[] = [
     category: "IoT · Data · Systemes embarques",
     problem:
       "Les prototypes energetiques ont besoin d'un pont entre materiel physique, mesure et donnees comprehensibles.",
-    role:
-      "Data Analyst dans une equipe couvrant hardware, UI/UX, frontend, backend et analyse de donnees.",
+    role: "Data Analyst dans une equipe couvrant hardware, UI/UX, frontend, backend et analyse de donnees.",
     decision:
       "Utiliser du materiel piezoelectrique et Streamlit pour rendre les signaux du prototype plus lisibles.",
-    outcome: "Un prototype d'ingenierie reliant composants physiques, logiciel et interpretation des donnees."
+    outcome:
+      "Un prototype d'ingenierie reliant composants physiques, logiciel et interpretation des donnees."
   },
   {
     ...enProjects[7],
@@ -288,8 +328,10 @@ const frProjects: Project[] = [
     problem:
       "Une librairie a besoin d'operations fiables pour creer, lire, modifier et supprimer les informations des livres.",
     role: "Developpement backend et modelisation de base de donnees pour une API REST.",
-    decision: "Utiliser des routes Express avec MongoDB et Mongoose pour garder une structure claire.",
-    outcome: "Preuve de bases solides en architecture backend et en operations CRUD."
+    decision:
+      "Utiliser des routes Express avec MongoDB et Mongoose pour garder une structure claire.",
+    outcome:
+      "Preuve de bases solides en architecture backend et en operations CRUD."
   },
   {
     ...enProjects[9],
@@ -310,8 +352,7 @@ const esProjects: Project[] = [
     category: "IA · Full-Stack · Descubrimiento de oportunidades",
     problem:
       "La educacion, los programas, concursos y oportunidades de desarrollo estan dispersos en muchos sitios, lo que dificulta descubrirlos con constancia.",
-    role:
-      "Frontend, full-stack, pensamiento de producto, integracion de API y diseno de interaccion con IA junto a Team Dev Girls.",
+    role: "Frontend, full-stack, pensamiento de producto, integracion de API y diseno de interaccion con IA junto a Team Dev Girls.",
     decision:
       "Centrar la experiencia en una asistente con IA que ayuda a navegar informacion de oportunidades, no solo listas estaticas.",
     outcome:
@@ -322,8 +363,7 @@ const esProjects: Project[] = [
     category: "Full-Stack · Cultura · Web interactiva",
     problem:
       "El aprendizaje cultural ruandes puede sentirse fragmentado cuando historias, lugares, mapas y herramientas de exploracion viven separados.",
-    role:
-      "Desarrollo full-stack de una experiencia cultural multilingue centrada en aprender y explorar.",
+    role: "Desarrollo full-stack de una experiencia cultural multilingue centrada en aprender y explorar.",
     decision:
       "Combinar contenido cultural estructurado, mapas, experiencias interactivas y un concepto de guia IA con una interfaz moderna y contenida.",
     outcome:
@@ -340,8 +380,14 @@ const esProjects: Project[] = [
     outcome:
       "Los repositorios publicos verifican una direccion frontend/backend sin inventar funciones no comprobadas.",
     links: [
-      { label: "Repo frontend", href: "https://github.com/Aubierge-codes/Gwiza-frontend" },
-      { label: "Repo backend", href: "https://github.com/Aubierge-codes/Gwiza-backend" }
+      {
+        label: "Repo frontend",
+        href: "https://github.com/Aubierge-codes/Gwiza-frontend"
+      },
+      {
+        label: "Repo backend",
+        href: "https://github.com/Aubierge-codes/Gwiza-backend"
+      }
     ]
   },
   {
@@ -360,8 +406,7 @@ const esProjects: Project[] = [
     category: "Climate Tech · Comunidad · Plataforma web",
     problem:
       "Las inundaciones, drenajes bloqueados y residuos pueden afectar comunidades y las condiciones de educacion y liderazgo de las ninas.",
-    role:
-      "Contribucion de tecnologia y producto en el Girl in Bloom Global Ambassador Program 2026 con Team Gender Avengers.",
+    role: "Contribucion de tecnologia y producto en el Girl in Bloom Global Ambassador Program 2026 con Team Gender Avengers.",
     decision:
       "Plantear la plataforma como una experiencia tipo dashboard para documentar y entender, conectada con accion comunitaria.",
     outcome:
@@ -372,8 +417,7 @@ const esProjects: Project[] = [
     category: "IA · Datos · Tecnologia de salud · Sistemas embebidos",
     problem:
       "El trabajo de riesgo de malaria en Gisagara necesita explorar datos ambientales y contextuales con cuidado y sin exagerar certezas medicas.",
-    role:
-      "Exploracion de software y sistemas para recoleccion de datos, herramientas predictivas y canales de comunicacion.",
+    role: "Exploracion de software y sistemas para recoleccion de datos, herramientas predictivas y canales de comunicacion.",
     decision:
       "Conectar experimentos de machine learning con fuentes reales de datos y pensamiento de sistema cercano al hardware.",
     outcome:
@@ -384,11 +428,11 @@ const esProjects: Project[] = [
     category: "IoT · Datos · Sistemas embebidos",
     problem:
       "Los prototipos energeticos necesitan unir hardware fisico, medicion y datos faciles de interpretar.",
-    role:
-      "Data Analyst en un equipo con liderazgo de hardware, UI/UX, frontend, backend y analisis de datos.",
+    role: "Data Analyst en un equipo con liderazgo de hardware, UI/UX, frontend, backend y analisis de datos.",
     decision:
       "Usar hardware piezoelectrico y reportes en Streamlit para hacer mas legibles las senales del prototipo.",
-    outcome: "Un prototipo de ingenieria que conecta componentes fisicos, software e interpretacion de datos."
+    outcome:
+      "Un prototipo de ingenieria que conecta componentes fisicos, software e interpretacion de datos."
   },
   {
     ...enProjects[7],
@@ -407,8 +451,10 @@ const esProjects: Project[] = [
     problem:
       "Una libreria necesita operaciones confiables para crear, leer, actualizar y eliminar informacion de libros.",
     role: "Desarrollo backend y modelado de base de datos para una API REST.",
-    decision: "Usar rutas Express con MongoDB y Mongoose para mantener clara la estructura de la API.",
-    outcome: "Evidencia de fundamentos de arquitectura backend y comprension de CRUD."
+    decision:
+      "Usar rutas Express con MongoDB y Mongoose para mantener clara la estructura de la API.",
+    outcome:
+      "Evidencia de fundamentos de arquitectura backend y comprension de CRUD."
   },
   {
     ...enProjects[9],

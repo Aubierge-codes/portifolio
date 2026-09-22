@@ -21,7 +21,9 @@ export function Reveal({
 
   return (
     <Component
-      variants={reduceMotion ? undefined : stagger ? staggerContainer : revealVariants}
+      variants={
+        reduceMotion ? undefined : stagger ? staggerContainer : revealVariants
+      }
       initial={reduceMotion ? { opacity: 0 } : "hidden"}
       whileInView={reduceMotion ? { opacity: 1 } : "visible"}
       viewport={{ once: true, margin: "-80px" }}

@@ -43,7 +43,9 @@ export function ProjectCard({ project, index, t }: ProjectCardProps) {
           <p className="eyebrow text-maroon">{project.category}</p>
           <h3 className="heading-lg mt-3 max-w-[620px]">{project.name}</h3>
           {project.alsoKnownAs ? (
-            <p className="mt-2 text-sm font-medium text-ink/60">{project.alsoKnownAs}</p>
+            <p className="mt-2 text-sm font-medium text-ink/60">
+              {project.alsoKnownAs}
+            </p>
           ) : null}
         </div>
         <span className="hidden text-sm font-medium text-ink/40 md:block">
@@ -64,7 +66,9 @@ export function ProjectCard({ project, index, t }: ProjectCardProps) {
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-ink/55">
           {t("project.technology")}
         </p>
-        <p className="text-sm leading-6 text-ink/75">{project.technologies.join(" · ")}</p>
+        <p className="text-sm leading-6 text-ink/75">
+          {project.technologies.join(" · ")}
+        </p>
         {project.links?.length ? (
           <div className="mt-5 flex flex-wrap gap-4">
             {project.links.map((link) => (
@@ -98,7 +102,9 @@ function ProjectVisual({
   return (
     <motion.div
       className="relative mb-7 h-28 overflow-hidden border border-ink bg-ink"
-      animate={reduceMotion ? undefined : { backgroundPositionX: ["0%", "100%", "0%"] }}
+      animate={
+        reduceMotion ? undefined : { backgroundPositionX: ["0%", "100%", "0%"] }
+      }
       transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
       style={{
         backgroundImage:
@@ -129,7 +135,9 @@ function ProjectVisual({
 function ProjectFact({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="mb-1 text-xs font-medium uppercase tracking-[0.12em] text-maroon">{label}</p>
+      <p className="mb-1 text-xs font-medium uppercase tracking-[0.12em] text-maroon">
+        {label}
+      </p>
       <p className="text-ink/78">{value}</p>
     </div>
   );

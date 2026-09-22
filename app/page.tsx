@@ -22,7 +22,10 @@ export default function Home() {
       <Navigation locale={locale} setLocale={setLocale} t={t} />
       <main>
         <Hero t={t} />
-        <CredibilityStrip title={t("credibility.title")} items={bundle.credibility} />
+        <CredibilityStrip
+          title={t("credibility.title")}
+          items={bundle.credibility}
+        />
         <WorkSection t={t} locale={locale} />
         <ProjectStories t={t} locale={locale} />
         <ProcessSection t={t} steps={bundle.process} />

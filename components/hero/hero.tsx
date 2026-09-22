@@ -23,7 +23,11 @@ export function Hero({ t }: HeroProps) {
             <p className="eyebrow mb-5 text-maroon">{t("hero.eyebrow")}</p>
           </RevealItem>
           <RevealItem>
-            <AnimatedText value={t("hero.title")} as="h1" className="heading-xl max-w-[880px]" />
+            <AnimatedText
+              value={t("hero.title")}
+              as="h1"
+              className="heading-xl max-w-[880px]"
+            />
           </RevealItem>
           <RevealItem>
             <AnimatedText

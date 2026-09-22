@@ -13,7 +13,10 @@ export function LoadingSequence({ skipLabel }: LoadingSequenceProps) {
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setVisible(false), reduceMotion ? 450 : 1350);
+    const timeout = window.setTimeout(
+      () => setVisible(false),
+      reduceMotion ? 450 : 1350
+    );
     return () => window.clearTimeout(timeout);
   }, [reduceMotion]);
 
@@ -37,7 +40,11 @@ export function LoadingSequence({ skipLabel }: LoadingSequenceProps) {
           <motion.div
             aria-hidden="true"
             className="relative grid h-28 w-28 place-items-center border-2 border-ink bg-paper shadow-editorial"
-            initial={reduceMotion ? { opacity: 0 } : { scaleX: 0.45, scaleY: 1.24, y: 10 }}
+            initial={
+              reduceMotion
+                ? { opacity: 0 }
+                : { scaleX: 0.45, scaleY: 1.24, y: 10 }
+            }
             animate={
               reduceMotion
                 ? { opacity: 1 }
@@ -48,7 +55,9 @@ export function LoadingSequence({ skipLabel }: LoadingSequenceProps) {
                     rotate: [-3, -6, 4, -1, 0]
                   }
             }
-            transition={reduceMotion ? { duration: 0.2 } : { ...spring, duration: 1 }}
+            transition={
+              reduceMotion ? { duration: 0.2 } : { ...spring, duration: 1 }
+            }
           >
             <motion.span
               className="font-heading text-6xl font-medium"
@@ -59,7 +68,11 @@ export function LoadingSequence({ skipLabel }: LoadingSequenceProps) {
             </motion.span>
             <motion.span
               className="absolute -right-3 top-4 h-4 w-8 bg-maroon"
-              animate={reduceMotion ? undefined : { x: [-10, 4, 0], scaleX: [0.5, 1.2, 1] }}
+              animate={
+                reduceMotion
+                  ? undefined
+                  : { x: [-10, 4, 0], scaleX: [0.5, 1.2, 1] }
+              }
               transition={spring}
             />
           </motion.div>

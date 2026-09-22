@@ -1,4 +1,9 @@
-import type { FaqItem, Locale, ProcessStep, TranslationKey } from "@/types/content";
+import type {
+  FaqItem,
+  Locale,
+  ProcessStep,
+  TranslationKey
+} from "@/types/content";
 
 type TranslationBundle = Record<TranslationKey, string> & {
   credibility: string[];
@@ -42,21 +47,25 @@ export const translations: Record<Locale, TranslationBundle> = {
     "project.result": "Result",
     "project.technology": "Technology",
     "stories.eyebrow": "Project stories",
-    "stories.title": "The work moves from interface craft to systems that touch hardware, data, and community.",
+    "stories.title":
+      "The work moves from interface craft to systems that touch hardware, data, and community.",
     "stories.copy":
       "The strongest thread is learning by building: turn a problem into a prototype, then refine it until people can use it.",
     "process.eyebrow": "How Aubierge works",
-    "process.title": "A practical build loop for ideas that need to become real.",
+    "process.title":
+      "A practical build loop for ideas that need to become real.",
     "process.copy":
       "The process is intentionally simple: understand the problem, make something testable, learn from what breaks, and improve.",
     "about.eyebrow": "About",
-    "about.title": "Software, hardware, and people belong in the same conversation.",
+    "about.title":
+      "Software, hardware, and people belong in the same conversation.",
     "about.copy":
       "Aubierge Umurerwa studies Software Development and Embedded Systems at Rwanda Coding Academy. She enjoys building the interface, the backend, and the physical or data layer when the problem asks for it.",
     "about.note":
       "Her projects sit across Technovation, robotics, AI, community technology, product prototyping, and leadership training.",
     "faq.eyebrow": "FAQ",
-    "faq.title": "Practical answers for recruiters, collaborators, and clients.",
+    "faq.title":
+      "Practical answers for recruiters, collaborators, and clients.",
     "contact.eyebrow": "Contact",
     "contact.title": "Have an idea worth building?",
     "contact.copy":
@@ -72,7 +81,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "form.email": "Email",
     "form.message": "Message",
     "form.send": "Send",
-    "form.note": "This form is prepared for a future email service. Email is the fastest path today.",
+    "form.note":
+      "This form is prepared for a future email service. Email is the fastest path today.",
     "form.aria": "Contact form",
     "contact.emailLabel": "Email",
     "contact.githubLabel": "GitHub",
@@ -172,8 +182,10 @@ export const translations: Record<Locale, TranslationBundle> = {
     "nav.contact": "Contact",
     "nav.viewWork": "Voir les projets",
     "language.label": "Choisir la langue",
-    "hero.eyebrow": "Developpeuse logiciel · Frontend · IA · Systemes embarques",
-    "hero.title": "Je construis des logiciels qui transforment les idees en experiences utiles.",
+    "hero.eyebrow":
+      "Developpeuse logiciel · Frontend · IA · Systemes embarques",
+    "hero.title":
+      "Je construis des logiciels qui transforment les idees en experiences utiles.",
     "hero.copy":
       "Developpeuse a Rwanda Coding Academy, elle cree des interfaces, des applications intelligentes et des technologies reliees aux problemes reels.",
     "hero.primary": "Voir mon travail",
@@ -181,7 +193,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "hero.scroll": "Aller aux projets selectionnes",
     "credibility.title": "Reperes",
     "work.eyebrow": "Travaux selectionnes",
-    "work.title": "Des projets construits autour de vrais problemes, pas de simples demos techniques.",
+    "work.title":
+      "Des projets construits autour de vrais problemes, pas de simples demos techniques.",
     "work.copy":
       "Chaque projet presente le probleme, le role d'Aubierge, une decision technique importante et le resultat actuel.",
     "project.problem": "Probleme",
@@ -191,21 +204,25 @@ export const translations: Record<Locale, TranslationBundle> = {
     "project.result": "Resultat",
     "project.technology": "Technologie",
     "stories.eyebrow": "Histoires de projets",
-    "stories.title": "Le travail va de l'interface aux systemes qui touchent le materiel, les donnees et la communaute.",
+    "stories.title":
+      "Le travail va de l'interface aux systemes qui touchent le materiel, les donnees et la communaute.",
     "stories.copy":
       "Le fil conducteur est l'apprentissage par la construction: transformer un probleme en prototype, puis l'ameliorer jusqu'a ce qu'il soit utilisable.",
     "process.eyebrow": "Methode de travail",
-    "process.title": "Une boucle de construction pratique pour les idees qui doivent devenir reelles.",
+    "process.title":
+      "Une boucle de construction pratique pour les idees qui doivent devenir reelles.",
     "process.copy":
       "Le processus reste simple: comprendre le probleme, creer quelque chose de testable, apprendre de ce qui casse, puis ameliorer.",
     "about.eyebrow": "A propos",
-    "about.title": "Le logiciel, le materiel et les personnes doivent rester dans la meme conversation.",
+    "about.title":
+      "Le logiciel, le materiel et les personnes doivent rester dans la meme conversation.",
     "about.copy":
       "Aubierge Umurerwa etudie le developpement logiciel et les systemes embarques a Rwanda Coding Academy. Elle aime construire l'interface, le backend et la couche physique ou data quand le probleme le demande.",
     "about.note":
       "Ses projets croisent Technovation, la robotique, l'IA, la technologie communautaire, le prototypage produit et la formation au leadership.",
     "faq.eyebrow": "FAQ",
-    "faq.title": "Des reponses pratiques pour recruteurs, collaborateurs et clients.",
+    "faq.title":
+      "Des reponses pratiques pour recruteurs, collaborateurs et clients.",
     "contact.eyebrow": "Contact",
     "contact.title": "Vous avez une idee qui merite d'etre construite ?",
     "contact.copy":
@@ -221,11 +238,13 @@ export const translations: Record<Locale, TranslationBundle> = {
     "form.email": "Email",
     "form.message": "Message",
     "form.send": "Envoyer",
-    "form.note": "Ce formulaire est pret pour un futur service email. Aujourd'hui, l'email reste le chemin le plus rapide.",
+    "form.note":
+      "Ce formulaire est pret pour un futur service email. Aujourd'hui, l'email reste le chemin le plus rapide.",
     "form.aria": "Formulaire de contact",
     "contact.emailLabel": "Email",
     "contact.githubLabel": "GitHub",
-    "contact.linkedinPending": "Le profil LinkedIn pourra etre ajoute quand il sera public.",
+    "contact.linkedinPending":
+      "Le profil LinkedIn pourra etre ajoute quand il sera public.",
     credibility: [
       "Rwanda Coding Academy",
       "Demi-finaliste Technovation 2026",
@@ -321,8 +340,10 @@ export const translations: Record<Locale, TranslationBundle> = {
     "nav.contact": "Contacto",
     "nav.viewWork": "Ver trabajo",
     "language.label": "Seleccionar idioma",
-    "hero.eyebrow": "Desarrolladora de software · Frontend · IA · Sistemas embebidos",
-    "hero.title": "Construyo software que convierte ideas en experiencias utiles.",
+    "hero.eyebrow":
+      "Desarrolladora de software · Frontend · IA · Sistemas embebidos",
+    "hero.title":
+      "Construyo software que convierte ideas en experiencias utiles.",
     "hero.copy":
       "Desarrolladora en Rwanda Coding Academy, creando interfaces, aplicaciones inteligentes y tecnologia conectada con problemas reales.",
     "hero.primary": "Ver mi trabajo",
@@ -330,7 +351,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "hero.scroll": "Ir al trabajo seleccionado",
     "credibility.title": "Senales",
     "work.eyebrow": "Trabajo seleccionado",
-    "work.title": "Proyectos creados alrededor de problemas reales, no demos vacias.",
+    "work.title":
+      "Proyectos creados alrededor de problemas reales, no demos vacias.",
     "work.copy":
       "Cada proyecto muestra el problema, el rol de Aubierge, una decision tecnica clave y el estado actual.",
     "project.problem": "Problema",
@@ -340,7 +362,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "project.result": "Resultado",
     "project.technology": "Tecnologia",
     "stories.eyebrow": "Historias de proyecto",
-    "stories.title": "El trabajo va desde interfaces hasta sistemas con hardware, datos y comunidad.",
+    "stories.title":
+      "El trabajo va desde interfaces hasta sistemas con hardware, datos y comunidad.",
     "stories.copy":
       "La linea principal es aprender construyendo: convertir un problema en prototipo y mejorarlo hasta que sea usable.",
     "process.eyebrow": "Como trabaja Aubierge",
@@ -348,20 +371,23 @@ export const translations: Record<Locale, TranslationBundle> = {
     "process.copy":
       "El proceso es simple: entender el problema, crear algo comprobable, aprender de lo que falla y mejorar.",
     "about.eyebrow": "Sobre mi",
-    "about.title": "Software, hardware y personas pertenecen a la misma conversacion.",
+    "about.title":
+      "Software, hardware y personas pertenecen a la misma conversacion.",
     "about.copy":
       "Aubierge Umurerwa estudia Desarrollo de Software y Sistemas Embebidos en Rwanda Coding Academy. Disfruta crear la interfaz, el backend y la capa fisica o de datos cuando el problema lo requiere.",
     "about.note":
       "Sus proyectos conectan Technovation, robotica, IA, tecnologia comunitaria, prototipado de productos y liderazgo.",
     "faq.eyebrow": "FAQ",
-    "faq.title": "Respuestas practicas para reclutadores, colaboradores y clientes.",
+    "faq.title":
+      "Respuestas practicas para reclutadores, colaboradores y clientes.",
     "contact.eyebrow": "Contacto",
     "contact.title": "Tienes una idea que vale la pena construir?",
     "contact.copy":
       "Convirtamos el problema, la idea o el prototipo en algo que la gente pueda usar de verdad.",
     "contact.primary": "Iniciar conversacion",
     "contact.secondary": "Ver GitHub",
-    "footer.role": "Desarrolladora de software · Frontend · IA · Sistemas embebidos",
+    "footer.role":
+      "Desarrolladora de software · Frontend · IA · Sistemas embebidos",
     "footer.explore": "Explorar",
     "footer.connect": "Conectar",
     "footer.languages": "Idiomas",
@@ -370,11 +396,13 @@ export const translations: Record<Locale, TranslationBundle> = {
     "form.email": "Email",
     "form.message": "Mensaje",
     "form.send": "Enviar",
-    "form.note": "Este formulario queda preparado para un futuro servicio de correo. Hoy, el email es el camino mas rapido.",
+    "form.note":
+      "Este formulario queda preparado para un futuro servicio de correo. Hoy, el email es el camino mas rapido.",
     "form.aria": "Formulario de contacto",
     "contact.emailLabel": "Email",
     "contact.githubLabel": "GitHub",
-    "contact.linkedinPending": "El perfil de LinkedIn se puede anadir cuando sea publico.",
+    "contact.linkedinPending":
+      "El perfil de LinkedIn se puede anadir cuando sea publico.",
     credibility: [
       "Rwanda Coding Academy",
       "Semifinalista Technovation 2026",

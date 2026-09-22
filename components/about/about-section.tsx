@@ -15,22 +15,40 @@ export function AboutSection({ t, achievements }: AboutSectionProps) {
 
   return (
     <section id="about" className="section-shell py-24 md:py-32">
-      <Reveal stagger className="grid gap-10 lg:grid-cols-[0.72fr_0.42fr] lg:items-center">
+      <Reveal
+        stagger
+        className="grid gap-10 lg:grid-cols-[0.72fr_0.42fr] lg:items-center"
+      >
         <div>
           <RevealItem>
             <p className="eyebrow mb-4 text-maroon">{t("about.eyebrow")}</p>
-            <AnimatedText value={t("about.title")} as="h2" className="heading-lg" />
+            <AnimatedText
+              value={t("about.title")}
+              as="h2"
+              className="heading-lg"
+            />
           </RevealItem>
           <RevealItem>
-            <AnimatedText value={t("about.copy")} as="p" className="body-large mt-7 text-ink/72" />
+            <AnimatedText
+              value={t("about.copy")}
+              as="p"
+              className="body-large mt-7 text-ink/72"
+            />
           </RevealItem>
           <RevealItem>
-            <AnimatedText value={t("about.note")} as="p" className="body-large mt-5 text-ink/72" />
+            <AnimatedText
+              value={t("about.note")}
+              as="p"
+              className="body-large mt-5 text-ink/72"
+            />
           </RevealItem>
           <RevealItem>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               {achievements.map((item) => (
-                <p key={item} className="border-l-2 border-maroon pl-3 text-sm font-medium">
+                <p
+                  key={item}
+                  className="border-l-2 border-maroon pl-3 text-sm font-medium"
+                >
                   {item}
                 </p>
               ))}
@@ -68,7 +86,11 @@ export function AboutSection({ t, achievements }: AboutSectionProps) {
                 className="absolute left-[18%] top-[45%] h-2 w-[58%] bg-maroon"
                 animate={reduceMotion ? undefined : { scaleX: [0.2, 1, 0.2] }}
                 style={{ transformOrigin: "left" }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
               />
             </div>
           </div>

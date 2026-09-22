@@ -33,7 +33,11 @@ export function FaqSection({ t, items }: FaqSectionProps) {
         <div>
           <RevealItem>
             <p className="eyebrow mb-4 text-maroon">{t("faq.eyebrow")}</p>
-            <AnimatedText value={t("faq.title")} as="h2" className="heading-lg" />
+            <AnimatedText
+              value={t("faq.title")}
+              as="h2"
+              className="heading-lg"
+            />
           </RevealItem>
         </div>
         <RevealItem>
@@ -41,7 +45,10 @@ export function FaqSection({ t, items }: FaqSectionProps) {
             {items.map((item, index) => {
               const open = openItems.has(index);
               return (
-                <div key={item.question} className="border-b border-ink last:border-b-0">
+                <div
+                  key={item.question}
+                  className="border-b border-ink last:border-b-0"
+                >
                   <button
                     type="button"
                     className="flex min-h-20 w-full items-center justify-between gap-4 py-5 text-left"
@@ -54,7 +61,9 @@ export function FaqSection({ t, items }: FaqSectionProps) {
                     </span>
                     <motion.span
                       className="grid h-9 w-9 shrink-0 place-items-center border border-ink"
-                      animate={reduceMotion ? undefined : { rotate: open ? 45 : 0 }}
+                      animate={
+                        reduceMotion ? undefined : { rotate: open ? 45 : 0 }
+                      }
                     >
                       +
                     </motion.span>
@@ -63,10 +72,26 @@ export function FaqSection({ t, items }: FaqSectionProps) {
                     {open ? (
                       <motion.div
                         id={`faq-panel-${index}`}
-                        initial={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                        animate={reduceMotion ? { opacity: 1 } : { height: "auto", opacity: 1 }}
-                        exit={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        initial={
+                          reduceMotion
+                            ? { opacity: 0 }
+                            : { height: 0, opacity: 0 }
+                        }
+                        animate={
+                          reduceMotion
+                            ? { opacity: 1 }
+                            : { height: "auto", opacity: 1 }
+                        }
+                        exit={
+                          reduceMotion
+                            ? { opacity: 0 }
+                            : { height: 0, opacity: 0 }
+                        }
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 30
+                        }}
                         className="overflow-hidden"
                       >
                         <p className="max-w-[760px] pb-6 text-base leading-7 text-ink/72">
