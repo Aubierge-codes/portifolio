@@ -1,0 +1,89 @@
+"use client";
+
+import { githubUrl } from "@/data/projects";
+import { languages } from "@/data/translations";
+import type { Locale, TranslationKey } from "@/types/content";
+
+type SiteFooterProps = {
+  locale: Locale;
+  setLocale: (locale: Locale) => void;
+  t: (key: TranslationKey) => string;
+};
+
+export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
+  return (
+    <footer className="border-t-2 border-ink bg-paper py-12">
+      <div className="section-shell">
+        <div className="grid gap-10 md:grid-cols-4">
+          <div>
+            <p className="font-heading text-3xl font-medium">Aubierge Umurerwa</p>
+            <p className="mt-3 text-sm leading-6 text-ink/65">{t("footer.role")}</p>
+          </div>
+          <FooterColumn
+            title={t("footer.explore")}
+            links={[
+              { label: t("nav.work"), href: "#work" },
+              { label: t("nav.process"), href: "#process" },
+              { label: t("nav.about"), href: "#about" },
+              { label: t("nav.contact"), href: "#contact" }
+            ]}
+          />
+          <FooterColumn
+            title={t("footer.connect")}
+            links={[
+              { label: "GitHub", href: githubUrl },
+              { label: "LinkedIn", href: "https://www.linkedin.com/" }
+            ]}
+          />
+          <div>
+            <p className="mb-4 text-sm font-medium uppercase tracking-[0.12em] text-maroon">
+              {t("footer.languages")}
+            </p>
+            <div className="grid gap-2">
+              {languages.map((language) => (
+                <button
+                  key={language.code}
+                  type="button"
+                  className="text-left text-sm font-medium underline-offset-4 hover:text-maroon hover:underline"
+                  aria-pressed={locale === language.code}
+                  onClick={() => setLocale(language.code)}
+                >
+                  {language.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-ink pt-5 text-sm text-ink/65">
+          <p>© Aubierge Umurerwa</p>
+          <p>{t("footer.built")}</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function FooterColumn({
+  title,
+  links
+}: {
+  title: string;
+  links: { label: string; href: string }[];
+}) {
+  return (
+    <div>
+      <p className="mb-4 text-sm font-medium uppercase tracking-[0.12em] text-maroon">{title}</p>
+      <div className="grid gap-2">
+        {links.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            className="text-sm font-medium underline-offset-4 hover:text-maroon hover:underline"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
