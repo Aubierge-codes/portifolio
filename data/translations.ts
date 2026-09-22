@@ -34,6 +34,12 @@ export const translations: Record<Locale, TranslationBundle> = {
     "work.title": "Projects built around real problems, not empty tech demos.",
     "work.copy":
       "Each project is presented through the problem, Aubierge's role, a key technical decision, and the current result.",
+    "project.problem": "Problem",
+    "project.role": "Role",
+    "project.decision": "Decision",
+    "project.outcome": "Outcome",
+    "project.result": "Result",
+    "project.technology": "Technology",
     "stories.eyebrow": "Project stories",
     "stories.title": "The work moves from interface craft to systems that touch hardware, data, and community.",
     "stories.copy":
@@ -165,6 +171,12 @@ export const translations: Record<Locale, TranslationBundle> = {
     "work.title": "Des projets construits autour de vrais problemes, pas de simples demos techniques.",
     "work.copy":
       "Chaque projet presente le probleme, le role d'Aubierge, une decision technique importante et le resultat actuel.",
+    "project.problem": "Probleme",
+    "project.role": "Role",
+    "project.decision": "Decision",
+    "project.outcome": "Resultat",
+    "project.result": "Resultat",
+    "project.technology": "Technologie",
     "stories.eyebrow": "Histoires de projets",
     "stories.title": "Le travail va de l'interface aux systemes qui touchent le materiel, les donnees et la communaute.",
     "stories.copy":
@@ -296,6 +308,12 @@ export const translations: Record<Locale, TranslationBundle> = {
     "work.title": "Proyectos creados alrededor de problemas reales, no demos vacias.",
     "work.copy":
       "Cada proyecto muestra el problema, el rol de Aubierge, una decision tecnica clave y el estado actual.",
+    "project.problem": "Problema",
+    "project.role": "Rol",
+    "project.decision": "Decision",
+    "project.outcome": "Resultado",
+    "project.result": "Resultado",
+    "project.technology": "Tecnologia",
     "stories.eyebrow": "Historias de proyecto",
     "stories.title": "El trabajo va desde interfaces hasta sistemas con hardware, datos y comunidad.",
     "stories.copy":

@@ -1,17 +1,19 @@
 "use client";
 
-import { projects } from "@/data/projects";
+import { localizedProjects } from "@/data/projects";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
-import type { TranslationKey } from "@/types/content";
+import type { Locale, TranslationKey } from "@/types/content";
 
 type ProjectStoriesProps = {
   t: (key: TranslationKey) => string;
+  locale: Locale;
 };
 
 const featuredIds = ["heringress", "umucocore", "zero-bite"];
 
-export function ProjectStories({ t }: ProjectStoriesProps) {
+export function ProjectStories({ t, locale }: ProjectStoriesProps) {
+  const projects = localizedProjects[locale];
   const featured = featuredIds
     .map((id) => projects.find((project) => project.id === id))
     .filter(Boolean);
@@ -40,10 +42,10 @@ export function ProjectStories({ t }: ProjectStoriesProps) {
                   </div>
                 </RevealItem>
                 <div className="grid gap-4 md:grid-cols-2">
-                  <StoryBeat label="Problem" value={project.problem} />
-                  <StoryBeat label="Role" value={project.role} />
-                  <StoryBeat label="Decision" value={project.decision} />
-                  <StoryBeat label="Result" value={project.outcome} />
+                  <StoryBeat label={t("project.problem")} value={project.problem} />
+                  <StoryBeat label={t("project.role")} value={project.role} />
+                  <StoryBeat label={t("project.decision")} value={project.decision} />
+                  <StoryBeat label={t("project.result")} value={project.outcome} />
                 </div>
               </Reveal>
             ) : null

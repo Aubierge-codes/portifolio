@@ -3,11 +3,12 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { quickSpring } from "@/lib/motion";
-import type { Project } from "@/types/content";
+import type { Project, TranslationKey } from "@/types/content";
 
 type ProjectCardProps = {
   project: Project;
   index: number;
+  t: (key: TranslationKey) => string;
 };
 
 const sizeClasses: Record<Project["size"], string> = {
@@ -17,7 +18,7 @@ const sizeClasses: Record<Project["size"], string> = {
   small: "lg:col-span-3 min-h-[390px]"
 };
 
-export function ProjectCard({ project, index }: ProjectCardProps) {
+export function ProjectCard({ project, index, t }: ProjectCardProps) {
   const reduceMotion = useReducedMotion();
 
   return (
@@ -71,15 +72,15 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       </motion.div>
 
       <div className="grid gap-4 text-sm leading-6 md:grid-cols-2">
-        <ProjectFact label="Problem" value={project.problem} />
-        <ProjectFact label="Role" value={project.role} />
-        <ProjectFact label="Decision" value={project.decision} />
-        <ProjectFact label="Outcome" value={project.outcome} />
+        <ProjectFact label={t("project.problem")} value={project.problem} />
+        <ProjectFact label={t("project.role")} value={project.role} />
+        <ProjectFact label={t("project.decision")} value={project.decision} />
+        <ProjectFact label={t("project.outcome")} value={project.outcome} />
       </div>
 
       <div className="mt-auto pt-7">
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-ink/55">
-          Technology
+          {t("project.technology")}
         </p>
         <p className="text-sm leading-6 text-ink/75">{project.technologies.join(" · ")}</p>
         {project.links?.length ? (

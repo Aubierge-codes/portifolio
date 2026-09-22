@@ -23,8 +23,8 @@ export default function Home() {
       <main>
         <Hero t={t} />
         <CredibilityStrip title={t("credibility.title")} items={bundle.credibility} />
-        <WorkSection t={t} />
-        <ProjectStories t={t} />
+        <WorkSection t={t} locale={locale} />
+        <ProjectStories t={t} locale={locale} />
         <ProcessSection t={t} steps={bundle.process} />
         <AboutSection t={t} />
         <FaqSection t={t} items={bundle.faq} />
