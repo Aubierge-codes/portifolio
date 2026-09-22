@@ -57,7 +57,7 @@ export function ProcessSection({ t, steps }: ProcessSectionProps) {
         </RevealItem>
       </Reveal>
 
-      <div className="relative mb-10 h-36 overflow-hidden border border-ink/15">
+      <div className="relative mb-10 h-44 overflow-hidden border border-ink/15">
         <div className="absolute inset-x-6 bottom-8 h-px bg-ink/20" />
         <motion.div
           className="absolute bottom-0 w-20"

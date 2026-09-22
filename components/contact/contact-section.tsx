@@ -149,7 +149,7 @@ export function ContactSection({ t }: ContactSectionProps) {
           </RevealItem>
         </Reveal>
       </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-paper" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-paper" aria-hidden="true">
         <div className="absolute inset-x-0 top-0 h-px bg-ink/20" />
         <motion.div
           className="absolute bottom-0 w-20"

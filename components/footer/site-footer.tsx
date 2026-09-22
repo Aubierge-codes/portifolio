@@ -2,8 +2,8 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { githubUrl } from "@/data/projects";
-import { languages } from "@/data/translations";
 import { Logo } from "@/components/navigation/logo";
+import { LanguageSwitcher } from "@/components/navigation/language-switcher";
 import { LineCharacter } from "@/components/characters/line-character";
 import { emailAddress } from "@/lib/utils";
 import type { Locale, TranslationKey } from "@/types/content";
@@ -52,19 +52,12 @@ export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
             <p className="mb-4 text-sm uppercase tracking-[0.12em] text-maroon">
               {t("footer.languages")}
             </p>
-            <div className="grid gap-2">
-              {languages.map((language) => (
-                <button
-                  key={language.code}
-                  type="button"
-                  className="min-h-11 text-left text-sm underline-offset-4 hover:text-maroon hover:underline"
-                  aria-pressed={locale === language.code}
-                  onClick={() => setLocale(language.code)}
-                >
-                  {language.label}
-                </button>
-              ))}
-            </div>
+            <LanguageSwitcher
+              locale={locale}
+              setLocale={setLocale}
+              label={t("language.label")}
+              variant="rail"
+            />
           </div>
         </div>
         <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-ink pt-5 text-sm text-ink/65">

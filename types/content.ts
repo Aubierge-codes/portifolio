@@ -8,6 +8,8 @@ export type TranslationKey =
   | "nav.about"
   | "nav.contact"
   | "nav.viewWork"
+  | "nav.menu"
+  | "nav.closeMenu"
   | "language.label"
   | "hero.eyebrow"
   | "hero.title"

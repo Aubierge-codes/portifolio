@@ -25,7 +25,7 @@ export type CarryItem =
 
 export type HairStyle = "short" | "puff" | "bun";
 
-type LineCharacterProps = {
+export type LineCharacterProps = {
   pose?: CharacterPose;
   carry?: CarryItem;
   hair?: HairStyle;
@@ -43,7 +43,7 @@ export function LineCharacter({
   carry = "none",
   hair = "short",
   delay = 0,
-  duration = 0.44,
+  duration = 0.52,
   paused = false,
   look = 0,
   lean = 0,
@@ -53,14 +53,15 @@ export function LineCharacter({
   const reduceMotion = useReducedMotion();
   const running = pose === "run" && !paused && !reduceMotion;
   const walking = pose === "walk" && !paused && !reduceMotion;
-  const cycle = running ? duration : walking ? duration * 1.45 : 0;
+  const cycle = running ? duration : walking ? duration * 1.28 : 0;
   const move = running || walking;
   const kick = pose === "kick";
   const sit = pose === "sit" || pose === "think";
+  const swing = move ? (running ? 16 : 11) : 0;
 
   return (
     <svg
-      viewBox="0 0 90 140"
+      viewBox="0 0 72 152"
       fill="none"
       className={cn("overflow-visible", className)}
       aria-hidden="true"
@@ -71,108 +72,98 @@ export function LineCharacter({
             ? undefined
             : {
                 rotate: lean,
-                y: move ? [0, -4, 0] : pose === "idle" ? [0, -1.5, 0] : 0
+                y: move ? [0, -1.4, 0] : pose === "idle" ? [0, -0.7, 0] : 0
               }
         }
         transition={
           move
             ? { duration: cycle, repeat: Infinity, ease: "easeInOut", delay }
-            : { duration: 2.4, repeat: Infinity, ease: "easeInOut", delay }
+            : { duration: 3.2, repeat: Infinity, ease: "easeInOut", delay }
         }
-        style={{ transformOrigin: "45px 78px" }}
+        style={{ transformOrigin: "36px 70px" }}
       >
         <motion.g
-          animate={{ rotate: look + (pose === "look" ? 18 : 0) }}
-          transition={{ type: "spring", stiffness: 180, damping: 16 }}
-          style={{ transformOrigin: "45px 28px" }}
+          animate={{ rotate: look + (pose === "look" ? 10 : 0) }}
+          transition={{ type: "spring", stiffness: 120, damping: 18 }}
+          style={{ transformOrigin: "36px 14px" }}
         >
-          {hair === "puff" ? (
-            <ellipse
-              cx="45"
-              cy="20"
-              rx="16"
-              ry="14"
-              stroke="#030303"
-              strokeWidth="2.4"
-            />
-          ) : hair === "bun" ? (
-            <>
-              <circle
-                cx="58"
-                cy="16"
-                r="6"
-                stroke="#030303"
-                strokeWidth="2.4"
-              />
-              <circle
-                cx="45"
-                cy="22"
-                r="13"
-                stroke="#030303"
-                strokeWidth="2.4"
-              />
-            </>
-          ) : (
-            <circle cx="45" cy="22" r="12" stroke="#030303" strokeWidth="2.4" />
-          )}
-          <circle cx="41" cy="21" r="1.3" fill="#030303" />
-          <circle cx="50" cy="21" r="1.3" fill="#030303" />
-          <path
-            d="M41 27.5 C44 29.5, 48 29.5, 51 27.5"
+          <Hair hair={hair} />
+          <ellipse
+            cx="36"
+            cy="14.5"
+            rx="5.6"
+            ry="6.5"
             stroke="#030303"
-            strokeWidth="1.6"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M36 21 L36 26.5"
+            stroke="#030303"
+            strokeWidth="1.45"
             strokeLinecap="round"
           />
         </motion.g>
 
         <path
-          d="M45 35 L45 78"
+          d="M23 30 C 29 25.5, 43 25.5, 49 30 L 46.5 67 C 41 70.5, 31 70.5, 25.5 67 Z"
           stroke="#030303"
-          strokeWidth="2.6"
-          strokeLinecap="round"
+          strokeWidth="1.55"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M36 26.5 L32 43 L36 47 L40 43 Z"
+          stroke="#030303"
+          strokeWidth="1.25"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M36 47 L36 67"
+          stroke="#030303"
+          strokeWidth="1.05"
+          opacity="0.35"
         />
         {accent ? (
           <path
-            d="M38 48 H52"
+            d="M28 49 H44"
             stroke="#6E1F24"
-            strokeWidth="2.2"
+            strokeWidth="1.4"
             strokeLinecap="round"
           />
         ) : null}
 
         <motion.g
-          style={{ transformOrigin: "45px 42px" }}
+          style={{ transformOrigin: "25px 31px" }}
           animate={
             kick
-              ? { rotate: [-12, 28, -8] }
+              ? { rotate: [-8, 18, -6] }
               : sit
-                ? { rotate: 42 }
+                ? { rotate: 38 }
                 : move
-                  ? { rotate: [22, -26, 22] }
-                  : { rotate: pose === "push" ? 28 : -8 }
+                  ? { rotate: [swing, -swing, swing] }
+                  : { rotate: pose === "push" ? 24 : -7 }
           }
           transition={
             move
               ? { duration: cycle, repeat: Infinity, ease: "easeInOut", delay }
-              : { duration: kick ? 0.42 : 0.5, ease: "easeInOut" }
+              : { duration: kick ? 0.48 : 0.55, ease: "easeInOut" }
           }
         >
           <path
-            d="M45 42 L18 58"
+            d="M25 31 C 22 44, 20 54, 19 64"
             stroke="#030303"
-            strokeWidth="2.4"
+            strokeWidth="1.45"
             strokeLinecap="round"
           />
         </motion.g>
 
         <motion.g
-          style={{ transformOrigin: "45px 42px" }}
+          style={{ transformOrigin: "47px 31px" }}
           animate={
             sit
-              ? { rotate: -50 }
+              ? { rotate: -46 }
               : move
-                ? { rotate: [-24, 24, -24] }
-                : { rotate: pose === "push" ? -18 : 12 }
+                ? { rotate: [-swing, swing, -swing] }
+                : { rotate: pose === "push" ? -16 : 8 }
           }
           transition={
             move
@@ -182,59 +173,61 @@ export function LineCharacter({
                   ease: "easeInOut",
                   delay: delay + cycle / 2
                 }
-              : { duration: 0.5 }
+              : { duration: 0.55 }
           }
         >
           <path
-            d="M45 42 L72 56"
+            d="M47 31 C 51 44, 53 53, 54 64"
             stroke="#030303"
-            strokeWidth="2.4"
+            strokeWidth="1.45"
             strokeLinecap="round"
           />
-          <Carry carry={carry} />
+          <g transform="translate(52 58)">
+            <Carry carry={carry} />
+          </g>
         </motion.g>
 
         <motion.g
-          style={{ transformOrigin: "45px 78px" }}
+          style={{ transformOrigin: "32px 67px" }}
           animate={
             kick
-              ? { rotate: [8, -42, 6] }
+              ? { rotate: [6, -28, 4] }
               : sit
-                ? { rotate: -70 }
+                ? { rotate: -62 }
                 : move
-                  ? { rotate: [-28, 30, -28] }
-                  : { rotate: 8 }
+                  ? { rotate: [-swing - 2, swing + 4, -swing - 2] }
+                  : { rotate: 5 }
           }
           transition={
             move
               ? { duration: cycle, repeat: Infinity, ease: "easeInOut", delay }
-              : { duration: kick ? 0.4 : 0.45, ease: [0.2, 0.8, 0.2, 1] }
+              : { duration: kick ? 0.46 : 0.5, ease: [0.22, 0.8, 0.28, 1] }
           }
         >
           <path
-            d="M45 78 L28 118"
+            d="M32 67 C 30 90, 29 112, 28 136"
             stroke="#030303"
-            strokeWidth="2.6"
+            strokeWidth="1.55"
             strokeLinecap="round"
           />
           <path
-            d="M28 118 L21 118"
+            d="M23 136 C 23 139.5, 32 139.5, 34 136"
             stroke="#030303"
-            strokeWidth="2.6"
+            strokeWidth="1.55"
             strokeLinecap="round"
           />
         </motion.g>
 
         <motion.g
-          style={{ transformOrigin: "45px 78px" }}
+          style={{ transformOrigin: "40px 67px" }}
           animate={
             kick
-              ? { rotate: [-10, 38, -6] }
+              ? { rotate: [-8, 32, -4] }
               : sit
-                ? { rotate: 18 }
+                ? { rotate: 14 }
                 : move
-                  ? { rotate: [26, -26, 26] }
-                  : { rotate: -10 }
+                  ? { rotate: [swing + 4, -swing - 2, swing + 4] }
+                  : { rotate: -6 }
           }
           transition={
             move
@@ -244,19 +237,19 @@ export function LineCharacter({
                   ease: "easeInOut",
                   delay: delay + cycle / 2
                 }
-              : { duration: kick ? 0.4 : 0.45 }
+              : { duration: kick ? 0.46 : 0.5 }
           }
         >
           <path
-            d="M45 78 L62 118"
+            d="M40 67 C 42 90, 43 112, 44 136"
             stroke="#030303"
-            strokeWidth="2.6"
+            strokeWidth="1.55"
             strokeLinecap="round"
           />
           <path
-            d="M62 118 L70 118"
+            d="M39 136 C 39 139.5, 49 139.5, 50 136"
             stroke="#030303"
-            strokeWidth="2.6"
+            strokeWidth="1.55"
             strokeLinecap="round"
           />
         </motion.g>
@@ -265,36 +258,65 @@ export function LineCharacter({
   );
 }
 
+function Hair({ hair }: { hair: HairStyle }) {
+  if (hair === "puff") {
+    return (
+      <path
+        d="M30 16 C 27.5 7, 36 3.5, 36 11 C 36 3.5, 44.5 7, 42 16"
+        stroke="#030303"
+        strokeWidth="1.45"
+        strokeLinecap="round"
+      />
+    );
+  }
+
+  if (hair === "bun") {
+    return (
+      <>
+        <circle cx="43.5" cy="7.5" r="3.1" stroke="#030303" strokeWidth="1.45" />
+        <path
+          d="M30.5 14.5 C 32 8.5, 40 7.5, 42 12"
+          stroke="#030303"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+      </>
+    );
+  }
+
+  return (
+    <path
+      d="M30.4 15 C 31.5 8.4, 40.5 7.6, 41.6 15"
+      stroke="#030303"
+      strokeWidth="1.45"
+      strokeLinecap="round"
+    />
+  );
+}
+
 function Carry({ carry }: { carry: CarryItem }) {
   if (carry === "none") return null;
 
   if (carry === "laptop") {
     return (
-      <g transform="translate(66 48)">
-        <rect
-          x="0"
-          y="0"
-          width="18"
-          height="12"
-          stroke="#030303"
-          strokeWidth="1.8"
-        />
-        <path d="M-2 12 H20" stroke="#030303" strokeWidth="1.8" />
-        <rect x="12" y="3" width="4" height="3" fill="#6E1F24" />
+      <g>
+        <rect x="0" y="-7" width="15" height="9" stroke="#030303" strokeWidth="1.3" />
+        <path d="M-1.5 2 H16.5" stroke="#030303" strokeWidth="1.3" />
+        <rect x="10" y="-4" width="3" height="2.2" fill="#6E1F24" />
       </g>
     );
   }
 
   if (carry === "ball") {
-    return <circle cx="74" cy="58" r="7" stroke="#030303" strokeWidth="2" />;
+    return <circle cx="8" cy="2" r="5.5" stroke="#030303" strokeWidth="1.4" />;
   }
 
   if (carry === "flag") {
     return (
-      <g transform="translate(70 34)">
-        <path d="M0 0 V28" stroke="#030303" strokeWidth="1.8" />
-        <path d="M0 0 H16 L12 8 L16 16 H0" fill="#6E1F24" />
-        <text x="3" y="11" fontSize="6" fill="#FFFFFF">
+      <g>
+        <path d="M2 -18 V8" stroke="#030303" strokeWidth="1.25" />
+        <path d="M2 -18 H15 L12 -11 L15 -4 H2" fill="#6E1F24" />
+        <text x="4.5" y="-8" fontSize="5" fill="#FFFFFF">
           {"</>"}
         </text>
       </g>
@@ -303,75 +325,47 @@ function Carry({ carry }: { carry: CarryItem }) {
 
   if (carry === "folder") {
     return (
-      <g transform="translate(66 46)">
+      <g>
         <path
-          d="M0 4 H6 L8 0 H20 V16 H0 Z"
+          d="M0 -2 H5 L7 -5 H17 V9 H0 Z"
           stroke="#030303"
-          strokeWidth="1.8"
+          strokeWidth="1.3"
           fill="#FFFFFF"
         />
-        <path d="M2 8 H18" stroke="#6E1F24" strokeWidth="1.4" />
+        <path d="M2 2 H15" stroke="#6E1F24" strokeWidth="1.2" />
       </g>
     );
   }
 
   if (carry === "plant") {
     return (
-      <g transform="translate(68 46)">
-        <rect
-          x="4"
-          y="10"
-          width="10"
-          height="8"
-          stroke="#030303"
-          strokeWidth="1.6"
-        />
+      <g>
+        <rect x="4" y="2" width="8" height="7" stroke="#030303" strokeWidth="1.25" />
         <path
-          d="M9 10 C4 2, 14 -2, 12 8"
+          d="M8 2 C 4 -5, 13 -8, 11 0"
           stroke="#030303"
-          strokeWidth="1.6"
+          strokeWidth="1.25"
           fill="none"
         />
-        <circle cx="12" cy="2" r="2.2" fill="#6E1F24" />
+        <circle cx="11" cy="-6" r="1.7" fill="#6E1F24" />
       </g>
     );
   }
 
   if (carry === "books") {
     return (
-      <g transform="translate(66 48)">
-        <rect
-          x="0"
-          y="2"
-          width="8"
-          height="14"
-          stroke="#030303"
-          strokeWidth="1.6"
-        />
-        <rect
-          x="8"
-          y="0"
-          width="8"
-          height="16"
-          stroke="#030303"
-          strokeWidth="1.6"
-        />
-        <path d="M10 4 V12" stroke="#6E1F24" strokeWidth="1.2" />
+      <g>
+        <rect x="0" y="-4" width="6.5" height="12" stroke="#030303" strokeWidth="1.25" />
+        <rect x="6.5" y="-6" width="6.5" height="14" stroke="#030303" strokeWidth="1.25" />
+        <path d="M8.5 -2 V6" stroke="#6E1F24" strokeWidth="1.1" />
       </g>
     );
   }
 
   return (
-    <g transform="translate(68 48)">
-      <rect
-        x="0"
-        y="0"
-        width="14"
-        height="16"
-        stroke="#030303"
-        strokeWidth="1.6"
-      />
-      <path d="M3 4 H11 M3 8 H9" stroke="#030303" strokeWidth="1.2" />
+    <g>
+      <rect x="0" y="-6" width="12" height="13" stroke="#030303" strokeWidth="1.25" />
+      <path d="M2.5 -2 H9.5 M2.5 2 H8" stroke="#030303" strokeWidth="1.05" />
     </g>
   );
 }

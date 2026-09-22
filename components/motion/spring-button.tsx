@@ -58,7 +58,7 @@ export function SpringButton({
   if (href) {
     return (
       <motion.div className="inline-flex" {...motionProps}>
-        <Link href={href} aria-label={ariaLabel} className={classes}>
+        <Link href={href} aria-label={ariaLabel} className={classes} onClick={onClick}>
           {children}
         </Link>
       </motion.div>

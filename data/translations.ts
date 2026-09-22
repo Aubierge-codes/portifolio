@@ -27,6 +27,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "nav.about": "About",
     "nav.contact": "Contact",
     "nav.viewWork": "View Work",
+    "nav.menu": "Open menu",
+    "nav.closeMenu": "Close menu",
     "language.label": "Select language",
     "hero.eyebrow": "Software Developer · Frontend · AI · Embedded Systems",
     "hero.title": "I build software that turns ideas into useful experiences.",
@@ -205,6 +207,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "nav.about": "A propos",
     "nav.contact": "Contact",
     "nav.viewWork": "Voir les projets",
+    "nav.menu": "Ouvrir le menu",
+    "nav.closeMenu": "Fermer le menu",
     "language.label": "Choisir la langue",
     "hero.eyebrow":
       "Developpeuse logiciel · Frontend · IA · Systemes embarques",
@@ -387,6 +391,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "nav.about": "Sobre mi",
     "nav.contact": "Contacto",
     "nav.viewWork": "Ver trabajo",
+    "nav.menu": "Abrir menu",
+    "nav.closeMenu": "Cerrar menu",
     "language.label": "Seleccionar idioma",
     "hero.eyebrow":
       "Desarrolladora de software · Frontend · IA · Sistemas embebidos",
