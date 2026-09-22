@@ -7,18 +7,10 @@ import type { TranslationKey } from "@/types/content";
 
 type AboutSectionProps = {
   t: (key: TranslationKey) => string;
+  achievements: string[];
 };
 
-const achievements = [
-  "Rwanda Coding Academy",
-  "Robotics projects",
-  "Technovation",
-  "AI Hackathon finalist",
-  "AIMS National Mathematics Summer Camp 2025",
-  "ILEAD leadership training"
-];
-
-export function AboutSection({ t }: AboutSectionProps) {
+export function AboutSection({ t, achievements }: AboutSectionProps) {
   const reduceMotion = useReducedMotion();
 
   return (

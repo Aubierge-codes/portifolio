@@ -26,7 +26,7 @@ export default function Home() {
         <WorkSection t={t} locale={locale} />
         <ProjectStories t={t} locale={locale} />
         <ProcessSection t={t} steps={bundle.process} />
-        <AboutSection t={t} />
+        <AboutSection t={t} achievements={bundle.achievements} />
         <FaqSection t={t} items={bundle.faq} />
         <ContactSection t={t} />
       </main>

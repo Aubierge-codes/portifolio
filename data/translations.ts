@@ -2,6 +2,7 @@ import type { FaqItem, Locale, ProcessStep, TranslationKey } from "@/types/conte
 
 type TranslationBundle = Record<TranslationKey, string> & {
   credibility: string[];
+  achievements: string[];
   process: ProcessStep[];
   faq: FaqItem[];
 };
@@ -82,6 +83,14 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Girl in Bloom Global Ambassador 2026",
       "AI · Web · Embedded Systems",
       "Robotics & Innovation"
+    ],
+    achievements: [
+      "Rwanda Coding Academy student",
+      "Robotics-related projects",
+      "Technovation 2026 Semifinalist",
+      "AI Hackathon finalist",
+      "AIMS National Mathematics Summer Camp 2025",
+      "ILEAD leadership training"
     ],
     process: [
       {
@@ -224,6 +233,14 @@ export const translations: Record<Locale, TranslationBundle> = {
       "IA · Web · Systemes embarques",
       "Robotique & innovation"
     ],
+    achievements: [
+      "Etudiante a Rwanda Coding Academy",
+      "Projets lies a la robotique",
+      "Demi-finaliste Technovation 2026",
+      "Finaliste d'un hackathon IA",
+      "AIMS National Mathematics Summer Camp 2025",
+      "Formation au leadership ILEAD"
+    ],
     process: [
       {
         number: "01",
@@ -364,6 +381,14 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Embajadora Girl in Bloom Global 2026",
       "IA · Web · Sistemas embebidos",
       "Robotica e innovacion"
+    ],
+    achievements: [
+      "Estudiante de Rwanda Coding Academy",
+      "Proyectos relacionados con robotica",
+      "Semifinalista Technovation 2026",
+      "Finalista en hackathon de IA",
+      "AIMS National Mathematics Summer Camp 2025",
+      "Formacion de liderazgo ILEAD"
     ],
     process: [
       {
