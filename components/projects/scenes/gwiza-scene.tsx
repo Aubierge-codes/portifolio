@@ -1,59 +1,30 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
-import { LineCharacter } from "@/components/characters/line-character";
+import { ThreeFrame } from "@/components/three/three-frame";
+import { Mannequin } from "@/components/three/mannequin";
+import { Satellite } from "@/components/three/satellite";
+
+function Bridge() {
+  return (
+    <mesh position={[0, -0.4, 0]}>
+      <boxGeometry args={[4, 0.05, 0.4]} />
+      <meshStandardMaterial color="#6E1F24" />
+    </mesh>
+  );
+}
 
 export function GwizaScene() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.45 });
-  const reduceMotion = useReducedMotion();
-
   return (
-    <div
-      ref={ref}
-      className="relative h-44 overflow-hidden border border-ink/15 bg-paper md:h-52"
-      aria-hidden="true"
-    >
-      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 40">
-        <motion.line
-          x1="22"
-          y1="22"
-          x2="78"
-          y2="22"
-          stroke="#6E1F24"
-          strokeWidth="1.4"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: inView || reduceMotion ? 1 : 0 }}
-          transition={{ duration: 0.9, delay: 0.35 }}
-        />
-      </svg>
-      <motion.div
-        className="absolute bottom-1 w-20"
-        animate={
-          reduceMotion
-            ? { left: "18%" }
-            : { left: inView ? ["2%", "28%"] : "2%" }
-        }
-        transition={{ duration: 1.4, type: "spring", stiffness: 120, damping: 16 }}
-      >
-        <LineCharacter pose={inView && !reduceMotion ? "walk" : "idle"} hair="short" />
-      </motion.div>
-      <motion.div
-        className="absolute bottom-1 w-20"
-        animate={
-          reduceMotion
-            ? { right: "18%" }
-            : { right: inView ? ["2%", "28%"] : "2%" }
-        }
-        transition={{ duration: 1.4, type: "spring", stiffness: 120, damping: 16 }}
-      >
-        <LineCharacter
-          pose={inView && !reduceMotion ? "walk" : "idle"}
-          hair="puff"
-          accent
-        />
-      </motion.div>
-    </div>
+    <ThreeFrame className="h-44 md:h-52" fallback={<div className="h-full w-full bg-paper" />}>
+      <Bridge />
+      <group position={[-1, -0.4, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <Mannequin pose="walk" hair="short" />
+      </group>
+      <group position={[1, -0.4, 0]} rotation={[0, -Math.PI / 2, 0]}>
+        <Mannequin pose="walk" hair="puff" accent />
+      </group>
+      {/* Add satellite orbiting above the bridge */}
+      <Satellite />
+    </ThreeFrame>
   );
 }
