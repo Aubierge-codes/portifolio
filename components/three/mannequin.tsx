@@ -9,7 +9,7 @@ const maroon = "#6E1F24";
 
 export type MannequinCarry = "none" | "laptop" | "flag";
 export type MannequinHair = "short" | "puff" | "bun";
-export type MannequinPose = "walk" | "idle" | "kick" | "look";
+export type MannequinPose = "walk" | "idle" | "kick" | "look" | "hit";
 
 type MannequinProps = {
   pose?: MannequinPose;
@@ -52,49 +52,53 @@ export function Mannequin({
     const t = clock.getElapsedTime() * speed + delay;
     const walking = pose === "walk";
     const kicking = pose === "kick";
+    const hitting = pose === "hit";
     const idle = pose === "idle" || pose === "look";
 
     if (root.current) {
-      root.current.position.y = walking ? Math.abs(Math.sin(t)) * 0.028 : 0;
+      root.current.position.y = walking ? Math.abs(Math.sin(t * 2)) * 0.04 : 0;
     }
 
+    const stride = kicking ? 0 : walking ? Math.sin(t) : 0;
+    const strideCos = kicking ? 0 : walking ? Math.cos(t) : 0;
+
     if (chest.current) {
-      chest.current.rotation.y = walking ? Math.sin(t) * 0.06 : 0;
+      chest.current.rotation.y = walking ? Math.sin(t) * 0.12 : hitting ? Math.sin(t * 8) * 0.2 : 0;
+      chest.current.rotation.z = walking ? Math.cos(t) * 0.04 : 0;
       chest.current.position.y = idle ? 0.92 + Math.sin(t * 0.7) * 0.008 : 0.92;
     }
 
     if (head.current) {
-      head.current.rotation.y = pose === "look" ? 0.42 + look * 0.02 : look * 0.01;
-      head.current.rotation.x = walking ? Math.sin(t * 0.5) * 0.03 : 0;
+      head.current.rotation.y = pose === "look" ? 0.42 + look * 0.02 : (walking ? Math.sin(t) * -0.06 : look * 0.01);
+      head.current.rotation.x = walking ? Math.sin(t * 2) * 0.04 : 0;
     }
 
-    const stride = kicking ? 0 : walking ? Math.sin(t) : 0;
-    if (leftThigh.current) leftThigh.current.rotation.x = stride * 0.52;
+    if (leftThigh.current) leftThigh.current.rotation.x = stride * 0.65;
     if (rightThigh.current) {
       rightThigh.current.rotation.x = kicking
         ? -0.95 + Math.sin(t * 2.4) * 0.12
-        : -stride * 0.52;
+        : -stride * 0.65;
     }
     if (leftShin.current) {
-      leftShin.current.rotation.x = walking ? Math.max(0.08, -Math.sin(t) * 0.42) : 0.08;
+      leftShin.current.rotation.x = walking ? Math.max(0.05, -strideCos * 0.8) : 0.08;
     }
     if (rightShin.current) {
       rightShin.current.rotation.x = kicking
         ? 0.2
         : walking
-          ? Math.max(0.08, Math.sin(t) * 0.42)
+          ? Math.max(0.05, strideCos * 0.8)
           : 0.08;
     }
 
-    if (leftArm.current) leftArm.current.rotation.x = walking ? -stride * 0.38 : 0.08;
+    if (leftArm.current) leftArm.current.rotation.x = walking ? -stride * 0.5 : 0.08;
     if (rightArm.current) {
       rightArm.current.rotation.x =
-        carry === "laptop" ? -0.55 : walking ? stride * 0.38 : 0.08;
-      rightArm.current.rotation.z = carry === "laptop" ? -0.18 : 0.06;
+        carry === "laptop" ? -0.55 : hitting ? -1.5 + Math.sin(t * 8) * 1.5 : walking ? stride * 0.5 : 0.08;
+      rightArm.current.rotation.z = carry === "laptop" ? -0.18 : hitting ? 0.5 : 0.06;
     }
-    if (leftFore.current) leftFore.current.rotation.x = walking ? 0.18 : 0.12;
+    if (leftFore.current) leftFore.current.rotation.x = walking ? (stride < 0 ? -stride * 0.5 : 0.1) : 0.12;
     if (rightFore.current) {
-      rightFore.current.rotation.x = carry === "laptop" ? 0.7 : 0.16;
+      rightFore.current.rotation.x = carry === "laptop" ? 0.7 : hitting ? 0.1 : walking ? (stride > 0 ? stride * 0.5 : 0.1) : 0.16;
     }
   });
 
@@ -103,7 +107,7 @@ export function Mannequin({
       <group position={[0, 0.92, 0]} ref={chest}>
         <mesh position={[0, 0.08, 0]}>
           <capsuleGeometry args={[0.13, 0.34, 6, 12]} />
-          <meshStandardMaterial {...mat} />
+          <meshStandardMaterial color="#f8f8f8" roughness={0.9} /> {/* Shirt */}
         </mesh>
         {accent ? (
           <mesh position={[0, 0.12, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
@@ -114,18 +118,24 @@ export function Mannequin({
         <group ref={head} position={[0, 0.38, 0]}>
           <mesh>
             <sphereGeometry args={[0.105, 18, 18]} />
-            <meshStandardMaterial {...mat} />
+            <meshStandardMaterial color="#5c3a21" roughness={0.6} /> {/* Skin */}
           </mesh>
           {hair === "puff" ? (
             <mesh position={[0, 0.08, -0.01]}>
               <sphereGeometry args={[0.12, 14, 14]} />
-              <meshStandardMaterial {...mat} />
+              <meshStandardMaterial color="#090909" roughness={0.9} /> {/* Hair */}
             </mesh>
           ) : null}
           {hair === "bun" ? (
             <mesh position={[0, 0.1, -0.08]}>
               <sphereGeometry args={[0.045, 12, 12]} />
-              <meshStandardMaterial {...mat} />
+              <meshStandardMaterial color="#090909" roughness={0.9} /> {/* Hair */}
+            </mesh>
+          ) : null}
+          {hair === "short" ? (
+            <mesh position={[0, 0.04, -0.02]}>
+              <sphereGeometry args={[0.11, 14, 14]} />
+              <meshStandardMaterial color="#090909" roughness={0.9} /> {/* Hair */}
             </mesh>
           ) : null}
         </group>
@@ -133,12 +143,12 @@ export function Mannequin({
         <group ref={leftArm} position={[-0.18, 0.22, 0]} rotation={[0, 0, 0.12]}>
           <mesh position={[0, -0.14, 0]}>
             <capsuleGeometry args={[0.035, 0.2, 4, 8]} />
-            <meshStandardMaterial {...mat} />
+            <meshStandardMaterial color="#f8f8f8" roughness={0.9} /> {/* Sleeve */}
           </mesh>
           <group ref={leftFore} position={[0, -0.28, 0]}>
             <mesh position={[0, -0.12, 0]}>
-              <capsuleGeometry args={[0.03, 0.18, 4, 8]} />
-              <meshStandardMaterial {...mat} />
+              <capsuleGeometry args={[0.028, 0.18, 4, 8]} />
+              <meshStandardMaterial color="#5c3a21" roughness={0.6} /> {/* Skin */}
             </mesh>
           </group>
         </group>
@@ -146,12 +156,12 @@ export function Mannequin({
         <group ref={rightArm} position={[0.18, 0.22, 0]} rotation={[0, 0, -0.12]}>
           <mesh position={[0, -0.14, 0]}>
             <capsuleGeometry args={[0.035, 0.2, 4, 8]} />
-            <meshStandardMaterial {...mat} />
+            <meshStandardMaterial color="#f8f8f8" roughness={0.9} /> {/* Sleeve */}
           </mesh>
           <group ref={rightFore} position={[0, -0.28, 0]}>
             <mesh position={[0, -0.12, 0]}>
-              <capsuleGeometry args={[0.03, 0.18, 4, 8]} />
-              <meshStandardMaterial {...mat} />
+              <capsuleGeometry args={[0.028, 0.18, 4, 8]} />
+              <meshStandardMaterial color="#5c3a21" roughness={0.6} /> {/* Skin */}
             </mesh>
             <Carry carry={carry} />
           </group>
@@ -161,16 +171,16 @@ export function Mannequin({
       <group ref={leftThigh} position={[-0.065, 0.72, 0]}>
         <mesh position={[0, -0.18, 0]}>
           <capsuleGeometry args={[0.05, 0.28, 4, 10]} />
-          <meshStandardMaterial {...mat} />
+          <meshStandardMaterial color="#1a1a1a" roughness={0.8} /> {/* Pants */}
         </mesh>
         <group ref={leftShin} position={[0, -0.36, 0]}>
           <mesh position={[0, -0.16, 0]}>
             <capsuleGeometry args={[0.042, 0.26, 4, 10]} />
-            <meshStandardMaterial {...mat} />
+            <meshStandardMaterial color="#1a1a1a" roughness={0.8} /> {/* Pants */}
           </mesh>
           <mesh position={[0.02, -0.32, 0.04]} rotation={[0.15, 0, 0]}>
-            <boxGeometry args={[0.08, 0.035, 0.16]} />
-            <meshStandardMaterial {...mat} />
+            <boxGeometry args={[0.08, 0.05, 0.16]} />
+            <meshStandardMaterial color={maroon} roughness={0.7} /> {/* Shoe */}
           </mesh>
         </group>
       </group>
@@ -178,16 +188,16 @@ export function Mannequin({
       <group ref={rightThigh} position={[0.065, 0.72, 0]}>
         <mesh position={[0, -0.18, 0]}>
           <capsuleGeometry args={[0.05, 0.28, 4, 10]} />
-          <meshStandardMaterial {...mat} />
+          <meshStandardMaterial color="#1a1a1a" roughness={0.8} /> {/* Pants */}
         </mesh>
         <group ref={rightShin} position={[0, -0.36, 0]}>
           <mesh position={[0, -0.16, 0]}>
             <capsuleGeometry args={[0.042, 0.26, 4, 10]} />
-            <meshStandardMaterial {...mat} />
+            <meshStandardMaterial color="#1a1a1a" roughness={0.8} /> {/* Pants */}
           </mesh>
           <mesh position={[0.02, -0.32, 0.04]} rotation={[0.15, 0, 0]}>
-            <boxGeometry args={[0.08, 0.035, 0.16]} />
-            <meshStandardMaterial {...mat} />
+            <boxGeometry args={[0.08, 0.05, 0.16]} />
+            <meshStandardMaterial color={maroon} roughness={0.7} /> {/* Shoe */}
           </mesh>
         </group>
       </group>
