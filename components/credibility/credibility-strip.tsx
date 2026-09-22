@@ -1,12 +1,10 @@
 "use client";
 
 import { Reveal, RevealItem } from "@/components/motion/reveal";
-import type { TranslationKey } from "@/types/content";
 
 type CredibilityStripProps = {
   title: string;
   items: string[];
-  t: (key: TranslationKey) => string;
 };
 
 export function CredibilityStrip({ title, items }: CredibilityStripProps) {
