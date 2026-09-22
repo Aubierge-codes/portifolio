@@ -56,7 +56,25 @@ const enProjects: Project[] = [
       "Shape the experience around an AI-powered assistant that helps users navigate opportunity information instead of only browsing static lists.",
     outcome:
       "Developed through the Technovation 2026 journey and recognized as a Technovation 2026 Semifinalist.",
-    technologies: sharedTech.heringress
+    technologies: sharedTech.heringress,
+    team: [
+      "Mutimutuje Hope Nancy Mizero",
+      "Shimirwa Teta Sonia",
+      "Aubierge Umurerwa"
+    ],
+    mentor: "Hilaire Hatangimbabazi",
+    context: "Technovation 2026",
+    status: "Technovation 2026 Semifinalist",
+    links: [
+      {
+        label: "Asha frontend",
+        href: "https://github.com/Aubierge-codes/Asha-ai-frontend"
+      },
+      {
+        label: "Asha backend",
+        href: "https://github.com/Aubierge-codes/Asha-ai-backend"
+      }
+    ]
   },
   {
     id: "umucocore",
@@ -85,7 +103,7 @@ const enProjects: Project[] = [
       "Treat the project as more than a single page by separating frontend and backend repositories.",
     outcome:
       "Public repositories verify a frontend/backend product direction while leaving unverified features out of the portfolio copy.",
-    technologies: ["Frontend app", "Backend API", "Full-stack architecture"],
+    technologies: ["Next.js", "Tailwind CSS", "Frontend app", "Backend API"],
     links: [
       {
         label: "Frontend repo",
@@ -138,6 +156,20 @@ const enProjects: Project[] = [
       "PostgreSQL",
       "Vercel",
       "Supabase"
+    ],
+    team: ["Gender Avengers"],
+    mentor: "Abigael Anaza-Mark",
+    coach: "Kudirat Abiola",
+    context: "Girl in Bloom Global Ambassador Program 2026",
+    links: [
+      {
+        label: "Frontend repo",
+        href: "https://github.com/Aubierge-codes/She-leads-front"
+      },
+      {
+        label: "Backend repo",
+        href: "https://github.com/Aubierge-codes/She-leads-back"
+      }
     ]
   },
   {
@@ -152,7 +184,13 @@ const enProjects: Project[] = [
       "Connect machine-learning experiments with real-world data sources and hardware-aware system thinking.",
     outcome:
       "Shows ability to work beyond traditional websites while avoiding unverified medical claims.",
-    technologies: sharedTech.zeroBite
+    technologies: sharedTech.zeroBite,
+    links: [
+      {
+        label: "Repository",
+        href: "https://github.com/Aubierge-codes/Zero-bite"
+      }
+    ]
   },
   {
     id: "kinetiq",
@@ -181,7 +219,13 @@ const enProjects: Project[] = [
       "Use real-time weather data and dynamic imagery so the interface changes with state.",
     outcome:
       "A compact project demonstrating API calls, responsive UI, state changes, and asynchronous behavior.",
-    technologies: ["JavaScript", "OpenWeatherMap API", "Dynamic imagery"]
+    technologies: ["JavaScript", "OpenWeatherMap API", "Dynamic imagery"],
+    links: [
+      {
+        label: "Repository",
+        href: "https://github.com/Aubierge-codes/my-weather-app"
+      }
+    ]
   },
   {
     id: "bookstore",
@@ -195,7 +239,13 @@ const enProjects: Project[] = [
       "Use Express routes with MongoDB and Mongoose to keep the API structure clear.",
     outcome:
       "Evidence of backend architecture fundamentals and CRUD workflow understanding.",
-    technologies: ["Node.js", "Express", "MongoDB", "Mongoose"]
+    technologies: ["Node.js", "Express", "MongoDB", "Mongoose"],
+    links: [
+      {
+        label: "Repository",
+        href: "https://github.com/Aubierge-codes/book_store"
+      }
+    ]
   },
   {
     id: "java-projects",
@@ -219,6 +269,16 @@ const enProjects: Project[] = [
       "Repositories",
       "Data structures",
       "Exception handling"
+    ],
+    links: [
+      {
+        label: "Save-Wise",
+        href: "https://github.com/Aubierge-codes/save-wise"
+      },
+      {
+        label: "Java OOP",
+        href: "https://github.com/Aubierge-codes/java-oop-project"
+      }
     ]
   }
 ];

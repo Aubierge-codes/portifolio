@@ -31,7 +31,7 @@ export const translations: Record<Locale, TranslationBundle> = {
     "hero.eyebrow": "Software Developer · Frontend · AI · Embedded Systems",
     "hero.title": "I build software that turns ideas into useful experiences.",
     "hero.copy":
-      "Software developer at Rwanda Coding Academy, building interfaces, intelligent applications, and technology that connects ideas to real-world problems.",
+      "Software developer at Rwanda Coding Academy, building interactive interfaces, intelligent applications, and technology that connects ideas to real-world problems.",
     "hero.primary": "View My Work",
     "hero.secondary": "About Me",
     "hero.scroll": "Scroll to selected work",
@@ -51,21 +51,41 @@ export const translations: Record<Locale, TranslationBundle> = {
       "The work moves from interface craft to systems that touch hardware, data, and community.",
     "stories.copy":
       "The strongest thread is learning by building: turn a problem into a prototype, then refine it until people can use it.",
-    "process.eyebrow": "How Aubierge works",
-    "process.title":
-      "A practical build loop for ideas that need to become real.",
+    "process.eyebrow": "Process",
+    "process.title": "How I Build",
     "process.copy":
       "The process is intentionally simple: understand the problem, make something testable, learn from what breaks, and improve.",
     "about.eyebrow": "About",
     "about.title":
       "Software, hardware, and people belong in the same conversation.",
     "about.copy":
-      "Aubierge Umurerwa studies Software Development and Embedded Systems at Rwanda Coding Academy. She enjoys building the interface, the backend, and the physical or data layer when the problem asks for it.",
+      "Aubierge Umurerwa is a Software Development and Embedded Systems student at Rwanda Coding Academy. She enjoys turning ideas into working products and exploring the intersection of software, hardware, and people.",
     "about.note":
-      "Her projects sit across Technovation, robotics, AI, community technology, product prototyping, and leadership training.",
+      "She does not just learn technology. She uses it to turn problems and ideas into systems people can actually use — across web, AI, robotics, embedded systems, prototyping, and community technology.",
+    "about.background":
+      "Raised and trained in Rwanda, she works across English, French, and Kinyarwanda, and designs interfaces that can also live in Spanish.",
+    "achievements.eyebrow": "Signals",
+    "achievements.title": "A compact record. The work stays the focus.",
+    "balloon.next": "NEXT",
+    "embedded.eyebrow": "Beyond the browser",
+    "embedded.title": "Hardware, data, and the systems that sit underneath the screen.",
+    "embedded.copy":
+      "Raspberry Pi, ESP32 / NodeMCU, Arduino, sensors, and machine learning show up when the problem is physical, environmental, or data-heavy.",
+    "project.alsoKnown": "Also",
+    "project.team": "Team",
+    "project.mentor": "Mentor",
+    "project.coach": "Coach",
+    "project.status": "Status",
+    "project.context": "Context",
+    "papers.learn": "Learn",
+    "papers.build": "Build",
+    "papers.apply": "Apply",
+    "papers.grow": "Grow",
+    "form.sent": "Opens email with your message.",
+    "scene.label": "Project animation",
     "faq.eyebrow": "FAQ",
     "faq.title":
-      "Practical answers for recruiters, collaborators, and clients.",
+      "Practical answers for recruiters, collaborators, and internships.",
     "contact.eyebrow": "Contact",
     "contact.title": "Have an idea worth building?",
     "contact.copy":
@@ -95,12 +115,16 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Robotics & Innovation"
     ],
     achievements: [
-      "Rwanda Coding Academy student",
-      "Robotics-related projects",
+      "Rwanda Coding Academy",
       "Technovation 2026 Semifinalist",
+      "Girl in Bloom Global Ambassador 2026",
+      "First LEGO League Rwanda",
       "AI Hackathon finalist",
       "AIMS National Mathematics Summer Camp 2025",
-      "ILEAD leadership training"
+      "Rwanda Mathematics Competition",
+      "ILEAD leadership training",
+      "Robotics-related projects",
+      "Ideation and prototyping training"
     ],
     process: [
       {
@@ -208,18 +232,38 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Le travail va de l'interface aux systemes qui touchent le materiel, les donnees et la communaute.",
     "stories.copy":
       "Le fil conducteur est l'apprentissage par la construction: transformer un probleme en prototype, puis l'ameliorer jusqu'a ce qu'il soit utilisable.",
-    "process.eyebrow": "Methode de travail",
-    "process.title":
-      "Une boucle de construction pratique pour les idees qui doivent devenir reelles.",
+    "process.eyebrow": "Processus",
+    "process.title": "Comment je construis",
     "process.copy":
       "Le processus reste simple: comprendre le probleme, creer quelque chose de testable, apprendre de ce qui casse, puis ameliorer.",
     "about.eyebrow": "A propos",
     "about.title":
       "Le logiciel, le materiel et les personnes doivent rester dans la meme conversation.",
     "about.copy":
-      "Aubierge Umurerwa etudie le developpement logiciel et les systemes embarques a Rwanda Coding Academy. Elle aime construire l'interface, le backend et la couche physique ou data quand le probleme le demande.",
+      "Aubierge Umurerwa etudie le developpement logiciel et les systemes embarques a Rwanda Coding Academy. Elle aime transformer des idees en produits utilisables et explorer le croisement entre logiciel, materiel et personnes.",
     "about.note":
-      "Ses projets croisent Technovation, la robotique, l'IA, la technologie communautaire, le prototypage produit et la formation au leadership.",
+      "Elle n'apprend pas seulement la technologie. Elle s'en sert pour transformer des problemes et des idees en systemes utilisables — web, IA, robotique, embarque, prototypage et technologie communautaire.",
+    "about.background":
+      "Formee au Rwanda, elle travaille en anglais, en francais et en kinyarwanda, et conçoit aussi des interfaces en espagnol.",
+    "achievements.eyebrow": "Reperes",
+    "achievements.title": "Un registre compact. Les projets restent au centre.",
+    "balloon.next": "SUITE",
+    "embedded.eyebrow": "Au-dela du navigateur",
+    "embedded.title": "Materiel, donnees, et les systemes sous l'ecran.",
+    "embedded.copy":
+      "Raspberry Pi, ESP32 / NodeMCU, Arduino, capteurs et machine learning apparaissent quand le probleme est physique, environnemental ou data.",
+    "project.alsoKnown": "Aussi",
+    "project.team": "Equipe",
+    "project.mentor": "Mentor",
+    "project.coach": "Coach",
+    "project.status": "Statut",
+    "project.context": "Contexte",
+    "papers.learn": "Apprendre",
+    "papers.build": "Construire",
+    "papers.apply": "Postuler",
+    "papers.grow": "Grandir",
+    "form.sent": "Ouvre un email avec votre message.",
+    "scene.label": "Animation du projet",
     "faq.eyebrow": "FAQ",
     "faq.title":
       "Des reponses pratiques pour recruteurs, collaborateurs et clients.",
@@ -253,12 +297,16 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Robotique & innovation"
     ],
     achievements: [
-      "Etudiante a Rwanda Coding Academy",
-      "Projets lies a la robotique",
+      "Rwanda Coding Academy",
       "Demi-finaliste Technovation 2026",
+      "Ambassadrice Girl in Bloom Global 2026",
+      "First LEGO League Rwanda",
       "Finaliste d'un hackathon IA",
       "AIMS National Mathematics Summer Camp 2025",
-      "Formation au leadership ILEAD"
+      "Rwanda Mathematics Competition",
+      "Formation au leadership ILEAD",
+      "Projets lies a la robotique",
+      "Formation ideation et prototypage"
     ],
     process: [
       {
@@ -366,17 +414,38 @@ export const translations: Record<Locale, TranslationBundle> = {
       "El trabajo va desde interfaces hasta sistemas con hardware, datos y comunidad.",
     "stories.copy":
       "La linea principal es aprender construyendo: convertir un problema en prototipo y mejorarlo hasta que sea usable.",
-    "process.eyebrow": "Como trabaja Aubierge",
-    "process.title": "Un ciclo practico para que las ideas se vuelvan reales.",
+    "process.eyebrow": "Proceso",
+    "process.title": "Como construyo",
     "process.copy":
       "El proceso es simple: entender el problema, crear algo comprobable, aprender de lo que falla y mejorar.",
     "about.eyebrow": "Sobre mi",
     "about.title":
       "Software, hardware y personas pertenecen a la misma conversacion.",
     "about.copy":
-      "Aubierge Umurerwa estudia Desarrollo de Software y Sistemas Embebidos en Rwanda Coding Academy. Disfruta crear la interfaz, el backend y la capa fisica o de datos cuando el problema lo requiere.",
+      "Aubierge Umurerwa estudia Desarrollo de Software y Sistemas Embebidos en Rwanda Coding Academy. Disfruta convertir ideas en productos reales y explorar la interseccion entre software, hardware y personas.",
     "about.note":
-      "Sus proyectos conectan Technovation, robotica, IA, tecnologia comunitaria, prototipado de productos y liderazgo.",
+      "No solo aprende tecnologia. La usa para convertir problemas e ideas en sistemas que la gente puede usar: web, IA, robotica, sistemas embebidos, prototipado y tecnologia comunitaria.",
+    "about.background":
+      "Formada en Ruanda, trabaja en ingles, frances y kinyarwanda, y tambien disena interfaces en espanol.",
+    "achievements.eyebrow": "Senales",
+    "achievements.title": "Un registro compacto. El trabajo sigue siendo el centro.",
+    "balloon.next": "SIGUE",
+    "embedded.eyebrow": "Mas alla del navegador",
+    "embedded.title": "Hardware, datos y los sistemas debajo de la pantalla.",
+    "embedded.copy":
+      "Raspberry Pi, ESP32 / NodeMCU, Arduino, sensores y machine learning aparecen cuando el problema es fisico, ambiental o de datos.",
+    "project.alsoKnown": "Tambien",
+    "project.team": "Equipo",
+    "project.mentor": "Mentor",
+    "project.coach": "Coach",
+    "project.status": "Estado",
+    "project.context": "Contexto",
+    "papers.learn": "Aprender",
+    "papers.build": "Construir",
+    "papers.apply": "Postular",
+    "papers.grow": "Crecer",
+    "form.sent": "Abre un correo con tu mensaje.",
+    "scene.label": "Animacion del proyecto",
     "faq.eyebrow": "FAQ",
     "faq.title":
       "Respuestas practicas para reclutadores, colaboradores y clientes.",
@@ -411,12 +480,16 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Robotica e innovacion"
     ],
     achievements: [
-      "Estudiante de Rwanda Coding Academy",
-      "Proyectos relacionados con robotica",
+      "Rwanda Coding Academy",
       "Semifinalista Technovation 2026",
+      "Embajadora Girl in Bloom Global 2026",
+      "First LEGO League Rwanda",
       "Finalista en hackathon de IA",
       "AIMS National Mathematics Summer Camp 2025",
-      "Formacion de liderazgo ILEAD"
+      "Rwanda Mathematics Competition",
+      "Formacion de liderazgo ILEAD",
+      "Proyectos relacionados con robotica",
+      "Formacion de ideacion y prototipado"
     ],
     process: [
       {
