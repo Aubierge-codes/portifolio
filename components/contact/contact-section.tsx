@@ -11,6 +11,10 @@ import { Reveal, RevealItem } from "@/components/motion/reveal";
 import { LineCharacter } from "@/components/characters/line-character";
 import { BouncingBall } from "@/components/motion/bouncing-ball";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { ThreeFrame } from "@/components/three/three-frame";
+import { Mannequin } from "@/components/three/mannequin";
+import { useFrame } from "@react-three/fiber";
+import type { Group } from "three";
 import type { TranslationKey } from "@/types/content";
 
 type ContactSectionProps = {
@@ -149,31 +153,49 @@ export function ContactSection({ t }: ContactSectionProps) {
           </RevealItem>
         </Reveal>
       </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-paper" aria-hidden="true">
-        <div className="absolute inset-x-0 top-0 h-px bg-ink/20" />
-        <motion.div
-          className="absolute bottom-0 w-20"
-          animate={
-            reduceMotion || !inView
-              ? { x: "8%" }
-              : { x: isMobile ? ["-10%", "70%"] : ["-10%", "88%"] }
-          }
-          transition={{ duration: 6.5, repeat: Infinity, ease: "linear" }}
-        >
-          <LineCharacter pose={reduceMotion ? "idle" : "run"} carry="ball" duration={0.4} />
-        </motion.div>
-        {isMobile ? null : (
-          <motion.div
-            className="absolute bottom-0 w-20"
-            animate={
-              reduceMotion || !inView ? { x: "18%" } : { x: ["-24%", "78%"] }
-            }
-            transition={{ duration: 7.4, repeat: Infinity, ease: "linear", delay: 0.5 }}
-          >
-            <LineCharacter pose="run" carry="flag" hair="bun" duration={0.48} />
-          </motion.div>
-        )}
-      </div>
+      <ContactCanvas isMobile={isMobile} />
     </section>
+  );
+}
+
+function RunningMannequins({ isMobile }: { isMobile: boolean }) {
+  const char1 = useRef<Group>(null);
+  const char2 = useRef<Group>(null);
+
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    if (char1.current) {
+      // Run from left to right (-6 to 6)
+      const x = ((t * 1.5) % 12) - 6;
+      char1.current.position.x = x;
+    }
+    if (char2.current && !isMobile) {
+      const x = (((t - 0.5) * 1.4) % 12) - 6;
+      char2.current.position.x = x;
+    }
+  });
+
+  return (
+    <group position={[0, -0.6, 0]} rotation={[0, Math.PI / 2, 0]}>
+      <group ref={char1} position={[-6, 0, -0.5]}>
+        <Mannequin pose="walk" carry="flag" speed={4} />
+      </group>
+      {!isMobile && (
+        <group ref={char2} position={[-6, 0, 0.5]}>
+          <Mannequin pose="walk" hair="bun" speed={4.2} accent />
+        </group>
+      )}
+    </group>
+  );
+}
+
+function ContactCanvas({ isMobile }: { isMobile: boolean }) {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-paper" aria-hidden="true">
+      <div className="absolute inset-x-0 top-0 h-px bg-ink/20" />
+      <ThreeFrame className="h-full w-full" fallback={<div />}>
+        <RunningMannequins isMobile={isMobile} />
+      </ThreeFrame>
+    </div>
   );
 }
