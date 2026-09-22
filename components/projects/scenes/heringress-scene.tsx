@@ -1,71 +1,63 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { LineCharacter } from "@/components/characters/line-character";
+import type { Group } from "three";
+import { ThreeFrame } from "@/components/three/three-frame";
+import { Mannequin } from "@/components/three/mannequin";
 
-type HerIngressSceneProps = {
-  papers: string[];
-};
-
-export function HerIngressScene({ papers }: HerIngressSceneProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.45 });
-  const reduceMotion = useReducedMotion();
+function FloatingPapers({ count = 4 }: { count?: number }) {
+  const groupRef = useRef<Group>(null);
+  
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    if (groupRef.current) {
+      groupRef.current.children.forEach((child, i) => {
+        child.position.y = Math.sin(t * 1.2 + i) * 0.2 + (i * 0.1);
+        child.rotation.y = t * 0.5 + i;
+        child.rotation.z = Math.sin(t * 0.8 + i) * 0.2;
+      });
+    }
+  });
 
   return (
-    <div
-      ref={ref}
-      className="relative h-48 overflow-hidden border border-ink/15 bg-paper md:h-56"
-      aria-hidden="true"
-    >
-      <div className="absolute inset-x-0 bottom-6 h-px bg-ink/15" />
-      <motion.div
-        className="absolute bottom-1 w-24"
-        animate={
-          reduceMotion
-            ? { x: "38%" }
-            : inView
-              ? { x: ["-20%", "42%", "42%", "88%"] }
-              : { x: "-18%" }
-        }
-        transition={{ duration: 5.6, repeat: Infinity, times: [0, 0.38, 0.62, 1] }}
-      >
-        <LineCharacter
-          pose={inView && !reduceMotion ? "run" : "idle"}
-          paused={inView && !reduceMotion ? false : true}
-          carry="folder"
-          hair="puff"
-          duration={0.4}
-          look={inView ? 8 : 0}
-        />
-      </motion.div>
-      {papers.map((paper, index) => (
-        <motion.span
-          key={paper}
-          className="absolute top-6 border border-ink bg-paper px-2 py-1 text-[10px] uppercase tracking-[0.12em]"
-          style={{ left: `${12 + index * 18}%` }}
-          animate={
-            reduceMotion
-              ? undefined
-              : inView
-                ? {
-                    x: [0, 18 + index * 6, 54],
-                    y: [8 + index * 4, -6, 18],
-                    rotate: [-8, 6, -4]
-                  }
-                : { y: [0, -6, 0], rotate: [-4, 5, -4] }
-          }
-          transition={{
-            duration: 3.4 + index * 0.35,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: index * 0.12
-          }}
-        >
-          {paper}
-        </motion.span>
+    <group ref={groupRef} position={[0.8, 0.5, -0.5]}>
+      {Array.from({ length: count }).map((_, i) => (
+        <mesh key={i} position={[i * 0.2 - 0.3, i * 0.1, i * -0.2]}>
+          <boxGeometry args={[0.3, 0.4, 0.01]} />
+          <meshStandardMaterial color="#ffffff" />
+          {/* Paper lines */}
+          <mesh position={[0, 0.1, 0.006]}>
+            <boxGeometry args={[0.2, 0.02, 0.002]} />
+            <meshStandardMaterial color="#6E1F24" />
+          </mesh>
+          <mesh position={[0, 0, 0.006]}>
+            <boxGeometry args={[0.2, 0.02, 0.002]} />
+            <meshStandardMaterial color="#111111" />
+          </mesh>
+          <mesh position={[0, -0.1, 0.006]}>
+            <boxGeometry args={[0.15, 0.02, 0.002]} />
+            <meshStandardMaterial color="#111111" />
+          </mesh>
+        </mesh>
       ))}
-    </div>
+    </group>
+  );
+}
+
+export function HerIngressScene({ papers }: { papers?: string[] }) {
+  return (
+    <ThreeFrame className="h-48 md:h-56" fallback={<div className="h-full w-full bg-paper" />}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
+        <planeGeometry args={[10, 10]} />
+        <meshStandardMaterial color="#f4f4f4" />
+      </mesh>
+      
+      <FloatingPapers count={papers?.length || 4} />
+      
+      <group position={[-0.5, -0.1, 0.5]} rotation={[0, 0.4, 0]}>
+        <Mannequin pose="look" look={4} carry="laptop" hair="puff" />
+      </group>
+    </ThreeFrame>
   );
 }
