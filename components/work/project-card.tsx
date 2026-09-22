@@ -51,25 +51,7 @@ export function ProjectCard({ project, index, t }: ProjectCardProps) {
         </span>
       </div>
 
-      <motion.div
-        className="relative mb-7 h-28 overflow-hidden border border-ink bg-ink"
-        animate={reduceMotion ? undefined : { backgroundPositionX: ["0%", "100%", "0%"] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-        style={{
-          backgroundImage:
-            "linear-gradient(90deg, #030303 0 24%, #ffffff 24% 26%, #6e1f24 26% 39%, #030303 39% 70%, #ffffff 70% 72%, #6e1f24 72% 100%)",
-          backgroundSize: "240% 100%"
-        }}
-      >
-        <motion.div
-          className="absolute bottom-5 left-5 h-10 w-24 bg-paper"
-          whileHover={reduceMotion ? undefined : { x: 12 }}
-        />
-        <motion.div
-          className="absolute right-6 top-5 h-14 w-14 border-2 border-paper"
-          whileHover={reduceMotion ? undefined : { rotate: 8 }}
-        />
-      </motion.div>
+      <ProjectVisual id={project.id} reduceMotion={reduceMotion} />
 
       <div className="grid gap-4 text-sm leading-6 md:grid-cols-2">
         <ProjectFact label={t("project.problem")} value={project.problem} />
@@ -101,6 +83,46 @@ export function ProjectCard({ project, index, t }: ProjectCardProps) {
       </div>
       <span className="absolute bottom-0 left-0 h-1 w-0 bg-maroon transition-all duration-300 group-hover:w-full" />
     </motion.article>
+  );
+}
+
+function ProjectVisual({
+  id,
+  reduceMotion
+}: {
+  id: string;
+  reduceMotion: boolean | null;
+}) {
+  const variant = id.length % 3;
+
+  return (
+    <motion.div
+      className="relative mb-7 h-28 overflow-hidden border border-ink bg-ink"
+      animate={reduceMotion ? undefined : { backgroundPositionX: ["0%", "100%", "0%"] }}
+      transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+      style={{
+        backgroundImage:
+          variant === 0
+            ? "linear-gradient(90deg, #030303 0 28%, #ffffff 28% 30%, #6e1f24 30% 45%, #030303 45% 100%)"
+            : variant === 1
+              ? "linear-gradient(135deg, #030303 0 38%, #6e1f24 38% 54%, #ffffff 54% 56%, #030303 56% 100%)"
+              : "linear-gradient(90deg, #030303 0 18%, #6e1f24 18% 36%, #030303 36% 70%, #ffffff 70% 72%, #030303 72% 100%)",
+        backgroundSize: "240% 100%"
+      }}
+    >
+      <motion.div
+        className="absolute bottom-5 left-5 h-10 w-24 bg-paper"
+        whileHover={reduceMotion ? undefined : { x: 12 }}
+      />
+      <motion.div
+        className="absolute right-6 top-5 h-14 w-14 border-2 border-paper"
+        whileHover={reduceMotion ? undefined : { rotate: 8 }}
+      />
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-5 w-20 -translate-x-1/2 -translate-y-1/2 bg-maroon"
+        whileHover={reduceMotion ? undefined : { scaleX: 1.16, y: -3 }}
+      />
+    </motion.div>
   );
 }
 
