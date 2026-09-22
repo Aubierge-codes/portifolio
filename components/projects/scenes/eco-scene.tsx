@@ -1,73 +1,73 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { LineCharacter } from "@/components/characters/line-character";
+import type { Group } from "three";
+import { ThreeFrame } from "@/components/three/three-frame";
+import { Mannequin } from "@/components/three/mannequin";
 
-export function EcoScene() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.4 });
-  const reduceMotion = useReducedMotion();
+function Tree({ position }: { position: [number, number, number] }) {
+  return (
+    <group position={position}>
+      <mesh position={[0, 0.2, 0]}>
+        <cylinderGeometry args={[0.04, 0.04, 0.4, 8]} />
+        <meshStandardMaterial color="#4A3B32" />
+      </mesh>
+      <mesh position={[0, 0.6, 0]}>
+        <coneGeometry args={[0.3, 0.6, 8]} />
+        <meshStandardMaterial color="#2E4A28" />
+      </mesh>
+      <mesh position={[0, 0.8, 0]}>
+        <coneGeometry args={[0.25, 0.5, 8]} />
+        <meshStandardMaterial color="#3A5F33" />
+      </mesh>
+    </group>
+  );
+}
+
+function FloatingLeaves() {
+  const groupRef = useRef<Group>(null);
+  
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    if (groupRef.current) {
+      groupRef.current.position.y = Math.sin(t * 0.5) * 0.1;
+      groupRef.current.children.forEach((child, i) => {
+        child.rotation.x = t * (0.2 + i * 0.1);
+        child.rotation.y = t * (0.3 + i * 0.1);
+      });
+    }
+  });
 
   return (
-    <div
-      ref={ref}
-      className="relative h-44 overflow-hidden border border-ink/15 bg-paper md:h-52"
-      aria-hidden="true"
-    >
-      {[18, 38, 58].map((left, index) => (
-        <motion.span
-          key={left}
-          className="absolute bottom-8 h-2 w-4 bg-ink/70"
-          style={{ left: `${left}%` }}
-          animate={
-            inView && !reduceMotion
-              ? { x: [0, 80 - left], y: [0, -6, 10], opacity: [1, 1, 0] }
-              : undefined
-          }
-          transition={{
-            duration: 2.8,
-            delay: index * 0.28,
-            repeat: Infinity,
-            repeatDelay: 1.4
-          }}
-        />
+    <group ref={groupRef} position={[0, 1.2, 0]}>
+      {[[-1, 0, 0], [0.5, 0.2, -0.5], [1.2, -0.1, 0.4]].map((pos, i) => (
+        <mesh key={i} position={pos as [number, number, number]}>
+          <boxGeometry args={[0.06, 0.01, 0.04]} />
+          <meshStandardMaterial color="#6E1F24" />
+        </mesh>
       ))}
-      <motion.div
-        className="absolute bottom-10 right-8 origin-bottom"
-        animate={
-          inView && !reduceMotion
-            ? { scaleY: [0.7, 1.08, 1], scaleX: [0.9, 1.04, 1] }
-            : { scale: 1 }
-        }
-        transition={{ duration: 2.2, delay: 0.8 }}
-      >
-        <svg width="28" height="36" viewBox="0 0 28 36" fill="none">
-          <path d="M14 34 V16" stroke="#030303" strokeWidth="2" />
-          <path
-            d="M14 18 C6 8, 18 2, 20 14"
-            stroke="#030303"
-            strokeWidth="2"
-          />
-          <circle cx="18" cy="8" r="3" fill="#6E1F24" />
-        </svg>
-      </motion.div>
-      <motion.div
-        className="absolute bottom-0 w-20"
-        animate={
-          reduceMotion
-            ? { left: "36%" }
-            : { left: inView ? ["6%", "62%", "6%"] : "6%" }
-        }
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <LineCharacter
-          pose={reduceMotion ? "idle" : "walk"}
-          carry="plant"
-          hair="bun"
-          duration={0.58}
-        />
-      </motion.div>
-    </div>
+    </group>
+  );
+}
+
+export function EcoScene() {
+  return (
+    <ThreeFrame className="h-44 md:h-52" fallback={<div className="h-full w-full bg-paper" />}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
+        <planeGeometry args={[10, 10, 8, 8]} />
+        <meshStandardMaterial color="#7A8B74" wireframe />
+      </mesh>
+      
+      <Tree position={[-1.4, -0.1, -1]} />
+      <Tree position={[1.2, -0.1, -0.5]} />
+      <Tree position={[2.0, -0.1, -1.2]} />
+      
+      <FloatingLeaves />
+      
+      <group position={[0, -0.1, 0.8]} rotation={[0, -Math.PI / 4, 0]}>
+        <Mannequin pose="walk" hair="bun" />
+      </group>
+    </ThreeFrame>
   );
 }
