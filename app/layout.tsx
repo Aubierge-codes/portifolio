@@ -21,6 +21,18 @@ export const metadata: Metadata = {
   description:
     "Portfolio of Aubierge Umurerwa, a Rwanda Coding Academy software development and embedded systems student building frontend, AI, full-stack, and hardware-connected systems.",
   metadataBase: new URL("https://aubierge.dev"),
+  authors: [{ name: "Aubierge Umurerwa" }],
+  creator: "Aubierge Umurerwa",
+  keywords: [
+    "Aubierge Umurerwa",
+    "frontend developer",
+    "software developer",
+    "Rwanda Coding Academy",
+    "AI applications",
+    "embedded systems",
+    "robotics",
+    "full-stack development"
+  ],
   openGraph: {
     title: "Aubierge Umurerwa | Software Developer",
     description:
