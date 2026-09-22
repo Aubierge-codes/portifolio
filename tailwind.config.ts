@@ -7,15 +7,12 @@ const config: Config = {
       colors: {
         ink: "#030303",
         paper: "#FFFFFF",
-        maroon: "#6E1F24"
+        maroon: "#6E1F24",
+        coral: "#EB5A3C"
       },
       fontFamily: {
         heading: ["var(--font-bricolage)", "sans-serif"],
         body: ["var(--font-dm-sans)", "sans-serif"]
-      },
-      boxShadow: {
-        editorial: "8px 8px 0 #030303",
-        "editorial-soft": "5px 5px 0 rgba(3, 3, 3, 0.18)"
       }
     }
   },

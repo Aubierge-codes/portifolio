@@ -1,30 +1,50 @@
-import type { Variants } from "framer-motion";
+import type { Transition, Variants } from "framer-motion";
 
-export const spring = {
+export const spring: Transition = {
   type: "spring",
-  stiffness: 260,
+  stiffness: 280,
   damping: 22,
   mass: 0.9
-} as const;
+};
 
-export const quickSpring = {
+export const quickSpring: Transition = {
   type: "spring",
   stiffness: 520,
   damping: 28,
   mass: 0.72
-} as const;
+};
+
+export const softSpring: Transition = {
+  type: "spring",
+  stiffness: 160,
+  damping: 18,
+  mass: 1.1
+};
+
+export const bounceSpring: Transition = {
+  type: "spring",
+  stiffness: 380,
+  damping: 14,
+  mass: 0.8
+};
 
 export const revealVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 28,
-    scale: 0.98
+    y: 22
   },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: spring
+  }
+};
+
+export const fadeVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.28 }
   }
 };
 
@@ -33,7 +53,14 @@ export const staggerContainer: Variants = {
   visible: {
     transition: {
       staggerChildren: 0.08,
-      delayChildren: 0.05
+      delayChildren: 0.04
     }
   }
+};
+
+export const reducedFade = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.18 }
 };

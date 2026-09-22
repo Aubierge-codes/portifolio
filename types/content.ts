@@ -55,7 +55,26 @@ export type TranslationKey =
   | "form.aria"
   | "contact.emailLabel"
   | "contact.githubLabel"
-  | "contact.linkedinPending";
+  | "contact.linkedinPending"
+  | "balloon.next"
+  | "embedded.eyebrow"
+  | "embedded.title"
+  | "embedded.copy"
+  | "about.background"
+  | "achievements.eyebrow"
+  | "achievements.title"
+  | "project.alsoKnown"
+  | "project.team"
+  | "project.mentor"
+  | "project.coach"
+  | "project.status"
+  | "project.context"
+  | "papers.learn"
+  | "papers.build"
+  | "papers.apply"
+  | "papers.grow"
+  | "form.sent"
+  | "scene.label";
 
 export type ProjectSize = "feature" | "large" | "medium" | "small";
 
@@ -70,6 +89,11 @@ export type Project = {
   decision: string;
   outcome: string;
   technologies: string[];
+  team?: string[];
+  mentor?: string;
+  coach?: string;
+  context?: string;
+  status?: string;
   links?: {
     label: string;
     href: string;
