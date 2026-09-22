@@ -8,8 +8,8 @@ type TranslationBundle = Record<TranslationKey, string> & {
 
 export const languages: { code: Locale; label: string; short: string }[] = [
   { code: "en", label: "English", short: "EN" },
-  { code: "fr", label: "Francais", short: "FR" },
-  { code: "es", label: "Espanol", short: "ES" }
+  { code: "fr", label: "Français", short: "FR" },
+  { code: "es", label: "Español", short: "ES" }
 ];
 
 export const translations: Record<Locale, TranslationBundle> = {
