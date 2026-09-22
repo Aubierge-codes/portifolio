@@ -59,14 +59,12 @@ export function FaqSection({ t, items }: FaqSectionProps) {
                     <span className="font-heading text-2xl font-medium leading-tight">
                       {item.question}
                     </span>
-                    <motion.span
-                      className="grid h-9 w-9 shrink-0 place-items-center border border-ink"
-                      animate={
-                        reduceMotion ? undefined : { rotate: open ? 45 : 0 }
-                      }
+                    <span
+                      className="grid h-11 w-11 shrink-0 place-items-center border border-ink text-xl leading-none"
+                      aria-hidden="true"
                     >
-                      +
-                    </motion.span>
+                      {open ? "−" : "+"}
+                    </span>
                   </button>
                   <AnimatePresence initial={false}>
                     {open ? (

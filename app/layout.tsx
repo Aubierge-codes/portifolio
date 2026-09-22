@@ -48,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${bricolage.variable} ${dmSans.variable}`}>
-      <body>{children}</body>
+      <body className="font-body">{children}</body>
     </html>
   );
 }

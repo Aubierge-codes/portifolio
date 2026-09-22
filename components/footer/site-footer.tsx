@@ -1,7 +1,11 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { githubUrl } from "@/data/projects";
 import { languages } from "@/data/translations";
+import { Logo } from "@/components/navigation/logo";
+import { LineCharacter } from "@/components/characters/line-character";
+import { emailAddress } from "@/lib/utils";
 import type { Locale, TranslationKey } from "@/types/content";
 
 type SiteFooterProps = {
@@ -11,14 +15,19 @@ type SiteFooterProps = {
 };
 
 export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <footer className="border-t-2 border-ink bg-paper py-12">
+    <footer className="relative overflow-hidden border-t border-ink bg-paper py-12">
       <div className="section-shell">
         <div className="grid gap-10 md:grid-cols-4">
           <div>
-            <p className="font-heading text-3xl font-medium">
-              Aubierge Umurerwa
-            </p>
+            <div className="flex items-center gap-2">
+              <Logo size={36} />
+              <p className="font-heading text-3xl font-medium">
+                Aubierge Umurerwa
+              </p>
+            </div>
             <p className="mt-3 text-sm leading-6 text-ink/65">
               {t("footer.role")}
             </p>
@@ -36,11 +45,11 @@ export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
             title={t("footer.connect")}
             links={[
               { label: "GitHub", href: githubUrl },
-              { label: "Email", href: "mailto:aubierge7557@gmail.com" }
+              { label: "Email", href: `mailto:${emailAddress}` }
             ]}
           />
           <div>
-            <p className="mb-4 text-sm font-medium uppercase tracking-[0.12em] text-maroon">
+            <p className="mb-4 text-sm uppercase tracking-[0.12em] text-maroon">
               {t("footer.languages")}
             </p>
             <div className="grid gap-2">
@@ -48,7 +57,7 @@ export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
                 <button
                   key={language.code}
                   type="button"
-                  className="text-left text-sm font-medium underline-offset-4 hover:text-maroon hover:underline"
+                  className="min-h-11 text-left text-sm underline-offset-4 hover:text-maroon hover:underline"
                   aria-pressed={locale === language.code}
                   onClick={() => setLocale(language.code)}
                 >
@@ -63,6 +72,14 @@ export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
           <p>{t("footer.built")}</p>
         </div>
       </div>
+      <motion.div
+        className="pointer-events-none absolute bottom-2 right-0 w-20"
+        aria-hidden="true"
+        animate={reduceMotion ? { x: 0 } : { x: [40, 160] }}
+        transition={{ duration: 4.8, repeat: Infinity, repeatDelay: 2.5, ease: "easeIn" }}
+      >
+        <LineCharacter pose={reduceMotion ? "idle" : "run"} duration={0.36} />
+      </motion.div>
     </footer>
   );
 }
@@ -76,7 +93,7 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="mb-4 text-sm font-medium uppercase tracking-[0.12em] text-maroon">
+      <p className="mb-4 text-sm uppercase tracking-[0.12em] text-maroon">
         {title}
       </p>
       <div className="grid gap-2">
@@ -84,7 +101,7 @@ function FooterColumn({
           <a
             key={link.label}
             href={link.href}
-            className="text-sm font-medium underline-offset-4 hover:text-maroon hover:underline"
+            className="min-h-11 inline-flex items-center text-sm underline-offset-4 hover:text-maroon hover:underline"
           >
             {link.label}
           </a>
