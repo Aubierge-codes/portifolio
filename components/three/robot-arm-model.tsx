@@ -35,6 +35,7 @@ export function RobotArmModel() {
     <group
       ref={groupRef}
       position={BASE_POSITION}
+      rotation={[0, Math.PI / 2, 0]}
       scale={CALIBRATION.scale}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
