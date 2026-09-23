@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
-import type { Group, PointLight } from "three";
+import { Box3, Vector3, type Group, type Mesh, type MeshStandardMaterial } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
 import {
   MODEL_CALIBRATION,
@@ -12,24 +12,57 @@ import {
 
 const CALIBRATION = MODEL_CALIBRATION.laptop;
 const BASE_POSITION = groundedPosition(CALIBRATION);
-// Approximate screen-panel position within the model's local bbox (upper,
-// slightly toward the back where the display stands open) — the source
-// file's materials were merged during optimization, so this is a soft light
-// placed near the screen rather than an emissive material on it.
-const SCREEN_LIGHT_POSITION: [number, number, number] = [-0.2, 2.1, -1.3];
+const SCREEN_GLOW = 0.55;
+/** The source model's RGB keyboard lighting, toned down from its authored full blast. */
+const ACCENT_GLOW = 0.12;
 
 export function LaptopModel() {
   const { scene } = useGLTF(MODEL_PATHS.laptop);
   const groupRef = useRef<Group>(null);
-  const screenLightRef = useRef<PointLight>(null);
 
-  const { handlePointerOver, handlePointerOut } = useModelInteraction(
-    groupRef,
-    {
-      baseScale: CALIBRATION.scale,
-      hoverScale: 1.03
-    }
-  );
+  const { handlePointerOver, handlePointerOut } = useModelInteraction(groupRef, {
+    baseScale: CALIBRATION.scale,
+    hoverScale: 1.03
+  });
+
+  // The optimizer merged this model's 14 materials down to 5 palette entries,
+  // so there's no "screen" material to match by name. Instead the display is
+  // found geometrically: among the meshes, it's the broad, thin panel sitting
+  // in the upper half of the model. Lighting that one makes the laptop read as
+  // powered on rather than relying on a floating light placed near it.
+  useEffect(() => {
+    const bounds = new Box3().setFromObject(scene);
+    const size = bounds.getSize(new Vector3());
+    const midY = bounds.min.y + size.y * 0.45;
+
+    scene.traverse((child) => {
+      const mesh = child as Mesh;
+      if (!mesh.isMesh || !mesh.geometry) return;
+      const material = mesh.material as MeshStandardMaterial;
+      if (!material) return;
+
+      mesh.geometry.computeBoundingBox();
+      const meshBounds = mesh.geometry.boundingBox;
+      if (!meshBounds) return;
+      const meshSize = meshBounds.getSize(new Vector3());
+      const center = meshBounds.getCenter(new Vector3());
+
+      const thinnestAxis = Math.min(meshSize.x, meshSize.y, meshSize.z);
+      const largestAxis = Math.max(meshSize.x, meshSize.y, meshSize.z);
+      const isPanel = thinnestAxis < largestAxis * 0.12;
+      const isUpper = center.y > midY;
+
+      if (isPanel && isUpper) {
+        material.emissiveIntensity = SCREEN_GLOW;
+        if (material.emissive) material.emissive.setRGB(1, 1, 1);
+        if (material.map) material.emissiveMap = material.map;
+      } else if (material.emissiveIntensity > ACCENT_GLOW) {
+        // Rein in the model's authored RGB accent lighting.
+        material.emissiveIntensity = ACCENT_GLOW;
+      }
+      material.needsUpdate = true;
+    });
+  }, [scene]);
 
   return (
     <group
@@ -41,14 +74,6 @@ export function LaptopModel() {
       onPointerOut={handlePointerOut}
     >
       <primitive object={scene} />
-      <pointLight
-        ref={screenLightRef}
-        position={SCREEN_LIGHT_POSITION}
-        intensity={0.5}
-        color="#cfe8ff"
-        distance={2.5}
-        decay={2}
-      />
     </group>
   );
 }
