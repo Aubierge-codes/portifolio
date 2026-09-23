@@ -5,18 +5,15 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import type { Group } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
-import {
-  MODEL_CALIBRATION,
-  MODEL_PATHS,
-  groundedPosition
-} from "@/components/three/model-config";
+import { useGroundedModel } from "@/hooks/use-grounded-model";
+import { MODEL_CALIBRATION, MODEL_PATHS } from "@/components/three/model-config";
 
 const CALIBRATION = MODEL_CALIBRATION.robotArm;
-const BASE_POSITION = groundedPosition(CALIBRATION);
 
 export function RobotArmModel() {
   const { scene } = useGLTF(MODEL_PATHS.robotArm);
   const groupRef = useRef<Group>(null);
+  const innerRef = useRef<Group>(null);
   const idleRef = useRef<Group>(null);
 
   const { handlePointerOver, handlePointerOut } = useModelInteraction(
@@ -26,6 +23,8 @@ export function RobotArmModel() {
       hoverScale: 1.03
     }
   );
+
+  useGroundedModel(groupRef, innerRef, [scene]);
 
   // The joint hierarchy isn't semantically named in the source file, so
   // rather than guess at an individual segment, the whole rig gets one
@@ -41,14 +40,15 @@ export function RobotArmModel() {
   return (
     <group
       ref={groupRef}
-      position={BASE_POSITION}
       rotation={[0, Math.PI / 2, 0]}
       scale={CALIBRATION.scale}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
-      <group ref={idleRef}>
-        <primitive object={scene} />
+      <group ref={innerRef}>
+        <group ref={idleRef}>
+          <primitive object={scene} />
+        </group>
       </group>
     </group>
   );
