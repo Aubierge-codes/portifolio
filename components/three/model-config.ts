@@ -25,6 +25,12 @@ type ModelCalibration = {
   center: [number, number];
   /** The model's lowest point (bbox min y), so it can be placed flush at y = 0. */
   floorY: number;
+  /**
+   * Rotation applied to the model *before* centering, for files authored with
+   * a different up-axis. When set, `center`/`floorY` describe the bbox after
+   * this rotation, not the raw file's.
+   */
+  preRotation?: [number, number, number];
 };
 
 export const MODEL_CALIBRATION: Record<
@@ -32,7 +38,17 @@ export const MODEL_CALIBRATION: Record<
   ModelCalibration
 > = {
   arduino: { scale: 1.15, center: [0.024, -0.086], floorY: 0.005 },
-  raspberryPi: { scale: 0.017, center: [-21.16, 27.83], floorY: -48.533 },
+  // This export has an arbitrary tilt quaternion baked into its only node, so
+  // the board sits at an angle rather than flat. preRotation is the correction
+  // solved by fitting a plane to the vertex cloud (PCA) and rotating its normal
+  // onto +Y. Centering is measured at runtime via useGroundedModel, so the
+  // center/floorY values here are unused for this entry.
+  raspberryPi: {
+    scale: 0.017,
+    center: [0, 0],
+    floorY: 0,
+    preRotation: [0.2255, 0.0421, -0.3678]
+  },
   robotArm: { scale: 1.4, center: [-0.001, -0.054], floorY: -0.21 },
   laptop: { scale: 0.42, center: [-0.205, 0.001], floorY: -0.131 },
   monitor: { scale: 0.38, center: [-2.427, -3.29], floorY: 6.277 },

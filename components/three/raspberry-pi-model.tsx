@@ -5,19 +5,19 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import type { Group, Mesh, MeshStandardMaterial } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
+import { useGroundedModel } from "@/hooks/use-grounded-model";
 import {
   MODEL_CALIBRATION,
-  MODEL_PATHS,
-  groundedPosition
+  MODEL_PATHS
 } from "@/components/three/model-config";
 
 const CALIBRATION = MODEL_CALIBRATION.raspberryPi;
-const BASE_POSITION = groundedPosition(CALIBRATION);
 const ACTIVITY_COLOR = "#e8483c";
 
 export function RaspberryPiModel() {
   const { scene } = useGLTF(MODEL_PATHS.raspberryPi);
   const groupRef = useRef<Group>(null);
+  const innerRef = useRef<Group>(null);
   const ledRef = useRef<Mesh>(null);
 
   const { handlePointerOver, handlePointerOut } = useModelInteraction(
@@ -27,6 +27,10 @@ export function RaspberryPiModel() {
       hoverScale: 1.04
     }
   );
+
+  // This export has a tilt baked into its node, so the board lands on edge;
+  // auto-leveling fits its plane and lays it flat.
+  useGroundedModel(groupRef, innerRef, [scene], { autoLevel: true });
 
   // Faint activity-LED flicker — an edge-computing board reading sensors,
   // not a disco light. Irregular but small, never a hard on/off blink.
@@ -43,21 +47,22 @@ export function RaspberryPiModel() {
   return (
     <group
       ref={groupRef}
-      position={BASE_POSITION}
-      rotation={[0, 0.3, 0]}
+      rotation={[0, 0.35, 0]}
       scale={CALIBRATION.scale}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
-      <primitive object={scene} />
-      <mesh ref={ledRef} position={[-40, 16, 30]}>
-        <sphereGeometry args={[1.6, 8, 8]} />
-        <meshStandardMaterial
-          color={ACTIVITY_COLOR}
-          emissive={ACTIVITY_COLOR}
-          emissiveIntensity={0.6}
-        />
-      </mesh>
+      <group ref={innerRef}>
+        <primitive object={scene} />
+        <mesh ref={ledRef} position={[-40, 16, 30]}>
+          <sphereGeometry args={[1.6, 8, 8]} />
+          <meshStandardMaterial
+            color={ACTIVITY_COLOR}
+            emissive={ACTIVITY_COLOR}
+            emissiveIntensity={0.6}
+          />
+        </mesh>
+      </group>
     </group>
   );
 }
