@@ -31,7 +31,10 @@ export function StudioLighting({
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0005}
       >
-        <orthographicCamera attach="shadow-camera" args={[-4, 4, 4, -4, 0.1, 20]} />
+        <orthographicCamera
+          attach="shadow-camera"
+          args={[-4, 4, 4, -4, 0.1, 20]}
+        />
       </directionalLight>
       <directionalLight
         position={[-3.5, 2.2, 1.5]}

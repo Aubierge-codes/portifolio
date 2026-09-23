@@ -2,7 +2,7 @@
 
 import { ThreeFrame } from "@/components/three/three-frame";
 import { ModelStage } from "@/components/three/model-stage";
-import { Float, Turntable } from "@/components/three/motion-rigs";
+import { Float, ScrollTilt, Turntable } from "@/components/three/motion-rigs";
 import { LaptopModel } from "@/components/three/laptop-model";
 
 const FLOOR = -0.55;
@@ -19,13 +19,15 @@ export function WorkLaptopCanvas() {
         shadowBlur={2.2}
         shadowOpacity={0.35}
       >
-        <group position={[-0.12, FLOOR, 0]}>
-          <Turntable period={50} sweep={0.3}>
-            <Float amplitude={0.035} period={7.5}>
-              <LaptopModel />
-            </Float>
-          </Turntable>
-        </group>
+        <ScrollTilt yaw={0.2} pitch={0.04} lift={0.1}>
+          <group position={[-0.12, FLOOR, 0]}>
+            <Turntable period={50} sweep={0.3}>
+              <Float amplitude={0.035} period={7.5}>
+                <LaptopModel />
+              </Float>
+            </Turntable>
+          </group>
+        </ScrollTilt>
       </ModelStage>
     </ThreeFrame>
   );

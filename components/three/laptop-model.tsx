@@ -2,7 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
-import { Box3, Vector3, type Group, type Mesh, type MeshStandardMaterial } from "three";
+import {
+  Box3,
+  Vector3,
+  type Group,
+  type Mesh,
+  type MeshStandardMaterial
+} from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
 import {
   MODEL_CALIBRATION,
@@ -20,10 +26,13 @@ export function LaptopModel() {
   const { scene } = useGLTF(MODEL_PATHS.laptop);
   const groupRef = useRef<Group>(null);
 
-  const { handlePointerOver, handlePointerOut } = useModelInteraction(groupRef, {
-    baseScale: CALIBRATION.scale,
-    hoverScale: 1.03
-  });
+  const { handlePointerOver, handlePointerOut } = useModelInteraction(
+    groupRef,
+    {
+      baseScale: CALIBRATION.scale,
+      hoverScale: 1.03
+    }
+  );
 
   // The optimizer merged this model's 14 materials down to 5 palette entries,
   // so there's no "screen" material to match by name. Instead the display is

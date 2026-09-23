@@ -101,8 +101,10 @@ export function ScrollTilt({
     const centered = progress.current - 0.5;
     const ease = Math.min(1, delta * 4);
     ref.current.rotation.y += (centered * yaw - ref.current.rotation.y) * ease;
-    ref.current.rotation.x += (centered * pitch - ref.current.rotation.x) * ease;
-    ref.current.position.y += (-centered * lift - ref.current.position.y) * ease;
+    ref.current.rotation.x +=
+      (centered * pitch - ref.current.rotation.x) * ease;
+    ref.current.position.y +=
+      (-centered * lift - ref.current.position.y) * ease;
   });
 
   return <group ref={ref}>{children}</group>;
