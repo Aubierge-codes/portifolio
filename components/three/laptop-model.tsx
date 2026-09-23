@@ -4,7 +4,11 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import type { Group, PointLight } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
-import { MODEL_CALIBRATION, MODEL_PATHS, groundedPosition } from "@/components/three/model-config";
+import {
+  MODEL_CALIBRATION,
+  MODEL_PATHS,
+  groundedPosition
+} from "@/components/three/model-config";
 
 const CALIBRATION = MODEL_CALIBRATION.laptop;
 const BASE_POSITION = groundedPosition(CALIBRATION);
@@ -19,10 +23,13 @@ export function LaptopModel() {
   const groupRef = useRef<Group>(null);
   const screenLightRef = useRef<PointLight>(null);
 
-  const { handlePointerOver, handlePointerOut } = useModelInteraction(groupRef, {
-    baseScale: CALIBRATION.scale,
-    hoverScale: 1.03
-  });
+  const { handlePointerOver, handlePointerOut } = useModelInteraction(
+    groupRef,
+    {
+      baseScale: CALIBRATION.scale,
+      hoverScale: 1.03
+    }
+  );
 
   return (
     <group

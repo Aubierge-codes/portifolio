@@ -19,7 +19,10 @@ export function EmbeddedDiagram() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <div className="relative min-h-[280px] border border-ink bg-paper" aria-hidden="true">
+    <div
+      className="relative min-h-[280px] border border-ink bg-paper"
+      aria-hidden="true"
+    >
       {nodes.map((node, index) => (
         <motion.button
           key={node.label}

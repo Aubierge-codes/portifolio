@@ -49,7 +49,8 @@ export function useModelInteraction<T extends Group>(
     pressRef.current += (1 - pressRef.current) * settleAmt;
     if (groupRef.current) {
       const target = baseScale * pressRef.current * (hovered ? hoverScale : 1);
-      groupRef.current.scale.x += (target - groupRef.current.scale.x) * settleAmt;
+      groupRef.current.scale.x +=
+        (target - groupRef.current.scale.x) * settleAmt;
       groupRef.current.scale.y = groupRef.current.scale.x;
       groupRef.current.scale.z = groupRef.current.scale.x;
     }

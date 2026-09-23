@@ -5,7 +5,11 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import type { Group } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
-import { MODEL_CALIBRATION, MODEL_PATHS, groundedPosition } from "@/components/three/model-config";
+import {
+  MODEL_CALIBRATION,
+  MODEL_PATHS,
+  groundedPosition
+} from "@/components/three/model-config";
 
 const CALIBRATION = MODEL_CALIBRATION.robotArm;
 const BASE_POSITION = groundedPosition(CALIBRATION);
@@ -15,10 +19,13 @@ export function RobotArmModel() {
   const groupRef = useRef<Group>(null);
   const idleRef = useRef<Group>(null);
 
-  const { handlePointerOver, handlePointerOut } = useModelInteraction(groupRef, {
-    baseScale: CALIBRATION.scale,
-    hoverScale: 1.03
-  });
+  const { handlePointerOver, handlePointerOut } = useModelInteraction(
+    groupRef,
+    {
+      baseScale: CALIBRATION.scale,
+      hoverScale: 1.03
+    }
+  );
 
   // The joint hierarchy isn't semantically named in the source file, so
   // rather than guess at an individual segment, the whole rig gets one

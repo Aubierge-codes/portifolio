@@ -23,5 +23,7 @@ export function SceneEnvironment() {
     return renderTarget.texture;
   }, [gl]);
 
-  return <Environment map={texture} background={false} environmentIntensity={1} />;
+  return (
+    <Environment map={texture} background={false} environmentIntensity={1} />
+  );
 }

@@ -5,7 +5,11 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import type { Group, Mesh, MeshStandardMaterial } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
-import { MODEL_CALIBRATION, MODEL_PATHS, groundedPosition } from "@/components/three/model-config";
+import {
+  MODEL_CALIBRATION,
+  MODEL_PATHS,
+  groundedPosition
+} from "@/components/three/model-config";
 
 const CALIBRATION = MODEL_CALIBRATION.arduino;
 const BASE_POSITION = groundedPosition(CALIBRATION);
@@ -16,18 +20,23 @@ export function ArduinoModel() {
   const groupRef = useRef<Group>(null);
   const ledRef = useRef<Mesh>(null);
 
-  const { handlePointerOver, handlePointerOut } = useModelInteraction(groupRef, {
-    baseScale: CALIBRATION.scale,
-    hoverScale: 1.04
-  });
+  const { handlePointerOver, handlePointerOut } = useModelInteraction(
+    groupRef,
+    {
+      baseScale: CALIBRATION.scale,
+      hoverScale: 1.04
+    }
+  );
 
   // A restrained, steady power-LED pulse rather than a blinking indicator —
   // real Arduino boards keep this LED on solid, with only a faint breathing
   // variation so it doesn't read as "flashing."
   useFrame(({ clock }) => {
-    const material = ledRef.current?.material as MeshStandardMaterial | undefined;
+    const material = ledRef.current?.material as
+      MeshStandardMaterial | undefined;
     if (material) {
-      material.emissiveIntensity = 1.1 + Math.sin(clock.getElapsedTime() * 1.4) * 0.25;
+      material.emissiveIntensity =
+        1.1 + Math.sin(clock.getElapsedTime() * 1.4) * 0.25;
     }
   });
 
