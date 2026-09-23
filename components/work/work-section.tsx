@@ -1,5 +1,8 @@
 "use client";
 
+import { useRef } from "react";
+import dynamic from "next/dynamic";
+import { useInView } from "framer-motion";
 import { localizedProjects } from "@/data/projects";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
@@ -7,7 +10,16 @@ import { ProjectCard } from "@/components/work/project-card";
 import { FloatingBalloon } from "@/components/motion/floating-balloon";
 import { BouncingBall } from "@/components/motion/bouncing-ball";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { cn } from "@/lib/utils";
 import type { Locale, TranslationKey } from "@/types/content";
+
+const WorkLaptopCanvas = dynamic(
+  () =>
+    import("@/components/three/work-laptop-canvas").then(
+      (mod) => mod.WorkLaptopCanvas
+    ),
+  { ssr: false, loading: () => <div /> }
+);
 
 type WorkSectionProps = {
   t: (key: TranslationKey) => string;
@@ -17,6 +29,8 @@ type WorkSectionProps = {
 export function WorkSection({ t, locale }: WorkSectionProps) {
   const projects = localizedProjects[locale];
   const isMobile = useIsMobile();
+  const laptopRef = useRef<HTMLDivElement>(null);
+  const laptopInView = useInView(laptopRef, { amount: 0.4, once: true });
   const papers = [
     t("papers.learn"),
     t("papers.build"),
@@ -48,6 +62,16 @@ export function WorkSection({ t, locale }: WorkSectionProps) {
               as="p"
               className="body-large text-ink/70"
             />
+            <div
+              ref={laptopRef}
+              className={cn(
+                "relative mt-6 h-40 border border-ink/15 bg-paper transition-opacity duration-700 md:h-48",
+                laptopInView ? "opacity-100" : "opacity-0"
+              )}
+              aria-hidden="true"
+            >
+              {laptopInView ? <WorkLaptopCanvas /> : null}
+            </div>
           </RevealItem>
         </Reveal>
         <Reveal stagger className="grid gap-5 lg:grid-cols-12">
