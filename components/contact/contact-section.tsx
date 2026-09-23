@@ -101,7 +101,7 @@ export function ContactSection({ t }: ContactSectionProps) {
               </div>
             </RevealItem>
             {isStackedLayout ? (
-              <div className="relative -ml-2 mt-8 h-40 w-40" aria-hidden="true">
+              <div className="relative -ml-2 mt-8 h-56 w-56" aria-hidden="true">
                 <ThreeFrame
                   transparent
                   className="h-full w-full"
@@ -237,7 +237,7 @@ function LampCorner({
 }) {
   return (
     <div
-      className="absolute bottom-44 left-4 z-20 h-36 w-36 sm:left-8 sm:h-44 sm:w-44 lg:left-14 lg:h-52 lg:w-52"
+      className="absolute bottom-44 left-4 z-20 h-52 w-52 sm:left-8 sm:h-64 sm:w-64 lg:left-14 lg:h-80 lg:w-80"
       aria-hidden="true"
     >
       <ThreeFrame transparent className="h-full w-full" fallback={<div />}>
