@@ -10,14 +10,13 @@ import {
   type MeshStandardMaterial
 } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
+import { useGroundedModel } from "@/hooks/use-grounded-model";
 import {
   MODEL_CALIBRATION,
-  MODEL_PATHS,
-  groundedPosition
+  MODEL_PATHS
 } from "@/components/three/model-config";
 
 const CALIBRATION = MODEL_CALIBRATION.laptop;
-const BASE_POSITION = groundedPosition(CALIBRATION);
 const SCREEN_GLOW = 0.55;
 /** The source model's RGB keyboard lighting, toned down from its authored full blast. */
 const ACCENT_GLOW = 0.12;
@@ -25,6 +24,7 @@ const ACCENT_GLOW = 0.12;
 export function LaptopModel() {
   const { scene } = useGLTF(MODEL_PATHS.laptop);
   const groupRef = useRef<Group>(null);
+  const innerRef = useRef<Group>(null);
 
   const { handlePointerOver, handlePointerOut } = useModelInteraction(
     groupRef,
@@ -33,6 +33,8 @@ export function LaptopModel() {
       hoverScale: 1.03
     }
   );
+
+  useGroundedModel(groupRef, innerRef, [scene]);
 
   // The optimizer merged this model's 14 materials down to 5 palette entries,
   // so there's no "screen" material to match by name. Instead the display is
@@ -76,13 +78,14 @@ export function LaptopModel() {
   return (
     <group
       ref={groupRef}
-      position={BASE_POSITION}
       rotation={[0, -0.5, 0]}
       scale={CALIBRATION.scale}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
-      <primitive object={scene} />
+      <group ref={innerRef}>
+        <primitive object={scene} />
+      </group>
     </group>
   );
 }
