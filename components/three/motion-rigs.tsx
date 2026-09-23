@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import type { Group } from "three";
 
 /**
@@ -55,6 +55,58 @@ type FloatProps = {
   /** Degrees of gentle tilt paired with the rise, for a little life. */
   tilt?: number;
 };
+
+type ScrollTiltProps = {
+  children: React.ReactNode;
+  /** Radians of yaw swept across the full scroll pass. */
+  yaw?: number;
+  /** Radians of pitch swept across the full scroll pass. */
+  pitch?: number;
+  /** World units of vertical drift across the full scroll pass. */
+  lift?: number;
+};
+
+/**
+ * Parallax driven by the canvas's own position in the viewport, so the scene
+ * turns slightly as the visitor scrolls past it.
+ *
+ * Reads the canvas rect directly inside the render loop rather than bridging
+ * a DOM scroll listener into React state — no re-renders, and nothing that
+ * can disagree between server and client render. The measurement is throttled
+ * to every fourth frame since a layout read per frame isn't worth it for an
+ * effect this subtle.
+ */
+export function ScrollTilt({
+  children,
+  yaw = 0.22,
+  pitch = 0.06,
+  lift = 0.12
+}: ScrollTiltProps) {
+  const ref = useRef<Group>(null);
+  const canvas = useThree((state) => state.gl.domElement);
+  const progress = useRef(0.5);
+  const frame = useRef(0);
+
+  useFrame((_, delta) => {
+    if (!ref.current) return;
+
+    if (frame.current++ % 4 === 0) {
+      const rect = canvas.getBoundingClientRect();
+      const viewport = window.innerHeight || 1;
+      // 0 when the canvas is entering from the bottom, 1 when it has left the top.
+      const raw = (viewport - rect.top) / (viewport + rect.height);
+      progress.current = Math.min(1, Math.max(0, raw));
+    }
+
+    const centered = progress.current - 0.5;
+    const ease = Math.min(1, delta * 4);
+    ref.current.rotation.y += (centered * yaw - ref.current.rotation.y) * ease;
+    ref.current.rotation.x += (centered * pitch - ref.current.rotation.x) * ease;
+    ref.current.position.y += (-centered * lift - ref.current.position.y) * ease;
+  });
+
+  return <group ref={ref}>{children}</group>;
+}
 
 /** Subtle vertical drift, so static props don't feel frozen. */
 export function Float({
