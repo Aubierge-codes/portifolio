@@ -65,7 +65,7 @@ export function WorkSection({ t, locale }: WorkSectionProps) {
             <div
               ref={laptopRef}
               className={cn(
-                "relative mt-6 h-40 border border-ink/15 bg-paper transition-opacity duration-700 md:h-48",
+                "relative mt-6 h-52 border border-ink/15 bg-paper transition-opacity duration-700 md:h-64",
                 laptopInView ? "opacity-100" : "opacity-0"
               )}
               aria-hidden="true"

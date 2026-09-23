@@ -46,7 +46,7 @@ export function EmbeddedSection({ t }: EmbeddedSectionProps) {
           </RevealItem>
         </Reveal>
         <motion.div
-          className="relative min-h-[280px] border border-ink bg-paper"
+          className="relative h-[340px] border border-ink bg-paper md:h-[440px]"
           aria-hidden="true"
           initial={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
           animate={
