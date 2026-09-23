@@ -1,17 +1,20 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import dynamic from "next/dynamic";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
+import { EmbeddedDiagram } from "@/components/projects/embedded-diagram";
 import type { TranslationKey } from "@/types/content";
 
-const nodes = [
-  { label: "Pi", x: "12%", y: "28%" },
-  { label: "ESP", x: "38%", y: "18%" },
-  { label: "Arduino", x: "64%", y: "30%" },
-  { label: "Sensor", x: "22%", y: "62%" },
-  { label: "ML", x: "72%", y: "64%" }
-];
+const EmbeddedHardwareCanvas = dynamic(
+  () =>
+    import("@/components/three/embedded-hardware-canvas").then(
+      (mod) => mod.EmbeddedHardwareCanvas
+    ),
+  { ssr: false, loading: () => <EmbeddedDiagram /> }
+);
 
 type EmbeddedSectionProps = {
   t: (key: TranslationKey) => string;
@@ -19,9 +22,11 @@ type EmbeddedSectionProps = {
 
 export function EmbeddedSection({ t }: EmbeddedSectionProps) {
   const reduceMotion = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { amount: 0.2, once: true });
 
   return (
-    <section className="border-y border-ink py-24 md:py-32">
+    <section ref={ref} className="border-y border-ink py-24 md:py-32">
       <div className="section-shell grid gap-10 lg:grid-cols-[0.72fr_0.5fr] lg:items-center">
         <Reveal stagger>
           <RevealItem>
@@ -40,31 +45,17 @@ export function EmbeddedSection({ t }: EmbeddedSectionProps) {
             />
           </RevealItem>
         </Reveal>
-        <div className="relative min-h-[280px] border border-ink bg-paper" aria-hidden="true">
-          {nodes.map((node, index) => (
-            <motion.button
-              key={node.label}
-              type="button"
-              tabIndex={-1}
-              className="absolute min-h-11 border border-ink bg-paper px-3 text-xs uppercase tracking-[0.12em]"
-              style={{ left: node.x, top: node.y }}
-              animate={
-                reduceMotion
-                  ? undefined
-                  : { y: [0, index % 2 ? -6 : 5, 0] }
-              }
-              whileHover={reduceMotion ? undefined : { scale: 1.04 }}
-              transition={{ duration: 2.6 + index * 0.2, repeat: Infinity }}
-            >
-              {node.label}
-            </motion.button>
-          ))}
-          <motion.span
-            className="absolute left-[18%] top-[40%] h-px w-[54%] bg-maroon origin-left"
-            animate={reduceMotion ? undefined : { scaleX: [0.3, 1, 0.3] }}
-            transition={{ duration: 3.4, repeat: Infinity }}
-          />
-        </div>
+        <motion.div
+          className="relative min-h-[280px] border border-ink bg-paper"
+          aria-hidden="true"
+          initial={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
+          animate={
+            inView && !reduceMotion ? { opacity: 1, scale: 1 } : undefined
+          }
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          {inView ? <EmbeddedHardwareCanvas /> : <EmbeddedDiagram />}
+        </motion.div>
       </div>
     </section>
   );
