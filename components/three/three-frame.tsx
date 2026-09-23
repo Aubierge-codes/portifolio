@@ -11,13 +11,16 @@ type ThreeFrameProps = {
   fallback: React.ReactNode;
   /** Skip the opaque white background and border frame, letting the page show through. */
   transparent?: boolean;
+  /** Skip the default ambient/directional pair so the scene can light itself. */
+  lights?: boolean;
 };
 
 export function ThreeFrame({
   children,
   className,
   fallback,
-  transparent = false
+  transparent = false,
+  lights = true
 }: ThreeFrameProps) {
   const reduceMotion = useReducedMotion();
 
@@ -33,8 +36,12 @@ export function ThreeFrame({
         gl={{ antialias: true, alpha: true }}
       >
         {transparent ? null : <color attach="background" args={["#ffffff"]} />}
-        <ambientLight intensity={0.85} />
-        <directionalLight position={[2.4, 3, 2]} intensity={0.7} />
+        {lights ? (
+          <>
+            <ambientLight intensity={0.85} />
+            <directionalLight position={[2.4, 3, 2]} intensity={0.7} />
+          </>
+        ) : null}
         <Suspense fallback={null}>{children}</Suspense>
       </Canvas>
       {transparent ? null : (
