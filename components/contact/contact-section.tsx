@@ -1,10 +1,9 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
 import { githubUrl } from "@/data/projects";
-import { emailAddress } from "@/lib/utils";
+import { cn, emailAddress } from "@/lib/utils";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { SpringButton } from "@/components/motion/spring-button";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
@@ -13,6 +12,7 @@ import { BouncingBall } from "@/components/motion/bouncing-ball";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { ThreeFrame } from "@/components/three/three-frame";
 import { Mannequin } from "@/components/three/mannequin";
+import { Lamp } from "@/components/three/lamp";
 import { useFrame } from "@react-three/fiber";
 import type { Group } from "three";
 import type { TranslationKey } from "@/types/content";
@@ -24,10 +24,14 @@ type ContactSectionProps = {
 export function ContactSection({ t }: ContactSectionProps) {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
+  // Matches the grid's own lg: breakpoint, where the two-column layout
+  // (and the empty space the corner lamp relies on) collapses to one.
+  const isStackedLayout = useIsMobile("(max-width: 1023px)");
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { amount: 0.25 });
   const [hit, setHit] = useState(false);
   const [sent, setSent] = useState(false);
+  const [isLampOn, setIsLampOn] = useState(false);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,7 +48,11 @@ export function ContactSection({ t }: ContactSectionProps) {
     <section
       id="contact"
       ref={ref}
-      className="relative overflow-hidden bg-ink pb-28 pt-24 text-paper md:pb-32 md:pt-32"
+      style={{ backgroundColor: isLampOn ? "#1a1816" : "#030303" }}
+      className={cn(
+        "relative overflow-hidden pb-28 pt-24 text-paper md:pb-32 md:pt-32",
+        !reduceMotion && "transition-colors duration-700"
+      )}
     >
       <div className="section-shell relative z-10">
         <Reveal
@@ -53,7 +61,9 @@ export function ContactSection({ t }: ContactSectionProps) {
         >
           <div>
             <RevealItem>
-              <p className="eyebrow mb-4 text-paper/60">{t("contact.eyebrow")}</p>
+              <p className="eyebrow mb-4 text-paper/60">
+                {t("contact.eyebrow")}
+              </p>
               <AnimatedText
                 value={t("contact.title")}
                 as="h2"
@@ -90,6 +100,20 @@ export function ContactSection({ t }: ContactSectionProps) {
                 ) : null}
               </div>
             </RevealItem>
+            {isStackedLayout ? (
+              <div className="relative -ml-2 mt-8 h-40 w-40" aria-hidden="true">
+                <ThreeFrame
+                  transparent
+                  className="h-full w-full"
+                  fallback={<div />}
+                >
+                  <Lamp
+                    isOn={isLampOn}
+                    onToggle={() => setIsLampOn((value) => !value)}
+                  />
+                </ThreeFrame>
+              </div>
+            ) : null}
           </div>
           <RevealItem>
             <div className="mb-5 grid gap-3 border-l border-paper/40 pl-4 text-sm">
@@ -153,6 +177,22 @@ export function ContactSection({ t }: ContactSectionProps) {
           </RevealItem>
         </Reveal>
       </div>
+
+      <button
+        type="button"
+        onClick={() => setIsLampOn((value) => !value)}
+        aria-pressed={isLampOn}
+        className="sr-only"
+      >
+        {isLampOn ? "Turn lamp off" : "Turn lamp on"}
+      </button>
+
+      {isStackedLayout ? null : (
+        <LampCorner
+          isOn={isLampOn}
+          onToggle={() => setIsLampOn((value) => !value)}
+        />
+      )}
       <ContactCanvas isMobile={isMobile} />
     </section>
   );
@@ -165,7 +205,6 @@ function RunningMannequins({ isMobile }: { isMobile: boolean }) {
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
     if (char1.current) {
-      // Run from left to right (-6 to 6)
       const x = ((t * 1.5) % 12) - 6;
       char1.current.position.x = x;
     }
@@ -189,9 +228,31 @@ function RunningMannequins({ isMobile }: { isMobile: boolean }) {
   );
 }
 
+function LampCorner({
+  isOn,
+  onToggle
+}: {
+  isOn: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div
+      className="absolute bottom-44 left-4 z-20 h-36 w-36 sm:left-8 sm:h-44 sm:w-44 lg:left-14 lg:h-52 lg:w-52"
+      aria-hidden="true"
+    >
+      <ThreeFrame transparent className="h-full w-full" fallback={<div />}>
+        <Lamp isOn={isOn} onToggle={onToggle} />
+      </ThreeFrame>
+    </div>
+  );
+}
+
 function ContactCanvas({ isMobile }: { isMobile: boolean }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-paper" aria-hidden="true">
+    <div
+      className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-paper"
+      aria-hidden="true"
+    >
       <div className="absolute inset-x-0 top-0 h-px bg-ink/20" />
       <ThreeFrame className="h-full w-full" fallback={<div />}>
         <RunningMannequins isMobile={isMobile} />
