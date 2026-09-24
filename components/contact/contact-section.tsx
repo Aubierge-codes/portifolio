@@ -1,13 +1,12 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
 import { githubUrl } from "@/data/projects";
 import { cn, emailAddress } from "@/lib/utils";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { SpringButton } from "@/components/motion/spring-button";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
-import { LineCharacter } from "@/components/characters/line-character";
 import { BouncingBall } from "@/components/motion/bouncing-ball";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { ThreeFrame } from "@/components/three/three-frame";

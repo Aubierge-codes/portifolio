@@ -88,7 +88,7 @@ export function ProjectCard({ project, index, t, papers }: ProjectCardProps) {
         </span>
       </div>
 
-      <ProjectScene id={project.id} papers={papers} isMobile={isMobile} />
+      <ProjectScene id={project.id} papers={papers} />
 
       <div className="mt-5 grid gap-4 text-sm leading-6 md:grid-cols-2">
         <Fact label={t("project.problem")} value={project.problem} />
@@ -155,15 +155,7 @@ export function ProjectCard({ project, index, t, papers }: ProjectCardProps) {
   );
 }
 
-function ProjectScene({
-  id,
-  papers,
-  isMobile
-}: {
-  id: string;
-  papers: string[];
-  isMobile: boolean;
-}) {
+function ProjectScene({ id, papers }: { id: string; papers: string[] }) {
   if (id === "heringress") return <HerIngressScene papers={papers} />;
   if (id === "umucocore") return <UmucoScene />;
   if (id === "gwiza") return <GwizaScene />;

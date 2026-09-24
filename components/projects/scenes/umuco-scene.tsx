@@ -2,7 +2,7 @@
 
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import type { Group, Mesh, MeshBasicMaterial } from "three";
+import type { Mesh, MeshBasicMaterial } from "three";
 import { ThreeFrame } from "@/components/three/three-frame";
 import { Mannequin } from "@/components/three/mannequin";
 
