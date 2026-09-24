@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type ThreeFrameProps = {
@@ -27,6 +28,7 @@ export function ThreeFrame({
   lights = true
 }: ThreeFrameProps) {
   const reduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const host = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
 
@@ -67,8 +69,16 @@ export function ThreeFrame({
       {near ? (
         <Canvas
           camera={{ position: [0, 1.1, 4.2], fov: 38 }}
-          dpr={[1, 1.5]}
-          gl={{ antialias: true, alpha: true }}
+          // Phones pay for every extra pixel twice over: high device ratios
+          // multiply the work, and they have the least GPU to do it with.
+          // Capping the ratio and dropping MSAA there costs little at the size
+          // these scenes actually render.
+          dpr={isMobile ? [1, 1] : [1, 1.5]}
+          gl={{
+            antialias: !isMobile,
+            alpha: true,
+            powerPreference: "high-performance"
+          }}
         >
           {transparent ? null : (
             <color attach="background" args={["#ffffff"]} />
