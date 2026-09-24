@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { spring } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 export function SignatureMark() {
   const reduceMotion = useReducedMotion();

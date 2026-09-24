@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { githubUrl } from "@/data/projects";
 import { cn, emailAddress } from "@/lib/utils";
 import { AnimatedText } from "@/components/motion/animated-text";
@@ -16,6 +16,7 @@ import { Lamp } from "@/components/three/lamp";
 import { useFrame } from "@react-three/fiber";
 import type { Group } from "three";
 import type { TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type ContactSectionProps = {
   t: (key: TranslationKey) => string;

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { quickSpring, spring } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type LoadingSequenceProps = {
   skipLabel: string;

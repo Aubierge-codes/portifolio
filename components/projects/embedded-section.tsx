@@ -2,11 +2,12 @@
 
 import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
 import { EmbeddedDiagram } from "@/components/projects/embedded-diagram";
 import type { TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const EmbeddedHardwareCanvas = dynamic(
   () =>

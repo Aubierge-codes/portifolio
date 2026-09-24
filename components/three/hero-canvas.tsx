@@ -3,7 +3,7 @@
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
-import { useReducedMotion } from "framer-motion";
+
 import type { Group, Mesh } from "three";
 import {
   Mannequin,
@@ -13,6 +13,7 @@ import {
 } from "@/components/three/mannequin";
 import { HeroFigure } from "@/components/hero/hero-figure";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type HeroPhase = "enter" | "run" | "look" | "kick" | "cta" | "rest";
 
@@ -41,7 +42,11 @@ export function HeroCanvas({ phase, isMobile, className }: HeroCanvasProps) {
           fov: isMobile ? 36 : 30
         }}
         dpr={[1, 1.4]}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance"
+        }}
       >
         <color attach="background" args={["#ffffff"]} />
         <ambientLight intensity={0.72} />

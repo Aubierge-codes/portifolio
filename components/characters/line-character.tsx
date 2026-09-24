@@ -1,27 +1,14 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 export type CharacterPose =
-  | "run"
-  | "walk"
-  | "idle"
-  | "kick"
-  | "look"
-  | "sit"
-  | "push"
-  | "think";
+  "run" | "walk" | "idle" | "kick" | "look" | "sit" | "push" | "think";
 
 export type CarryItem =
-  | "none"
-  | "laptop"
-  | "ball"
-  | "flag"
-  | "folder"
-  | "plant"
-  | "books"
-  | "note";
+  "none" | "laptop" | "ball" | "flag" | "folder" | "plant" | "books" | "note";
 
 export type HairStyle = "short" | "puff" | "bun";
 
@@ -273,7 +260,13 @@ function Hair({ hair }: { hair: HairStyle }) {
   if (hair === "bun") {
     return (
       <>
-        <circle cx="43.5" cy="7.5" r="3.1" stroke="#030303" strokeWidth="1.45" />
+        <circle
+          cx="43.5"
+          cy="7.5"
+          r="3.1"
+          stroke="#030303"
+          strokeWidth="1.45"
+        />
         <path
           d="M30.5 14.5 C 32 8.5, 40 7.5, 42 12"
           stroke="#030303"
@@ -300,7 +293,14 @@ function Carry({ carry }: { carry: CarryItem }) {
   if (carry === "laptop") {
     return (
       <g>
-        <rect x="0" y="-7" width="15" height="9" stroke="#030303" strokeWidth="1.3" />
+        <rect
+          x="0"
+          y="-7"
+          width="15"
+          height="9"
+          stroke="#030303"
+          strokeWidth="1.3"
+        />
         <path d="M-1.5 2 H16.5" stroke="#030303" strokeWidth="1.3" />
         <rect x="10" y="-4" width="3" height="2.2" fill="#6E1F24" />
       </g>
@@ -340,7 +340,14 @@ function Carry({ carry }: { carry: CarryItem }) {
   if (carry === "plant") {
     return (
       <g>
-        <rect x="4" y="2" width="8" height="7" stroke="#030303" strokeWidth="1.25" />
+        <rect
+          x="4"
+          y="2"
+          width="8"
+          height="7"
+          stroke="#030303"
+          strokeWidth="1.25"
+        />
         <path
           d="M8 2 C 4 -5, 13 -8, 11 0"
           stroke="#030303"
@@ -355,8 +362,22 @@ function Carry({ carry }: { carry: CarryItem }) {
   if (carry === "books") {
     return (
       <g>
-        <rect x="0" y="-4" width="6.5" height="12" stroke="#030303" strokeWidth="1.25" />
-        <rect x="6.5" y="-6" width="6.5" height="14" stroke="#030303" strokeWidth="1.25" />
+        <rect
+          x="0"
+          y="-4"
+          width="6.5"
+          height="12"
+          stroke="#030303"
+          strokeWidth="1.25"
+        />
+        <rect
+          x="6.5"
+          y="-6"
+          width="6.5"
+          height="14"
+          stroke="#030303"
+          strokeWidth="1.25"
+        />
         <path d="M8.5 -2 V6" stroke="#6E1F24" strokeWidth="1.1" />
       </g>
     );
@@ -364,7 +385,14 @@ function Carry({ carry }: { carry: CarryItem }) {
 
   return (
     <g>
-      <rect x="0" y="-6" width="12" height="13" stroke="#030303" strokeWidth="1.25" />
+      <rect
+        x="0"
+        y="-6"
+        width="12"
+        height="13"
+        stroke="#030303"
+        strokeWidth="1.25"
+      />
       <path d="M2.5 -2 H9.5 M2.5 2 H8" stroke="#030303" strokeWidth="1.05" />
     </g>
   );

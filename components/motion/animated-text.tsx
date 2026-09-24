@@ -1,7 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { spring } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type AnimatedTextProps = {
   value: string;

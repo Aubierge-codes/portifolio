@@ -1,10 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { LineCharacter } from "@/components/characters/line-character";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
 import type { TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type AboutSectionProps = {
   t: (key: TranslationKey) => string;

@@ -1,12 +1,13 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { githubUrl } from "@/data/projects";
 import { Logo } from "@/components/navigation/logo";
 import { LanguageSwitcher } from "@/components/navigation/language-switcher";
 import { LineCharacter } from "@/components/characters/line-character";
 import { emailAddress } from "@/lib/utils";
 import type { Locale, TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type SiteFooterProps = {
   locale: Locale;
@@ -69,7 +70,12 @@ export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
         className="pointer-events-none absolute bottom-2 right-0 w-20"
         aria-hidden="true"
         animate={reduceMotion ? { x: 0 } : { x: [40, 160] }}
-        transition={{ duration: 4.8, repeat: Infinity, repeatDelay: 2.5, ease: "easeIn" }}
+        transition={{
+          duration: 4.8,
+          repeat: Infinity,
+          repeatDelay: 2.5,
+          ease: "easeIn"
+        }}
       >
         <LineCharacter pose={reduceMotion ? "idle" : "run"} duration={0.36} />
       </motion.div>

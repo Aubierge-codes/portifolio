@@ -131,7 +131,9 @@ function LanguageList({
 
   const move = (direction: 1 | -1) => {
     const next =
-      languages[(selectedIndex + direction + languages.length) % languages.length];
+      languages[
+        (selectedIndex + direction + languages.length) % languages.length
+      ];
     onSelect(next.code);
   };
 

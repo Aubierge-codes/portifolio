@@ -2,18 +2,14 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform
-} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { BouncingBall } from "@/components/motion/bouncing-ball";
 import { SpringButton } from "@/components/motion/spring-button";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { HeroFigure } from "@/components/hero/hero-figure";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import type { TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const HeroCanvas = dynamic(
   () => import("@/components/three/hero-canvas").then((mod) => mod.HeroCanvas),

@@ -1,9 +1,10 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { useReducedMotion } from "framer-motion";
+
 import { Suspense, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type ThreeFrameProps = {
   children: React.ReactNode;
@@ -55,6 +56,8 @@ export function ThreeFrame({
     return () => observer.disconnect();
   }, []);
 
+  // The hook reports false until mounted, so this branch can't desync
+  // the first render from the server's markup.
   if (reduceMotion) {
     return <div className={className}>{fallback}</div>;
   }
@@ -67,7 +70,9 @@ export function ThreeFrame({
           dpr={[1, 1.5]}
           gl={{ antialias: true, alpha: true }}
         >
-          {transparent ? null : <color attach="background" args={["#ffffff"]} />}
+          {transparent ? null : (
+            <color attach="background" args={["#ffffff"]} />
+          )}
           {lights ? (
             <>
               <ambientLight intensity={0.85} />

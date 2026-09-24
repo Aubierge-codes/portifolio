@@ -6,7 +6,10 @@ import { useGLTF } from "@react-three/drei";
 import type { Group } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
 import { useGroundedModel } from "@/hooks/use-grounded-model";
-import { MODEL_CALIBRATION, MODEL_PATHS } from "@/components/three/model-config";
+import {
+  MODEL_CALIBRATION,
+  MODEL_PATHS
+} from "@/components/three/model-config";
 
 const CALIBRATION = MODEL_CALIBRATION.robotArm;
 

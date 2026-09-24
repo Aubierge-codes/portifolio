@@ -61,13 +61,7 @@ function Bowl() {
   );
 }
 
-function Plinth({
-  x,
-  children
-}: {
-  x: number;
-  children: React.ReactNode;
-}) {
+function Plinth({ x, children }: { x: number; children: React.ReactNode }) {
   return (
     <group position={[x, 0, 0]}>
       <mesh position={[0, 0.16, 0]}>

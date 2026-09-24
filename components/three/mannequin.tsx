@@ -9,13 +9,7 @@ const maroon = "#6E1F24";
 
 export type MannequinCarry = "none" | "laptop" | "flag";
 export type MannequinHair = "short" | "puff" | "bun";
-export type MannequinPose =
-  | "walk"
-  | "idle"
-  | "kick"
-  | "look"
-  | "hit"
-  | "reach";
+export type MannequinPose = "walk" | "idle" | "kick" | "look" | "hit" | "reach";
 export type MannequinOutfit = "paper" | "slate" | "sand" | "ink";
 
 /**

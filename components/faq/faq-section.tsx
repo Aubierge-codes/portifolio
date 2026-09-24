@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { AnimatedText } from "@/components/motion/animated-text";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
 import type { FaqItem, TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type FaqSectionProps = {
   t: (key: TranslationKey) => string;

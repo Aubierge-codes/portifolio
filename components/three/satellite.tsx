@@ -7,7 +7,7 @@ import type { Group } from "three";
 export function Satellite() {
   const rootRef = useRef<Group>(null);
   const panelRef = useRef<Group>(null);
-  
+
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
     if (rootRef.current) {
@@ -18,7 +18,7 @@ export function Satellite() {
       // Look forward along orbit
       rootRef.current.rotation.y = t * 0.4 + Math.PI;
     }
-    
+
     if (panelRef.current) {
       panelRef.current.rotation.x = t * 0.2; // slow panel rotation
     }
@@ -45,11 +45,19 @@ export function Satellite() {
       <group ref={panelRef}>
         <mesh position={[-0.7, 0, 0]}>
           <boxGeometry args={[1, 0.02, 0.3]} />
-          <meshStandardMaterial color="#1a2e3a" metalness={0.8} roughness={0.2} />
+          <meshStandardMaterial
+            color="#1a2e3a"
+            metalness={0.8}
+            roughness={0.2}
+          />
         </mesh>
         <mesh position={[0.7, 0, 0]}>
           <boxGeometry args={[1, 0.02, 0.3]} />
-          <meshStandardMaterial color="#1a2e3a" metalness={0.8} roughness={0.2} />
+          <meshStandardMaterial
+            color="#1a2e3a"
+            metalness={0.8}
+            roughness={0.2}
+          />
         </mesh>
         {/* Connection bars */}
         <mesh position={[-0.2, 0, 0]} rotation={[0, 0, Math.PI / 2]}>

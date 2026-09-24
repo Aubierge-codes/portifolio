@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { bounceSpring } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type BouncingBallProps = {
   className?: string;

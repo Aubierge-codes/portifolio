@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { quickSpring } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type SpringButtonProps = {
   href?: string;
@@ -49,16 +50,19 @@ export function SpringButton({
     whileHover: reduceMotion
       ? undefined
       : { y: -2, scaleX: 1.03, scaleY: 0.98 },
-    whileTap: reduceMotion
-      ? undefined
-      : { y: 2, scaleX: 0.96, scaleY: 0.92 },
+    whileTap: reduceMotion ? undefined : { y: 2, scaleX: 0.96, scaleY: 0.92 },
     transition: quickSpring
   };
 
   if (href) {
     return (
       <motion.div className="inline-flex" {...motionProps}>
-        <Link href={href} aria-label={ariaLabel} className={classes} onClick={onClick}>
+        <Link
+          href={href}
+          aria-label={ariaLabel}
+          className={classes}
+          onClick={onClick}
+        >
           {children}
         </Link>
       </motion.div>

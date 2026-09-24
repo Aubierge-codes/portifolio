@@ -1,6 +1,9 @@
 "use client";
 
-import { LineCharacter, type LineCharacterProps } from "@/components/characters/line-character";
+import {
+  LineCharacter,
+  type LineCharacterProps
+} from "@/components/characters/line-character";
 import { cn } from "@/lib/utils";
 
 export function HeroFigure({

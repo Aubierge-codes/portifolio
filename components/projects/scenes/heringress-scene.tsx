@@ -79,7 +79,8 @@ function Sunrise() {
   useFrame(({ clock }) => {
     if (!ref.current) return;
     // Barely moves; it should feel like dawn holding, not a sunrise timelapse.
-    ref.current.position.y = 0.52 + Math.sin(clock.getElapsedTime() * 0.14) * 0.03;
+    ref.current.position.y =
+      0.52 + Math.sin(clock.getElapsedTime() * 0.14) * 0.03;
   });
 
   return (

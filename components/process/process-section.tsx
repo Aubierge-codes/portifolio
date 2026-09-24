@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { LineCharacter } from "@/components/characters/line-character";
 import { AnimatedText } from "@/components/motion/animated-text";
@@ -9,6 +9,7 @@ import { Reveal, RevealItem } from "@/components/motion/reveal";
 import { BouncingBall } from "@/components/motion/bouncing-ball";
 import type { CharacterPose } from "@/components/characters/line-character";
 import type { ProcessStep, TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type ProcessSectionProps = {
   t: (key: TranslationKey) => string;
@@ -94,7 +95,9 @@ export function ProcessSection({ t, steps }: ProcessSectionProps) {
             onClick={() => setActive(index)}
             aria-pressed={active === index}
           >
-            <p className={`eyebrow ${active === index ? "text-paper/70" : "text-maroon"}`}>
+            <p
+              className={`eyebrow ${active === index ? "text-paper/70" : "text-maroon"}`}
+            >
               {step.number}
             </p>
             <h3 className="mt-5 font-heading text-3xl font-medium leading-tight">

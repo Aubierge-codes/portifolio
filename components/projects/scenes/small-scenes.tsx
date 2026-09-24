@@ -133,7 +133,11 @@ function Cloud({
       {puffs.map(([x, y, z, r], i) => (
         <mesh key={i} position={[x, y, z]}>
           <sphereGeometry args={[r, 18, 14]} />
-          <meshStandardMaterial color={tone} roughness={1} flatShading={false} />
+          <meshStandardMaterial
+            color={tone}
+            roughness={1}
+            flatShading={false}
+          />
         </mesh>
       ))}
       {/* Flatter, slightly shaded base so the cloud sits rather than floats. */}
@@ -199,7 +203,12 @@ export function WeatherScene() {
         <meshBasicMaterial color="#f7e6c8" />
       </mesh>
       <Cloud position={[-0.62, 0.52, 0]} scale={1.05} speed={0.17} />
-      <Cloud position={[0.62, 0.66, -0.45]} scale={0.8} speed={0.23} drift={0.3} />
+      <Cloud
+        position={[0.62, 0.66, -0.45]}
+        scale={0.8}
+        speed={0.23}
+        drift={0.3}
+      />
       <Cloud
         position={[0.05, 0.3, 0.45]}
         scale={0.6}
@@ -239,7 +248,8 @@ function Shelf() {
     const cycle = 7;
     const t = (clock.getElapsedTime() % cycle) / cycle;
     // Out of the row, turn to face, hold, then back.
-    const out = t < 0.25 ? t / 0.25 : t < 0.6 ? 1 : t < 0.85 ? 1 - (t - 0.6) / 0.25 : 0;
+    const out =
+      t < 0.25 ? t / 0.25 : t < 0.6 ? 1 : t < 0.85 ? 1 - (t - 0.6) / 0.25 : 0;
     const ease = out * out * (3 - 2 * out);
     picked.current.position.z = ease * 0.42;
     picked.current.position.y = ease * 0.06;
@@ -273,7 +283,11 @@ function Shelf() {
             {book}
           </group>
         ) : (
-          <group key={i} position={[x, 0, 0]} rotation={[0, 0, (i % 4 === 3 ? 0.06 : 0)]}>
+          <group
+            key={i}
+            position={[x, 0, 0]}
+            rotation={[0, 0, i % 4 === 3 ? 0.06 : 0]}
+          >
             {book}
           </group>
         );

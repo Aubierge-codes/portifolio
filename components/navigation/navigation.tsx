@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { LanguageSwitcher } from "@/components/navigation/language-switcher";
 import { Logo } from "@/components/navigation/logo";
 import { SpringButton } from "@/components/motion/spring-button";
 import { cn } from "@/lib/utils";
 import type { Locale, TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type NavigationProps = {
   locale: Locale;
@@ -234,7 +235,10 @@ function getFocusable(container: HTMLElement | null) {
     container.querySelectorAll<HTMLElement>(
       'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
     )
-  ).filter((element) => !element.hasAttribute("disabled") && element.getClientRects().length > 0);
+  ).filter(
+    (element) =>
+      !element.hasAttribute("disabled") && element.getClientRects().length > 0
+  );
 }
 
 function HamburgerIcon({ open }: { open: boolean }) {

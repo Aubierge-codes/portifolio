@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { usePointerTilt } from "@/hooks/use-pointer-tilt";
 import { cn } from "@/lib/utils";
@@ -19,16 +19,21 @@ import {
   WeatherScene
 } from "@/components/projects/scenes/small-scenes";
 import type { Project, TranslationKey } from "@/types/content";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const ZeroBiteCanvas = dynamic(
   () =>
-    import("@/components/three/zero-bite-canvas").then((mod) => mod.ZeroBiteCanvas),
+    import("@/components/three/zero-bite-canvas").then(
+      (mod) => mod.ZeroBiteCanvas
+    ),
   { ssr: false, loading: () => <ZeroBiteScene /> }
 );
 
 const KinetiqCanvas = dynamic(
   () =>
-    import("@/components/three/kinetiq-canvas").then((mod) => mod.KinetiqCanvas),
+    import("@/components/three/kinetiq-canvas").then(
+      (mod) => mod.KinetiqCanvas
+    ),
   { ssr: false, loading: () => <KinetiqScene /> }
 );
 
