@@ -8,6 +8,7 @@ import type { Group, Mesh } from "three";
 import {
   Mannequin,
   walkSpeedFor,
+  type MannequinOutfit,
   type MannequinPose
 } from "@/components/three/mannequin";
 import { HeroFigure } from "@/components/hero/hero-figure";
@@ -72,6 +73,7 @@ function HeroRig({ phase, isMobile }: { phase: HeroPhase; isMobile: boolean }) {
       <Walker
         pose={isMobile ? "walk" : walkerPose}
         carry={isMobile ? "laptop" : "none"}
+        outfit="paper"
         duration={10.8}
         start={-5.4}
         end={5.6}
@@ -84,6 +86,7 @@ function HeroRig({ phase, isMobile }: { phase: HeroPhase; isMobile: boolean }) {
             pose="walk"
             carry="laptop"
             hair="puff"
+            outfit="slate"
             accent
             duration={12.2}
             start={-6.4}
@@ -95,6 +98,7 @@ function HeroRig({ phase, isMobile }: { phase: HeroPhase; isMobile: boolean }) {
             pose={phase === "look" ? "look" : "walk"}
             carry="flag"
             hair="bun"
+            outfit="sand"
             duration={13.1}
             start={-7.2}
             end={4.8}
@@ -120,6 +124,7 @@ function Walker({
   pose,
   carry = "none",
   hair = "short",
+  outfit = "paper",
   accent = false,
   duration,
   start,
@@ -130,6 +135,7 @@ function Walker({
   pose: MannequinPose;
   carry?: "none" | "laptop" | "flag";
   hair?: "short" | "puff" | "bun";
+  outfit?: MannequinOutfit;
   accent?: boolean;
   duration: number;
   start: number;
@@ -160,6 +166,7 @@ function Walker({
         pose={pose}
         carry={carry}
         hair={hair}
+        outfit={outfit}
         accent={accent}
         speed={strideSpeed}
         delay={delay}
