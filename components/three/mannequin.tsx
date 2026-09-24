@@ -9,7 +9,13 @@ const maroon = "#6E1F24";
 
 export type MannequinCarry = "none" | "laptop" | "flag";
 export type MannequinHair = "short" | "puff" | "bun";
-export type MannequinPose = "walk" | "idle" | "kick" | "look" | "hit";
+export type MannequinPose =
+  | "walk"
+  | "idle"
+  | "kick"
+  | "look"
+  | "hit"
+  | "reach";
 export type MannequinOutfit = "paper" | "slate" | "sand" | "ink";
 
 /**
@@ -114,7 +120,8 @@ export function Mannequin({
     const walking = pose === "walk";
     const kicking = pose === "kick";
     const hitting = pose === "hit";
-    const idle = pose === "idle" || pose === "look";
+    const reaching = pose === "reach";
+    const idle = pose === "idle" || pose === "look" || reaching;
 
     // Gait phase for the left leg; the right leg runs half a cycle behind.
     // 0 = heel strike, PI/2 = midstance, PI = toe off, 3PI/2 = mid-swing.
@@ -145,6 +152,7 @@ export function Mannequin({
           ? Math.sin(t * 8) * 0.2
           : 0;
       chest.current.rotation.z = walking ? -Math.sin(t) * 0.03 : 0;
+      chest.current.rotation.x = reaching ? 0.08 : 0;
       chest.current.position.y = idle ? 0.2 + Math.sin(t * 0.7) * 0.008 : 0.2;
     }
 
@@ -193,14 +201,21 @@ export function Mannequin({
     const swingR = walking ? -Math.cos(pR) * 0.42 : 0.08;
     if (leftArm.current) leftArm.current.rotation.x = swingL;
     if (rightArm.current) {
-      rightArm.current.rotation.x =
-        carry === "laptop"
+      rightArm.current.rotation.x = reaching
+        ? // Arm out level with a small vertical pump — the shake itself.
+          -1.25 + Math.sin(t * 5) * 0.09
+        : carry === "laptop"
           ? -0.55
           : hitting
             ? -1.5 + Math.sin(t * 8) * 1.5
             : swingR;
-      rightArm.current.rotation.z =
-        carry === "laptop" ? -0.18 : hitting ? 0.5 : 0.06;
+      rightArm.current.rotation.z = reaching
+        ? -0.3
+        : carry === "laptop"
+          ? -0.18
+          : hitting
+            ? 0.5
+            : 0.06;
     }
     // Forearms trail the upper arm and stay a little flexed, as they do at rest.
     if (leftFore.current) {
@@ -209,8 +224,9 @@ export function Mannequin({
         : 0.12;
     }
     if (rightFore.current) {
-      rightFore.current.rotation.x =
-        carry === "laptop"
+      rightFore.current.rotation.x = reaching
+        ? 0.45
+        : carry === "laptop"
           ? 0.7
           : hitting
             ? 0.1
