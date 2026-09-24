@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { useReducedMotion } from "framer-motion";
-import { Suspense } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type ThreeFrameProps = {
@@ -15,6 +15,9 @@ type ThreeFrameProps = {
   lights?: boolean;
 };
 
+/** How far outside the viewport a scene starts rendering, so it's ready on arrival. */
+const PRELOAD_MARGIN = "500px 0px";
+
 export function ThreeFrame({
   children,
   className,
@@ -23,27 +26,59 @@ export function ThreeFrame({
   lights = true
 }: ThreeFrameProps) {
   const reduceMotion = useReducedMotion();
+  const host = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+
+  /**
+   * Only run a WebGL context while the frame is near the viewport.
+   *
+   * The page carries roughly fifteen of these scenes. Mounted all at once they
+   * sat right at the browser's simultaneous-context ceiling — past which the
+   * oldest context is dropped and a canvas goes blank — and every off-screen
+   * scene still ran a full render loop. Gating on intersection keeps only the
+   * handful in view alive.
+   *
+   * `near` is false on both the server and the client's first render, so
+   * there's nothing for hydration to disagree about.
+   */
+  useEffect(() => {
+    const el = host.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setNear(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setNear(entry.isIntersecting),
+      { rootMargin: PRELOAD_MARGIN }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   if (reduceMotion) {
     return <div className={className}>{fallback}</div>;
   }
 
   return (
-    <div className={cn("relative", className)}>
-      <Canvas
-        camera={{ position: [0, 1.1, 4.2], fov: 38 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
-      >
-        {transparent ? null : <color attach="background" args={["#ffffff"]} />}
-        {lights ? (
-          <>
-            <ambientLight intensity={0.85} />
-            <directionalLight position={[2.4, 3, 2]} intensity={0.7} />
-          </>
-        ) : null}
-        <Suspense fallback={null}>{children}</Suspense>
-      </Canvas>
+    <div ref={host} className={cn("relative", className)}>
+      {near ? (
+        <Canvas
+          camera={{ position: [0, 1.1, 4.2], fov: 38 }}
+          dpr={[1, 1.5]}
+          gl={{ antialias: true, alpha: true }}
+        >
+          {transparent ? null : <color attach="background" args={["#ffffff"]} />}
+          {lights ? (
+            <>
+              <ambientLight intensity={0.85} />
+              <directionalLight position={[2.4, 3, 2]} intensity={0.7} />
+            </>
+          ) : null}
+          <Suspense fallback={null}>{children}</Suspense>
+        </Canvas>
+      ) : (
+        fallback
+      )}
       {transparent ? null : (
         <div className="pointer-events-none absolute inset-0 border border-ink/15" />
       )}
