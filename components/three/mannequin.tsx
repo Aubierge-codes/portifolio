@@ -10,11 +10,59 @@ const maroon = "#6E1F24";
 export type MannequinCarry = "none" | "laptop" | "flag";
 export type MannequinHair = "short" | "puff" | "bun";
 export type MannequinPose = "walk" | "idle" | "kick" | "look" | "hit";
+export type MannequinOutfit = "paper" | "slate" | "sand" | "ink";
+
+/**
+ * Muted outfits so a crowd reads as several people rather than one figure
+ * duplicated, while staying inside the site's ink/paper/maroon range — these
+ * are deliberately desaturated, not a character-select colour wheel.
+ *
+ * Cloth is fully rough and non-metallic; skin sits a touch glossier than cloth
+ * but nowhere near the default 0.5 metalness that makes untouched
+ * MeshStandardMaterial look like painted plastic.
+ */
+const OUTFITS: Record<
+  MannequinOutfit,
+  { top: string; bottom: string; shoe: string; skin: string; hair: string }
+> = {
+  paper: {
+    top: "#f2f0ec",
+    bottom: "#23252b",
+    shoe: maroon,
+    skin: "#6b4a2f",
+    hair: "#100d0b"
+  },
+  slate: {
+    top: "#9aa3ad",
+    bottom: "#2b2f36",
+    shoe: "#1b1d21",
+    skin: "#8a6440",
+    hair: "#17120e"
+  },
+  sand: {
+    top: "#d8c7ac",
+    bottom: "#3a3a3c",
+    shoe: maroon,
+    skin: "#5c3a21",
+    hair: "#0d0b09"
+  },
+  ink: {
+    top: "#3c4149",
+    bottom: "#1b1d21",
+    shoe: "#6E1F24",
+    skin: "#4a2f1c",
+    hair: "#090909"
+  }
+};
+
+const CLOTH_ROUGHNESS = 0.95;
+const SKIN_ROUGHNESS = 0.72;
 
 type MannequinProps = {
   pose?: MannequinPose;
   carry?: MannequinCarry;
   hair?: MannequinHair;
+  outfit?: MannequinOutfit;
   accent?: boolean;
   speed?: number;
   delay?: number;
@@ -39,11 +87,13 @@ export function Mannequin({
   pose = "walk",
   carry = "none",
   hair = "short",
+  outfit = "paper",
   accent = false,
   speed = 2.05,
   delay = 0,
   look = 0
 }: MannequinProps) {
+  const palette = OUTFITS[outfit];
   const root = useRef<Group>(null);
   const pelvis = useRef<Group>(null);
   const chest = useRef<Group>(null);
@@ -177,7 +227,11 @@ export function Mannequin({
         <group position={[0, 0.2, 0]} ref={chest}>
           <mesh position={[0, 0.08, 0]}>
             <capsuleGeometry args={[0.13, 0.34, 6, 12]} />
-            <meshStandardMaterial color="#f8f8f8" roughness={0.9} />{" "}
+            <meshStandardMaterial
+              color={palette.top}
+              roughness={CLOTH_ROUGHNESS}
+              metalness={0}
+            />{" "}
             {/* Shirt */}
           </mesh>
           {accent ? (
@@ -193,27 +247,43 @@ export function Mannequin({
           <group ref={head} position={[0, 0.38, 0]}>
             <mesh>
               <sphereGeometry args={[0.105, 18, 18]} />
-              <meshStandardMaterial color="#5c3a21" roughness={0.6} />{" "}
+              <meshStandardMaterial
+                color={palette.skin}
+                roughness={SKIN_ROUGHNESS}
+                metalness={0}
+              />{" "}
               {/* Skin */}
             </mesh>
             {hair === "puff" ? (
               <mesh position={[0, 0.08, -0.01]}>
                 <sphereGeometry args={[0.12, 14, 14]} />
-                <meshStandardMaterial color="#090909" roughness={0.9} />{" "}
+                <meshStandardMaterial
+                  color={palette.hair}
+                  roughness={0.85}
+                  metalness={0}
+                />{" "}
                 {/* Hair */}
               </mesh>
             ) : null}
             {hair === "bun" ? (
               <mesh position={[0, 0.1, -0.08]}>
                 <sphereGeometry args={[0.045, 12, 12]} />
-                <meshStandardMaterial color="#090909" roughness={0.9} />{" "}
+                <meshStandardMaterial
+                  color={palette.hair}
+                  roughness={0.85}
+                  metalness={0}
+                />{" "}
                 {/* Hair */}
               </mesh>
             ) : null}
             {hair === "short" ? (
               <mesh position={[0, 0.04, -0.02]}>
                 <sphereGeometry args={[0.11, 14, 14]} />
-                <meshStandardMaterial color="#090909" roughness={0.9} />{" "}
+                <meshStandardMaterial
+                  color={palette.hair}
+                  roughness={0.85}
+                  metalness={0}
+                />{" "}
                 {/* Hair */}
               </mesh>
             ) : null}
@@ -226,13 +296,21 @@ export function Mannequin({
           >
             <mesh position={[0, -0.14, 0]}>
               <capsuleGeometry args={[0.035, 0.2, 4, 8]} />
-              <meshStandardMaterial color="#f8f8f8" roughness={0.9} />{" "}
+              <meshStandardMaterial
+                color={palette.top}
+                roughness={CLOTH_ROUGHNESS}
+                metalness={0}
+              />{" "}
               {/* Sleeve */}
             </mesh>
             <group ref={leftFore} position={[0, -0.28, 0]}>
               <mesh position={[0, -0.12, 0]}>
                 <capsuleGeometry args={[0.028, 0.18, 4, 8]} />
-                <meshStandardMaterial color="#5c3a21" roughness={0.6} />{" "}
+                <meshStandardMaterial
+                  color={palette.skin}
+                  roughness={SKIN_ROUGHNESS}
+                  metalness={0}
+                />{" "}
                 {/* Skin */}
               </mesh>
             </group>
@@ -245,13 +323,21 @@ export function Mannequin({
           >
             <mesh position={[0, -0.14, 0]}>
               <capsuleGeometry args={[0.035, 0.2, 4, 8]} />
-              <meshStandardMaterial color="#f8f8f8" roughness={0.9} />{" "}
+              <meshStandardMaterial
+                color={palette.top}
+                roughness={CLOTH_ROUGHNESS}
+                metalness={0}
+              />{" "}
               {/* Sleeve */}
             </mesh>
             <group ref={rightFore} position={[0, -0.28, 0]}>
               <mesh position={[0, -0.12, 0]}>
                 <capsuleGeometry args={[0.028, 0.18, 4, 8]} />
-                <meshStandardMaterial color="#5c3a21" roughness={0.6} />{" "}
+                <meshStandardMaterial
+                  color={palette.skin}
+                  roughness={SKIN_ROUGHNESS}
+                  metalness={0}
+                />{" "}
                 {/* Skin */}
               </mesh>
               <Carry carry={carry} />
@@ -262,20 +348,32 @@ export function Mannequin({
         <group ref={leftThigh} position={[-0.065, 0, 0]}>
           <mesh position={[0, -0.18, 0]}>
             <capsuleGeometry args={[0.05, 0.28, 4, 10]} />
-            <meshStandardMaterial color="#1a1a1a" roughness={0.8} />{" "}
+            <meshStandardMaterial
+              color={palette.bottom}
+              roughness={CLOTH_ROUGHNESS}
+              metalness={0}
+            />{" "}
             {/* Pants */}
           </mesh>
           <group ref={leftShin} position={[0, -0.36, 0]}>
             <mesh position={[0, -0.16, 0]}>
               <capsuleGeometry args={[0.042, 0.26, 4, 10]} />
-              <meshStandardMaterial color="#1a1a1a" roughness={0.8} />{" "}
+              <meshStandardMaterial
+                color={palette.bottom}
+                roughness={CLOTH_ROUGHNESS}
+                metalness={0}
+              />{" "}
               {/* Pants */}
             </mesh>
             {/* Ankle lets the foot roll heel-to-toe instead of staying rigid. */}
             <group ref={leftAnkle} position={[0.02, -0.32, 0]}>
               <mesh position={[0, 0, 0.04]}>
                 <boxGeometry args={[0.08, 0.05, 0.16]} />
-                <meshStandardMaterial color={maroon} roughness={0.7} />{" "}
+                <meshStandardMaterial
+                  color={palette.shoe}
+                  roughness={0.6}
+                  metalness={0}
+                />{" "}
                 {/* Shoe */}
               </mesh>
             </group>
@@ -285,19 +383,31 @@ export function Mannequin({
         <group ref={rightThigh} position={[0.065, 0, 0]}>
           <mesh position={[0, -0.18, 0]}>
             <capsuleGeometry args={[0.05, 0.28, 4, 10]} />
-            <meshStandardMaterial color="#1a1a1a" roughness={0.8} />{" "}
+            <meshStandardMaterial
+              color={palette.bottom}
+              roughness={CLOTH_ROUGHNESS}
+              metalness={0}
+            />{" "}
             {/* Pants */}
           </mesh>
           <group ref={rightShin} position={[0, -0.36, 0]}>
             <mesh position={[0, -0.16, 0]}>
               <capsuleGeometry args={[0.042, 0.26, 4, 10]} />
-              <meshStandardMaterial color="#1a1a1a" roughness={0.8} />{" "}
+              <meshStandardMaterial
+                color={palette.bottom}
+                roughness={CLOTH_ROUGHNESS}
+                metalness={0}
+              />{" "}
               {/* Pants */}
             </mesh>
             <group ref={rightAnkle} position={[0.02, -0.32, 0]}>
               <mesh position={[0, 0, 0.04]}>
                 <boxGeometry args={[0.08, 0.05, 0.16]} />
-                <meshStandardMaterial color={maroon} roughness={0.7} />{" "}
+                <meshStandardMaterial
+                  color={palette.shoe}
+                  roughness={0.6}
+                  metalness={0}
+                />{" "}
                 {/* Shoe */}
               </mesh>
             </group>
