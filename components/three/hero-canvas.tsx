@@ -5,7 +5,11 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
 import { useReducedMotion } from "framer-motion";
 import type { Group, Mesh } from "three";
-import { Mannequin, type MannequinPose } from "@/components/three/mannequin";
+import {
+  Mannequin,
+  walkSpeedFor,
+  type MannequinPose
+} from "@/components/three/mannequin";
 import { HeroFigure } from "@/components/hero/hero-figure";
 import { cn } from "@/lib/utils";
 
@@ -135,6 +139,13 @@ function Walker({
 }) {
   const group = useRef<Group>(null);
 
+  // Drive the stride from how fast this walker actually crosses the scene, so
+  // the feet plant instead of skating along under a fixed-rate cycle.
+  const strideSpeed = useMemo(
+    () => walkSpeedFor(Math.abs(end - start) / duration),
+    [start, end, duration]
+  );
+
   useFrame(({ clock }) => {
     if (!group.current) return;
     const t = ((clock.getElapsedTime() + delay) % duration) / duration;
@@ -145,7 +156,14 @@ function Walker({
 
   return (
     <group ref={group}>
-      <Mannequin pose={pose} carry={carry} hair={hair} accent={accent} delay={delay} />
+      <Mannequin
+        pose={pose}
+        carry={carry}
+        hair={hair}
+        accent={accent}
+        speed={strideSpeed}
+        delay={delay}
+      />
     </group>
   );
 }
