@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 export function KinetiqScene() {
   const ref = useRef<HTMLButtonElement>(null);
@@ -23,7 +24,11 @@ export function KinetiqScene() {
           reduceMotion
             ? undefined
             : inView
-              ? { y: [0, 54, 54], scaleY: [1, 1.1, 0.72, 1], scaleX: [1, 0.9, 1.12, 1] }
+              ? {
+                  y: [0, 54, 54],
+                  scaleY: [1, 1.1, 0.72, 1],
+                  scaleX: [1, 0.9, 1.12, 1]
+                }
               : undefined
         }
         transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 0.5 }}
@@ -34,17 +39,26 @@ export function KinetiqScene() {
         animate={
           reduceMotion
             ? undefined
-            : { scaleY: inView ? [1, 1.8, 1] : 1, scaleX: inView ? [1, 1.06, 1] : 1 }
+            : {
+                scaleY: inView ? [1, 1.8, 1] : 1,
+                scaleX: inView ? [1, 1.06, 1] : 1
+              }
         }
         transition={{ duration: 0.28, repeat: Infinity, repeatDelay: 1.3 }}
       />
-      <svg className="absolute inset-x-8 bottom-4 h-8 w-[calc(100%-4rem)]" viewBox="0 0 120 24">
+      <svg
+        className="absolute inset-x-8 bottom-4 h-8 w-[calc(100%-4rem)]"
+        viewBox="0 0 120 24"
+      >
         <motion.path
           d="M0 12 H24 L32 4 L40 20 L48 8 L56 16 H120"
           fill="none"
           stroke="#6E1F24"
           strokeWidth="1.8"
-          animate={reduceMotion ? undefined : { pathLength: [0.2, 1, 0.2] }}
+          initial={{ pathLength: 0.2 }}
+          animate={
+            reduceMotion ? { pathLength: 1 } : { pathLength: [0.2, 1, 0.2] }
+          }
           transition={{ duration: 1.8, repeat: Infinity }}
         />
       </svg>

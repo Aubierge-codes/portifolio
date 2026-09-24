@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useMemo, useRef } from "react";
 import { LineCharacter } from "@/components/characters/line-character";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 function mosquitoPath(t: number) {
   const x = 12 + t * 76 + Math.sin(t * 14) * 6;
@@ -26,7 +27,12 @@ export function ZeroBiteScene() {
       aria-hidden="true"
     >
       <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 60">
-        <path d="M0 48 C 20 44, 40 52, 100 46" stroke="#030303" strokeWidth="0.8" fill="none" />
+        <path
+          d="M0 48 C 20 44, 40 52, 100 46"
+          stroke="#030303"
+          strokeWidth="0.8"
+          fill="none"
+        />
         <motion.path
           d="M8 52 C 18 40, 28 38, 40 30 C 52 22, 64 28, 88 18"
           fill="none"
@@ -43,12 +49,26 @@ export function ZeroBiteScene() {
             cy={38 - i * 3}
             r="1.1"
             fill="#030303"
+            // Explicit start value: framer drives cy as an SVG attribute, and
+            // without an initial it had nothing defined to write on the first
+            // frame, emitting cy="undefined".
+            initial={{ cy: 38 - i * 3, opacity: 0.4 }}
             animate={
+              // Always give framer a concrete target. Passing undefined here
+              // left it driving `cy` with no value to land on, which wrote
+              // cy="undefined" to the DOM and threw an SVG attribute error.
               reduceMotion
-                ? undefined
-                : { cy: [38 - i * 3, 30 - i * 2, 38 - i * 3], opacity: [0.4, 1, 0.4] }
+                ? { cy: 38 - i * 3, opacity: 0.7 }
+                : {
+                    cy: [38 - i * 3, 30 - i * 2, 38 - i * 3],
+                    opacity: [0.4, 1, 0.4]
+                  }
             }
-            transition={{ duration: 2.2 + i * 0.2, repeat: Infinity, delay: i * 0.1 }}
+            transition={{
+              duration: 2.2 + i * 0.2,
+              repeat: Infinity,
+              delay: i * 0.1
+            }}
           />
         ))}
       </svg>
@@ -87,6 +107,7 @@ function Mosquito() {
         ry="3.2"
         stroke="#030303"
         strokeWidth="1.6"
+        initial={{ rotate: -6 }}
         animate={{ rotate: [-6, 8, -6] }}
         transition={{ duration: 0.28, repeat: Infinity }}
       />
@@ -95,7 +116,14 @@ function Mosquito() {
         d="M8 10 C 4 2, 16 2, 12 10"
         stroke="#6E1F24"
         strokeWidth="1.2"
-        animate={{ d: ["M8 10 C 4 2, 16 2, 12 10", "M8 10 C 2 6, 18 0, 12 10", "M8 10 C 4 2, 16 2, 12 10"] }}
+        initial={{ d: "M8 10 C 4 2, 16 2, 12 10" }}
+        animate={{
+          d: [
+            "M8 10 C 4 2, 16 2, 12 10",
+            "M8 10 C 2 6, 18 0, 12 10",
+            "M8 10 C 4 2, 16 2, 12 10"
+          ]
+        }}
         transition={{ duration: 0.18, repeat: Infinity }}
       />
     </svg>

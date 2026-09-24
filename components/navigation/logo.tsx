@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 type LogoProps = {
   className?: string;
@@ -59,22 +60,28 @@ export function Logo({ className, size = 40 }: LogoProps) {
           animate={{ pathLength: 1, opacity: 1 }}
           transition={{ duration: 0.42, ease: "easeInOut" }}
         />
-        <motion.circle
-          cx="50"
-          cy="50"
-          r="3"
-          fill="#EB5A3C"
+        {/* Animated on a wrapping <g> rather than the circle itself. Scaling an
+            SVG shape directly makes framer drive its geometry attributes, and
+            with cx/cy supplied as plain props it had nothing to write back —
+            emitting cy="undefined" and an SVG attribute error on every pulse. */}
+        <motion.g
           animate={
             reduceMotion || !hovered
-              ? { scale: 1 }
+              ? { scale: 1, opacity: 1 }
               : {
                   scale: [1, 1.35, 1],
                   opacity: [1, 0.7, 1]
                 }
           }
-          transition={{ duration: 0.7, repeat: hovered ? Infinity : 0, ease: "easeInOut" }}
+          transition={{
+            duration: 0.7,
+            repeat: hovered ? Infinity : 0,
+            ease: "easeInOut"
+          }}
           style={{ transformOrigin: "50px 50px" }}
-        />
+        >
+          <circle cx="50" cy="50" r="3" fill="#EB5A3C" />
+        </motion.g>
       </svg>
     </motion.span>
   );
