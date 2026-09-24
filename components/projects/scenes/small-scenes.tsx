@@ -212,60 +212,203 @@ export function WeatherScene() {
   );
 }
 
-function FallingBooks() {
-  const ref = useRef<Group>(null);
+const SPINE_COLOURS = [
+  "#1b1d21",
+  "#6E1F24",
+  "#2f3a42",
+  "#4a3b32",
+  "#1b1d21",
+  "#57483a",
+  "#2b2f36",
+  "#6E1F24",
+  "#1f2933"
+];
+
+/**
+ * A shelf of books with one title easing out of the row and turning to face
+ * front — browsing and discovery, which is what the project is for. A book
+ * rotating on the spot said "3D object"; a book being picked off a shelf says
+ * "bookstore".
+ */
+function Shelf() {
+  const picked = useRef<Group>(null);
+  const PICK_INDEX = 4;
+
   useFrame(({ clock }) => {
-    if (ref.current) {
-      const t = clock.getElapsedTime();
-      ref.current.children.forEach((child, i) => {
-        child.position.y = Math.sin(t * 1.5 + i) * 0.1;
-        child.rotation.z = Math.cos(t * 1.5 + i) * 0.1;
-      });
-    }
+    if (!picked.current) return;
+    const cycle = 7;
+    const t = (clock.getElapsedTime() % cycle) / cycle;
+    // Out of the row, turn to face, hold, then back.
+    const out = t < 0.25 ? t / 0.25 : t < 0.6 ? 1 : t < 0.85 ? 1 - (t - 0.6) / 0.25 : 0;
+    const ease = out * out * (3 - 2 * out);
+    picked.current.position.z = ease * 0.42;
+    picked.current.position.y = ease * 0.06;
+    picked.current.rotation.y = ease * 1.35;
   });
+
   return (
-    <group ref={ref} position={[-0.2, -0.2, 0]}>
-      {[0, 1, 2].map((i) => (
-        <mesh key={i} position={[i * 0.3, i * 0.1, 0]} rotation={[0, 0, i === 2 ? -0.4 : 0]}>
-          <boxGeometry args={[0.2, 0.3, 0.05]} />
-          <meshStandardMaterial color={i === 2 ? "#6E1F24" : "#111111"} />
-        </mesh>
-      ))}
+    <group position={[0, -0.35, 0]}>
+      {/* shelf board */}
+      <mesh position={[0, -0.03, 0]}>
+        <boxGeometry args={[1.85, 0.05, 0.42]} />
+        <meshStandardMaterial color="#4a3b32" roughness={0.95} />
+      </mesh>
+      <mesh position={[0, 0.34, -0.19]}>
+        <boxGeometry args={[1.85, 0.72, 0.04]} />
+        <meshStandardMaterial color="#e6e1d9" roughness={1} />
+      </mesh>
+
+      {SPINE_COLOURS.map((colour, i) => {
+        const x = -0.78 + i * 0.195;
+        const h = 0.44 + ((i * 7) % 3) * 0.05;
+        const isPicked = i === PICK_INDEX;
+        const book = (
+          <mesh position={[0, h / 2, 0]}>
+            <boxGeometry args={[0.13, h, 0.3]} />
+            <meshStandardMaterial color={colour} roughness={0.85} />
+          </mesh>
+        );
+        return isPicked ? (
+          <group key={i} ref={picked} position={[x, 0, 0]}>
+            {book}
+          </group>
+        ) : (
+          <group key={i} position={[x, 0, 0]} rotation={[0, 0, (i % 4 === 3 ? 0.06 : 0)]}>
+            {book}
+          </group>
+        );
+      })}
     </group>
   );
 }
 
 export function BookstoreScene() {
   return (
-    <ThreeFrame className="h-40 md:h-48" fallback={<div className="h-full w-full bg-paper" />}>
-      <FallingBooks />
-      <group position={[0.8, -0.4, 0]} rotation={[0, -1.2, 0]}>
-        <Mannequin pose="walk" carry="laptop" />
-      </group>
+    <ThreeFrame
+      className="h-40 md:h-48"
+      fallback={<div className="h-full w-full bg-paper" />}
+    >
+      <Shelf />
     </ThreeFrame>
+  );
+}
+
+const NODE_X = [-0.95, -0.02, 0.92];
+
+/**
+ * Save-Wise as a flow diagram rather than abstract objects: income arrives,
+ * the app allocates a share of it, and the goal bar fills toward its target.
+ * Deliberately three nodes and one bar — the point is that the logic reads at
+ * a glance, not that it looks like a trading dashboard.
+ */
+function SaveWiseFlow() {
+  const coins = useRef<(Group | null)[]>([]);
+  const fill = useRef<Mesh>(null);
+
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+
+    // Coins travel income -> allocation -> goal, staggered along the path.
+    coins.current.forEach((coin, i) => {
+      if (!coin) return;
+      const p = (t * 0.3 + i / coins.current.length) % 1;
+      coin.position.x = NODE_X[0] + (NODE_X[2] - NODE_X[0]) * p;
+      // Small hop between nodes so it reads as transfer, not a slide.
+      coin.position.y = 0.34 + Math.abs(Math.sin(p * Math.PI * 2)) * 0.09;
+      coin.rotation.y = p * Math.PI * 4;
+      coin.visible = p < 0.97;
+    });
+
+    // Goal bar fills over a longer cycle, then resets — progress toward target.
+    if (fill.current) {
+      const progress = (t * 0.075) % 1;
+      fill.current.scale.x = Math.max(0.001, progress);
+      fill.current.position.x = -0.6 + progress * 0.6;
+    }
+  });
+
+  return (
+    <group position={[0, -0.18, 0]} rotation={[0.26, 0, 0]}>
+      {/* connector rail */}
+      <mesh position={[0, 0.34, -0.02]}>
+        <planeGeometry args={[1.95, 0.012]} />
+        <meshBasicMaterial color="#c9c5bd" />
+      </mesh>
+
+      {/* income -> allocation -> goal */}
+      {NODE_X.map((x, i) => (
+        <group key={x} position={[x, 0.34, 0]}>
+          <mesh>
+            <circleGeometry args={[0.15, 28]} />
+            <meshBasicMaterial color={i === 1 ? "#6E1F24" : "#1b1d21"} />
+          </mesh>
+          <mesh position={[0, 0, 0.01]}>
+            <circleGeometry args={[0.105, 28]} />
+            <meshBasicMaterial color="#ffffff" />
+          </mesh>
+          {/* glyphs: coin slot, split, target ring */}
+          {i === 0 ? (
+            <mesh position={[0, 0, 0.02]}>
+              <planeGeometry args={[0.02, 0.09]} />
+              <meshBasicMaterial color="#1b1d21" />
+            </mesh>
+          ) : null}
+          {i === 1 ? (
+            <>
+              <mesh position={[0, 0.025, 0.02]}>
+                <planeGeometry args={[0.1, 0.018]} />
+                <meshBasicMaterial color="#6E1F24" />
+              </mesh>
+              <mesh position={[0, -0.025, 0.02]}>
+                <planeGeometry args={[0.055, 0.018]} />
+                <meshBasicMaterial color="#6E1F24" />
+              </mesh>
+            </>
+          ) : null}
+          {i === 2 ? (
+            <mesh position={[0, 0, 0.02]}>
+              <ringGeometry args={[0.03, 0.055, 20]} />
+              <meshBasicMaterial color="#1b1d21" />
+            </mesh>
+          ) : null}
+        </group>
+      ))}
+
+      {/* money in transit */}
+      {[0, 1, 2].map((i) => (
+        <group
+          key={i}
+          ref={(el) => {
+            coins.current[i] = el;
+          }}
+        >
+          <mesh position={[0, 0, 0.03]}>
+            <circleGeometry args={[0.042, 18]} />
+            <meshBasicMaterial color="#c98a4b" />
+          </mesh>
+        </group>
+      ))}
+
+      {/* goal progress bar */}
+      <mesh position={[0, -0.12, 0]}>
+        <planeGeometry args={[1.2, 0.085]} />
+        <meshBasicMaterial color="#e2ded6" />
+      </mesh>
+      <mesh ref={fill} position={[-0.6, -0.12, 0.01]}>
+        <planeGeometry args={[1.2, 0.085]} />
+        <meshBasicMaterial color="#6E1F24" />
+      </mesh>
+    </group>
   );
 }
 
 export function JavaScene() {
   return (
-    <ThreeFrame className="h-40 md:h-48" fallback={<div className="h-full w-full bg-paper" />}>
-      <group position={[0, -0.2, 0]}>
-        <mesh position={[-0.6, 0, 0]} rotation={[0, 0.2, 0]}>
-          <boxGeometry args={[0.4, 0.4, 0.4]} />
-          <meshStandardMaterial color="#6E1F24" />
-        </mesh>
-        <mesh position={[0, 0.2, 0]} rotation={[0, 0.4, 0]}>
-          <boxGeometry args={[0.4, 0.4, 0.4]} />
-          <meshStandardMaterial color="#111111" />
-        </mesh>
-        <mesh position={[0.6, 0, 0]} rotation={[0, -0.2, 0]}>
-          <boxGeometry args={[0.4, 0.4, 0.4]} />
-          <meshStandardMaterial color="#444444" />
-        </mesh>
-      </group>
-      <group position={[-1.2, -0.4, 0.5]} rotation={[0, 1.2, 0]}>
-        <Mannequin pose="idle" hair="puff" />
-      </group>
+    <ThreeFrame
+      className="h-40 md:h-48"
+      fallback={<div className="h-full w-full bg-paper" />}
+    >
+      <SaveWiseFlow />
     </ThreeFrame>
   );
 }
