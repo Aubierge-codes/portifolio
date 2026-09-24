@@ -55,7 +55,10 @@ export function ProjectCard({ project, index, t, papers }: ProjectCardProps) {
     <motion.article
       id={project.id}
       className={cn(
-        "group relative flex flex-col border border-ink bg-paper p-5",
+        // min-w-0: grid items default to min-width:auto, which refused to
+        // shrink below the card's intrinsic content width and pushed every
+        // card past the viewport at 320px.
+        "group relative flex min-w-0 flex-col border border-ink bg-paper p-5",
         sizeClasses[project.size]
       )}
       style={tilt.style}
