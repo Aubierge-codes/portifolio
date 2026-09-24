@@ -2,7 +2,7 @@
 
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import type { Group, Mesh } from "three";
+import type { Group, Mesh, MeshStandardMaterial } from "three";
 import { ThreeFrame } from "@/components/three/three-frame";
 import { Mannequin } from "@/components/three/mannequin";
 
@@ -88,47 +88,99 @@ export function VeloraScene() {
   );
 }
 
-function Cloud({ position }: { position: [number, number, number] }) {
+/**
+ * Cloud built from a cluster of overlapping spheres at varied sizes and
+ * depths, rather than three same-size balls in a row. The silhouette is what
+ * sells a cloud: a heavier flat-ish base with piled, uneven tops. Shaded with
+ * a slight grey underside so it has volume instead of reading as a white blob
+ * on a white page.
+ */
+function Cloud({
+  position,
+  scale = 1,
+  drift = 0.4,
+  speed = 0.2,
+  tone = "#ffffff"
+}: {
+  position: [number, number, number];
+  scale?: number;
+  drift?: number;
+  speed?: number;
+  tone?: string;
+}) {
   const ref = useRef<Group>(null);
   useFrame(({ clock }) => {
-    if (ref.current) {
-      ref.current.position.x = position[0] + Math.sin(clock.getElapsedTime() * 0.2) * 0.4;
-    }
+    if (!ref.current) return;
+    const t = clock.getElapsedTime();
+    ref.current.position.x = position[0] + Math.sin(t * speed) * drift;
+    // Puffs breathe very slightly so the mass isn't perfectly rigid.
+    ref.current.scale.setScalar(scale * (1 + Math.sin(t * 0.4) * 0.012));
   });
 
+  const puffs: [number, number, number, number][] = [
+    // x, y, z, radius
+    [0, 0, 0, 0.22],
+    [0.21, 0.04, -0.04, 0.17],
+    [-0.2, 0.02, 0.03, 0.16],
+    [0.09, 0.14, 0.02, 0.15],
+    [-0.09, 0.12, -0.05, 0.13],
+    [0.34, -0.04, 0.01, 0.11],
+    [-0.33, -0.03, -0.02, 0.1]
+  ];
+
   return (
-    <group ref={ref} position={position}>
-      <mesh position={[0, 0, 0]}>
-        <sphereGeometry args={[0.2, 16, 16]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
-      <mesh position={[0.2, -0.05, 0]}>
-        <sphereGeometry args={[0.15, 16, 16]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
-      <mesh position={[-0.2, -0.05, 0]}>
-        <sphereGeometry args={[0.15, 16, 16]} />
-        <meshStandardMaterial color="#ffffff" />
+    <group ref={ref} position={position} scale={scale}>
+      {puffs.map(([x, y, z, r], i) => (
+        <mesh key={i} position={[x, y, z]}>
+          <sphereGeometry args={[r, 18, 14]} />
+          <meshStandardMaterial color={tone} roughness={1} flatShading={false} />
+        </mesh>
+      ))}
+      {/* Flatter, slightly shaded base so the cloud sits rather than floats. */}
+      <mesh position={[0, -0.08, 0]} scale={[1.15, 0.45, 0.9]}>
+        <sphereGeometry args={[0.24, 18, 12]} />
+        <meshStandardMaterial color="#e4e7ea" roughness={1} />
       </mesh>
     </group>
   );
 }
 
-function Rain() {
+function Rain({ count = 26 }: { count?: number }) {
   const ref = useRef<Group>(null);
+  // Fixed offsets — Math.random() during render would reshuffle every frame.
+  const drops = useRef(
+    Array.from({ length: count }, (_, i) => ({
+      x: -1.15 + (i % 13) * 0.18 + ((i * 37) % 7) * 0.012,
+      z: -0.35 + ((i * 53) % 9) * 0.08,
+      offset: ((i * 29) % 100) / 100
+    }))
+  );
+
   useFrame(({ clock }) => {
-    if (ref.current) {
-      ref.current.children.forEach((child, i) => {
-        child.position.y = 1 - ((clock.getElapsedTime() * 1.5 + i * 0.2) % 2);
-      });
-    }
+    if (!ref.current) return;
+    const t = clock.getElapsedTime();
+    ref.current.children.forEach((child, i) => {
+      const d = drops.current[i];
+      const fall = (t * 0.85 + d.offset) % 1;
+      child.position.y = 0.42 - fall * 1.15;
+      // Fade out near the bottom so drops don't pop.
+      const mesh = child as Mesh;
+      const material = mesh.material as MeshStandardMaterial;
+      material.opacity = Math.min(1, (1 - fall) * 2.2) * 0.5;
+    });
   });
+
   return (
     <group ref={ref}>
-      {Array.from({ length: 10 }).map((_, i) => (
-        <mesh key={i} position={[Math.random() * 2 - 1, 0, Math.random() - 0.5]}>
-          <boxGeometry args={[0.01, 0.1, 0.01]} />
-          <meshStandardMaterial color="#6E1F24" />
+      {drops.current.map((d, i) => (
+        <mesh key={i} position={[d.x, 0, d.z]}>
+          <capsuleGeometry args={[0.0055, 0.07, 3, 5]} />
+          <meshStandardMaterial
+            color="#8fa3b5"
+            transparent
+            opacity={0.5}
+            roughness={0.4}
+          />
         </mesh>
       ))}
     </group>
@@ -137,9 +189,24 @@ function Rain() {
 
 export function WeatherScene() {
   return (
-    <ThreeFrame className="h-40 md:h-48" fallback={<div className="h-full w-full bg-paper" />}>
-      <Cloud position={[-0.5, 0.5, 0]} />
-      <Cloud position={[0.6, 0.6, -0.2]} />
+    <ThreeFrame
+      className="h-40 md:h-48"
+      fallback={<div className="h-full w-full bg-paper" />}
+    >
+      {/* Sun behind the break in the cloud cover. */}
+      <mesh position={[1.05, 0.72, -1.2]}>
+        <circleGeometry args={[0.3, 32]} />
+        <meshBasicMaterial color="#f7e6c8" />
+      </mesh>
+      <Cloud position={[-0.62, 0.52, 0]} scale={1.05} speed={0.17} />
+      <Cloud position={[0.62, 0.66, -0.45]} scale={0.8} speed={0.23} drift={0.3} />
+      <Cloud
+        position={[0.05, 0.3, 0.45]}
+        scale={0.6}
+        speed={0.29}
+        drift={0.22}
+        tone="#f1f3f5"
+      />
       <Rain />
     </ThreeFrame>
   );
