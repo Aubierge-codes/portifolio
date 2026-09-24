@@ -57,10 +57,10 @@ function HeroRig({ phase, isMobile }: { phase: HeroPhase; isMobile: boolean }) {
 
   return (
     <group position={[0, -0.82, 0]}>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.001, 0]}>
-        <planeGeometry args={[14, 3.2]} />
-        <meshStandardMaterial color="#ffffff" roughness={1} />
-      </mesh>
+      {/* The figures' only ground reference is this hairline, matching the
+          page's other rules. A filled plane used to sit here, but on a white
+          page it just read as a grey slab the walkers stood on — ContactShadows
+          below renders onto its own surface and doesn't need one. */}
       <mesh position={[0, 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[12, 0.01]} />
         <meshStandardMaterial color="#030303" />
