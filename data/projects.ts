@@ -534,5 +534,3 @@ export const localizedProjects: Record<Locale, Project[]> = {
   fr: frProjects,
   es: esProjects
 };
-
-export const projects = enProjects;
