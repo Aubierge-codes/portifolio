@@ -5,12 +5,9 @@ import { useGLTF } from "@react-three/drei";
 import type { Group } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
 import { useGroundedModel } from "@/hooks/use-grounded-model";
-import {
-  MODEL_CALIBRATION,
-  MODEL_PATHS
-} from "@/components/three/model-config";
+import { MODEL_PATHS, MODEL_SCALE } from "@/components/three/model-config";
 
-const CALIBRATION = MODEL_CALIBRATION.arduino;
+const SCALE = MODEL_SCALE.arduino;
 
 export function ArduinoModel() {
   const { scene } = useGLTF(MODEL_PATHS.arduino);
@@ -20,7 +17,7 @@ export function ArduinoModel() {
   const { handlePointerOver, handlePointerOut } = useModelInteraction(
     groupRef,
     {
-      baseScale: CALIBRATION.scale,
+      baseScale: SCALE,
       hoverScale: 1.04
     }
   );
@@ -31,7 +28,7 @@ export function ArduinoModel() {
     <group
       ref={groupRef}
       rotation={[0, -0.35, 0]}
-      scale={CALIBRATION.scale}
+      scale={SCALE}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
