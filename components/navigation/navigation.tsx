@@ -71,6 +71,9 @@ export function Navigation({ locale, setLocale, t }: NavigationProps) {
     if (!open) return;
 
     const panel = panelRef.current;
+    // The toggle stays mounted while the menu is open, so capturing it here
+    // is safe and lets focus return to it when the menu closes.
+    const toggle = toggleRef.current;
     const focusables = () => getFocusable(panel);
     focusables()[0]?.focus();
 
@@ -98,7 +101,7 @@ export function Navigation({ locale, setLocale, t }: NavigationProps) {
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      toggleRef.current?.focus();
+      toggle?.focus();
     };
   }, [open]);
 
