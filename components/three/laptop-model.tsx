@@ -11,12 +11,9 @@ import {
 } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
 import { useGroundedModel } from "@/hooks/use-grounded-model";
-import {
-  MODEL_CALIBRATION,
-  MODEL_PATHS
-} from "@/components/three/model-config";
+import { MODEL_PATHS, MODEL_SCALE } from "@/components/three/model-config";
 
-const CALIBRATION = MODEL_CALIBRATION.laptop;
+const SCALE = MODEL_SCALE.laptop;
 const SCREEN_GLOW = 0.55;
 /** The source model's RGB keyboard lighting, toned down from its authored full blast. */
 const ACCENT_GLOW = 0.12;
@@ -29,7 +26,7 @@ export function LaptopModel() {
   const { handlePointerOver, handlePointerOut } = useModelInteraction(
     groupRef,
     {
-      baseScale: CALIBRATION.scale,
+      baseScale: SCALE,
       hoverScale: 1.03
     }
   );
@@ -79,7 +76,7 @@ export function LaptopModel() {
     <group
       ref={groupRef}
       rotation={[0, -0.5, 0]}
-      scale={CALIBRATION.scale}
+      scale={SCALE}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
