@@ -16,8 +16,6 @@ export type TranslationKey =
   | "hero.copy"
   | "hero.primary"
   | "hero.secondary"
-  | "hero.scroll"
-  | "credibility.title"
   | "work.eyebrow"
   | "work.title"
   | "work.copy"
@@ -25,11 +23,7 @@ export type TranslationKey =
   | "project.role"
   | "project.decision"
   | "project.outcome"
-  | "project.result"
   | "project.technology"
-  | "stories.eyebrow"
-  | "stories.title"
-  | "stories.copy"
   | "process.eyebrow"
   | "process.title"
   | "process.copy"
@@ -75,8 +69,7 @@ export type TranslationKey =
   | "papers.build"
   | "papers.apply"
   | "papers.grow"
-  | "form.sent"
-  | "scene.label";
+  | "form.sent";
 
 export type ProjectSize = "feature" | "large" | "medium" | "small";
 
