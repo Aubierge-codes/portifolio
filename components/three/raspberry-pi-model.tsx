@@ -6,12 +6,9 @@ import { useGLTF } from "@react-three/drei";
 import type { Group, Mesh, MeshStandardMaterial } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
 import { useGroundedModel } from "@/hooks/use-grounded-model";
-import {
-  MODEL_CALIBRATION,
-  MODEL_PATHS
-} from "@/components/three/model-config";
+import { MODEL_PATHS, MODEL_SCALE } from "@/components/three/model-config";
 
-const CALIBRATION = MODEL_CALIBRATION.raspberryPi;
+const SCALE = MODEL_SCALE.raspberryPi;
 const ACTIVITY_COLOR = "#e8483c";
 
 export function RaspberryPiModel() {
@@ -23,7 +20,7 @@ export function RaspberryPiModel() {
   const { handlePointerOver, handlePointerOut } = useModelInteraction(
     groupRef,
     {
-      baseScale: CALIBRATION.scale,
+      baseScale: SCALE,
       hoverScale: 1.04
     }
   );
@@ -48,7 +45,7 @@ export function RaspberryPiModel() {
     <group
       ref={groupRef}
       rotation={[0, 0.35, 0]}
-      scale={CALIBRATION.scale}
+      scale={SCALE}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
