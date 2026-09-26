@@ -20,7 +20,7 @@ export const languages: { code: Locale; label: string; short: string }[] = [
 
 export const translations: Record<Locale, TranslationBundle> = {
   en: {
-    skip: "Skip loading animation",
+    skip: "Skip to selected work",
     brand: "Aubierge.",
     "nav.work": "Work",
     "nav.process": "Process",
@@ -36,8 +36,6 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Software developer at Rwanda Coding Academy, building interactive interfaces, intelligent applications, and technology that connects ideas to real-world problems.",
     "hero.primary": "View My Work",
     "hero.secondary": "About Me",
-    "hero.scroll": "Scroll to selected work",
-    "credibility.title": "Signals",
     "work.eyebrow": "Selected work",
     "work.title": "Projects built around real problems, not empty tech demos.",
     "work.copy":
@@ -46,13 +44,7 @@ export const translations: Record<Locale, TranslationBundle> = {
     "project.role": "Role",
     "project.decision": "Decision",
     "project.outcome": "Outcome",
-    "project.result": "Result",
     "project.technology": "Technology",
-    "stories.eyebrow": "Project stories",
-    "stories.title":
-      "The work moves from interface craft to systems that touch hardware, data, and community.",
-    "stories.copy":
-      "The strongest thread is learning by building: turn a problem into a prototype, then refine it until people can use it.",
     "process.eyebrow": "Process",
     "process.title": "How I Build",
     "process.copy":
@@ -70,7 +62,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "achievements.title": "A compact record. The work stays the focus.",
     "balloon.next": "NEXT",
     "embedded.eyebrow": "Beyond the browser",
-    "embedded.title": "Hardware, data, and the systems that sit underneath the screen.",
+    "embedded.title":
+      "Hardware, data, and the systems that sit underneath the screen.",
     "embedded.copy":
       "Raspberry Pi, ESP32 / NodeMCU, Arduino, sensors, and machine learning show up when the problem is physical, environmental, or data-heavy.",
     "project.alsoKnown": "Also",
@@ -84,7 +77,6 @@ export const translations: Record<Locale, TranslationBundle> = {
     "papers.apply": "Apply",
     "papers.grow": "Grow",
     "form.sent": "Opens email with your message.",
-    "scene.label": "Project animation",
     "faq.eyebrow": "FAQ",
     "faq.title":
       "Practical answers for recruiters, collaborators, and internships.",
@@ -200,7 +192,7 @@ export const translations: Record<Locale, TranslationBundle> = {
     ]
   },
   fr: {
-    skip: "Passer l'animation de chargement",
+    skip: "Aller aux projets selectionnes",
     brand: "Aubierge.",
     "nav.work": "Projets",
     "nav.process": "Processus",
@@ -218,8 +210,6 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Developpeuse a Rwanda Coding Academy, elle cree des interfaces, des applications intelligentes et des technologies reliees aux problemes reels.",
     "hero.primary": "Voir mon travail",
     "hero.secondary": "A propos",
-    "hero.scroll": "Aller aux projets selectionnes",
-    "credibility.title": "Reperes",
     "work.eyebrow": "Travaux selectionnes",
     "work.title":
       "Des projets construits autour de vrais problemes, pas de simples demos techniques.",
@@ -229,13 +219,7 @@ export const translations: Record<Locale, TranslationBundle> = {
     "project.role": "Role",
     "project.decision": "Decision",
     "project.outcome": "Resultat",
-    "project.result": "Resultat",
     "project.technology": "Technologie",
-    "stories.eyebrow": "Histoires de projets",
-    "stories.title":
-      "Le travail va de l'interface aux systemes qui touchent le materiel, les donnees et la communaute.",
-    "stories.copy":
-      "Le fil conducteur est l'apprentissage par la construction: transformer un probleme en prototype, puis l'ameliorer jusqu'a ce qu'il soit utilisable.",
     "process.eyebrow": "Processus",
     "process.title": "Comment je construis",
     "process.copy":
@@ -267,7 +251,6 @@ export const translations: Record<Locale, TranslationBundle> = {
     "papers.apply": "Postuler",
     "papers.grow": "Grandir",
     "form.sent": "Ouvre un email avec votre message.",
-    "scene.label": "Animation du projet",
     "faq.eyebrow": "FAQ",
     "faq.title":
       "Des reponses pratiques pour recruteurs, collaborateurs et clients.",
@@ -384,7 +367,7 @@ export const translations: Record<Locale, TranslationBundle> = {
     ]
   },
   es: {
-    skip: "Saltar animacion de carga",
+    skip: "Ir al trabajo seleccionado",
     brand: "Aubierge.",
     "nav.work": "Trabajo",
     "nav.process": "Proceso",
@@ -402,8 +385,6 @@ export const translations: Record<Locale, TranslationBundle> = {
       "Desarrolladora en Rwanda Coding Academy, creando interfaces, aplicaciones inteligentes y tecnologia conectada con problemas reales.",
     "hero.primary": "Ver mi trabajo",
     "hero.secondary": "Sobre mi",
-    "hero.scroll": "Ir al trabajo seleccionado",
-    "credibility.title": "Senales",
     "work.eyebrow": "Trabajo seleccionado",
     "work.title":
       "Proyectos creados alrededor de problemas reales, no demos vacias.",
@@ -413,13 +394,7 @@ export const translations: Record<Locale, TranslationBundle> = {
     "project.role": "Rol",
     "project.decision": "Decision",
     "project.outcome": "Resultado",
-    "project.result": "Resultado",
     "project.technology": "Tecnologia",
-    "stories.eyebrow": "Historias de proyecto",
-    "stories.title":
-      "El trabajo va desde interfaces hasta sistemas con hardware, datos y comunidad.",
-    "stories.copy":
-      "La linea principal es aprender construyendo: convertir un problema en prototipo y mejorarlo hasta que sea usable.",
     "process.eyebrow": "Proceso",
     "process.title": "Como construyo",
     "process.copy":
@@ -434,7 +409,8 @@ export const translations: Record<Locale, TranslationBundle> = {
     "about.background":
       "Formada en Ruanda, trabaja en ingles, frances y kinyarwanda, y tambien disena interfaces en espanol.",
     "achievements.eyebrow": "Senales",
-    "achievements.title": "Un registro compacto. El trabajo sigue siendo el centro.",
+    "achievements.title":
+      "Un registro compacto. El trabajo sigue siendo el centro.",
     "balloon.next": "SIGUE",
     "embedded.eyebrow": "Mas alla del navegador",
     "embedded.title": "Hardware, datos y los sistemas debajo de la pantalla.",
@@ -451,7 +427,6 @@ export const translations: Record<Locale, TranslationBundle> = {
     "papers.apply": "Postular",
     "papers.grow": "Crecer",
     "form.sent": "Abre un correo con tu mensaje.",
-    "scene.label": "Animacion del proyecto",
     "faq.eyebrow": "FAQ",
     "faq.title":
       "Respuestas practicas para reclutadores, colaboradores y clientes.",
