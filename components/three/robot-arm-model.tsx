@@ -6,12 +6,9 @@ import { useGLTF } from "@react-three/drei";
 import type { Group } from "three";
 import { useModelInteraction } from "@/hooks/use-model-interaction";
 import { useGroundedModel } from "@/hooks/use-grounded-model";
-import {
-  MODEL_CALIBRATION,
-  MODEL_PATHS
-} from "@/components/three/model-config";
+import { MODEL_PATHS, MODEL_SCALE } from "@/components/three/model-config";
 
-const CALIBRATION = MODEL_CALIBRATION.robotArm;
+const SCALE = MODEL_SCALE.robotArm;
 
 export function RobotArmModel() {
   const { scene } = useGLTF(MODEL_PATHS.robotArm);
@@ -22,7 +19,7 @@ export function RobotArmModel() {
   const { handlePointerOver, handlePointerOut } = useModelInteraction(
     groupRef,
     {
-      baseScale: CALIBRATION.scale,
+      baseScale: SCALE,
       hoverScale: 1.03
     }
   );
@@ -44,7 +41,7 @@ export function RobotArmModel() {
     <group
       ref={groupRef}
       rotation={[0, Math.PI / 2, 0]}
-      scale={CALIBRATION.scale}
+      scale={SCALE}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
