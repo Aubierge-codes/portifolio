@@ -6,6 +6,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { SceneErrorBoundary } from "@/components/three/scene-error-boundary";
 
 type ThreeFrameProps = {
   children: React.ReactNode;
@@ -67,30 +68,32 @@ export function ThreeFrame({
   return (
     <div ref={host} className={cn("relative", className)}>
       {near ? (
-        <Canvas
-          camera={{ position: [0, 1.1, 4.2], fov: 38 }}
-          // Phones pay for every extra pixel twice over: high device ratios
-          // multiply the work, and they have the least GPU to do it with.
-          // Capping the ratio and dropping MSAA there costs little at the size
-          // these scenes actually render.
-          dpr={isMobile ? [1, 1] : [1, 1.5]}
-          gl={{
-            antialias: !isMobile,
-            alpha: true,
-            powerPreference: "high-performance"
-          }}
-        >
-          {transparent ? null : (
-            <color attach="background" args={["#ffffff"]} />
-          )}
-          {lights ? (
-            <>
-              <ambientLight intensity={0.85} />
-              <directionalLight position={[2.4, 3, 2]} intensity={0.7} />
-            </>
-          ) : null}
-          <Suspense fallback={null}>{children}</Suspense>
-        </Canvas>
+        <SceneErrorBoundary fallback={fallback}>
+          <Canvas
+            camera={{ position: [0, 1.1, 4.2], fov: 38 }}
+            // Phones pay for every extra pixel twice over: high device ratios
+            // multiply the work, and they have the least GPU to do it with.
+            // Capping the ratio and dropping MSAA there costs little at the size
+            // these scenes actually render.
+            dpr={isMobile ? [1, 1] : [1, 1.5]}
+            gl={{
+              antialias: !isMobile,
+              alpha: true,
+              powerPreference: "high-performance"
+            }}
+          >
+            {transparent ? null : (
+              <color attach="background" args={["#ffffff"]} />
+            )}
+            {lights ? (
+              <>
+                <ambientLight intensity={0.85} />
+                <directionalLight position={[2.4, 3, 2]} intensity={0.7} />
+              </>
+            ) : null}
+            <Suspense fallback={null}>{children}</Suspense>
+          </Canvas>
+        </SceneErrorBoundary>
       ) : (
         fallback
       )}
