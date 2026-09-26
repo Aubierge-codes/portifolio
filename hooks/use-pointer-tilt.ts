@@ -6,8 +6,16 @@ import type { PointerEvent } from "react";
 export function usePointerTilt(enabled: boolean) {
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
-  const springX = useSpring(rotateX, { stiffness: 220, damping: 18, mass: 0.6 });
-  const springY = useSpring(rotateY, { stiffness: 220, damping: 18, mass: 0.6 });
+  const springX = useSpring(rotateX, {
+    stiffness: 220,
+    damping: 18,
+    mass: 0.6
+  });
+  const springY = useSpring(rotateY, {
+    stiffness: 220,
+    damping: 18,
+    mass: 0.6
+  });
 
   const onPointerMove = (event: PointerEvent<HTMLElement>) => {
     if (!enabled) return;
