@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <LayoutGroup id="aubierge-world">
       <a href="#work" className="skip-link">
-        {t("nav.work")}
+        {t("skip")}
       </a>
       <Navigation locale={locale} setLocale={setLocale} t={t} />
       <main>
