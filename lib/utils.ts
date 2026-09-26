@@ -12,5 +12,4 @@ export function getStoredLocale(value: string | null) {
   return "en";
 }
 
-export const githubUrl = "https://github.com/Aubierge-codes/";
 export const emailAddress = "aubierge7557@gmail.com";
