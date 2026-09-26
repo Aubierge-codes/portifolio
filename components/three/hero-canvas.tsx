@@ -12,6 +12,7 @@ import {
   type MannequinPose
 } from "@/components/three/mannequin";
 import { HeroFigure } from "@/components/hero/hero-figure";
+import { SceneErrorBoundary } from "@/components/three/scene-error-boundary";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
@@ -26,36 +27,36 @@ type HeroCanvasProps = {
 export function HeroCanvas({ phase, isMobile, className }: HeroCanvasProps) {
   const reduceMotion = useReducedMotion();
 
+  const still = <HeroFigure pose="idle" carry="laptop" />;
+
   if (reduceMotion) {
-    return (
-      <div className={cn("relative", className)}>
-        <HeroFigure pose="idle" carry="laptop" />
-      </div>
-    );
+    return <div className={cn("relative", className)}>{still}</div>;
   }
 
   return (
     <div className={cn("relative h-full w-full", className)}>
-      <Canvas
-        camera={{
-          position: isMobile ? [0.4, 1.15, 4.4] : [0.2, 1.25, 5.1],
-          fov: isMobile ? 36 : 30
-        }}
-        dpr={[1, 1.4]}
-        gl={{
-          antialias: true,
-          alpha: true,
-          powerPreference: "high-performance"
-        }}
-      >
-        <color attach="background" args={["#ffffff"]} />
-        <ambientLight intensity={0.72} />
-        <directionalLight position={[3.2, 5, 2.4]} intensity={1.05} />
-        <directionalLight position={[-2.5, 1.4, -1]} intensity={0.25} />
-        <Suspense fallback={null}>
-          <HeroRig phase={phase} isMobile={isMobile} />
-        </Suspense>
-      </Canvas>
+      <SceneErrorBoundary fallback={still}>
+        <Canvas
+          camera={{
+            position: isMobile ? [0.4, 1.15, 4.4] : [0.2, 1.25, 5.1],
+            fov: isMobile ? 36 : 30
+          }}
+          dpr={[1, 1.4]}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance"
+          }}
+        >
+          <color attach="background" args={["#ffffff"]} />
+          <ambientLight intensity={0.72} />
+          <directionalLight position={[3.2, 5, 2.4]} intensity={1.05} />
+          <directionalLight position={[-2.5, 1.4, -1]} intensity={0.25} />
+          <Suspense fallback={null}>
+            <HeroRig phase={phase} isMobile={isMobile} />
+          </Suspense>
+        </Canvas>
+      </SceneErrorBoundary>
     </div>
   );
 }
