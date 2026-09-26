@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+import { MODEL_PATHS } from "@/components/three/model-config";
 import {
   AdditiveBlending,
   Color,
@@ -42,7 +43,7 @@ function isBulbOrGlassMaterial(material: MeshStandardMaterial) {
 }
 
 export function Lamp({ isOn, onToggle }: LampProps) {
-  const { scene } = useGLTF("/lamp.glb");
+  const { scene } = useGLTF(MODEL_PATHS.streetLamp);
   const groupRef = useRef<Group>(null);
   const lightRef = useRef<PointLight>(null);
   const glowInnerRef = useRef<Mesh>(null);
@@ -170,4 +171,4 @@ export function Lamp({ isOn, onToggle }: LampProps) {
   );
 }
 
-useGLTF.preload("/lamp.glb");
+useGLTF.preload(MODEL_PATHS.streetLamp);
