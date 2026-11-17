@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
+import { SITE_NAME } from "@/lib/site";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -17,14 +18,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Aubierge Umurerwa | Software Developer",
-  description:
-    "Portfolio of Aubierge Umurerwa, a Rwanda Coding Academy software development and embedded systems student building frontend, AI, full-stack, and hardware-connected systems.",
+  title: `${SITE_NAME} | Software Developer`,
+  description: `Portfolio of ${SITE_NAME}, a Rwanda Coding Academy software development and embedded systems student building frontend, AI, full-stack, and hardware-connected systems.`,
   metadataBase: new URL("https://aubierge.dev"),
-  authors: [{ name: "Aubierge Umurerwa" }],
-  creator: "Aubierge Umurerwa",
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
   keywords: [
-    "Aubierge Umurerwa",
+    SITE_NAME,
     "frontend developer",
     "software developer",
     "Rwanda Coding Academy",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     "full-stack development"
   ],
   openGraph: {
-    title: "Aubierge Umurerwa | Software Developer",
+    title: `${SITE_NAME} | Software Developer`,
     description:
       "Frontend, AI, full-stack, embedded systems, and technology-for-impact projects.",
     type: "website"
@@ -48,7 +48,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${bricolage.variable} ${dmSans.variable}`}>
-      <body className="font-body">{children}</body>
+      <body className="font-body">
+        {/* Without JavaScript nothing would ever lift the loader. */}
+        <noscript>
+          <style>{"[data-site-loader]{display:none!important}"}</style>
+        </noscript>
+        {children}
+      </body>
     </html>
   );
 }
