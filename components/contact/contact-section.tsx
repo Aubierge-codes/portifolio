@@ -10,12 +10,22 @@ import { Reveal, RevealItem } from "@/components/motion/reveal";
 import { BouncingBall } from "@/components/motion/bouncing-ball";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { ThreeFrame } from "@/components/three/three-frame";
-import { Mannequin } from "@/components/three/mannequin";
+import { CAST, Person, strideRate } from "@/components/world/person";
 import { Lamp } from "@/components/three/lamp";
 import { useFrame } from "@react-three/fiber";
 import type { Group } from "three";
 import type { TranslationKey } from "@/types/content";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
+/**
+ * Frames the ~2.5-unit lamp, foot to head, in its square corner canvas. R3F
+ * aims its default camera at the origin, so the camera stays level and the
+ * lamp is lowered to meet it (see Lamp).
+ */
+const LAMP_CAMERA = {
+  position: [0, 0, 4.6] as [number, number, number],
+  fov: 34
+};
 
 type ContactSectionProps = {
   t: (key: TranslationKey) => string;
@@ -104,6 +114,8 @@ export function ContactSection({ t }: ContactSectionProps) {
               <div className="relative -ml-2 mt-8 h-56 w-56" aria-hidden="true">
                 <ThreeFrame
                   transparent
+                  lights={false}
+                  camera={LAMP_CAMERA}
                   className="h-full w-full"
                   fallback={<div />}
                 >
@@ -206,22 +218,27 @@ function RunningMannequins({ isMobile }: { isMobile: boolean }) {
     const t = clock.getElapsedTime();
     if (char1.current) {
       const x = ((t * 1.5) % 12) - 6;
-      char1.current.position.x = x;
+      char1.current.position.z = x;
     }
     if (char2.current && !isMobile) {
       const x = (((t - 0.5) * 1.4) % 12) - 6;
-      char2.current.position.x = x;
+      char2.current.position.z = x;
     }
   });
 
   return (
-    <group position={[0, -0.6, 0]} rotation={[0, Math.PI / 2, 0]}>
-      <group ref={char1} position={[-6, 0, -0.5]}>
-        <Mannequin pose="walk" carry="flag" speed={4} />
+    <group position={[0, -0.6, 0]} rotation={[0, Math.PI / 2, 0]} scale={0.86}>
+      <group ref={char1} position={[-0.5, 0, -6]}>
+        <Person look={CAST.eric} pose="walk" speed={strideRate(1.5)} />
       </group>
       {!isMobile && (
-        <group ref={char2} position={[-6, 0, 0.5]}>
-          <Mannequin pose="walk" hair="bun" speed={4.2} accent />
+        <group ref={char2} position={[0.5, 0, -6]}>
+          <Person
+            look={CAST.ines}
+            pose="walk"
+            speed={strideRate(1.4)}
+            phase={1.3}
+          />
         </group>
       )}
     </group>
@@ -240,7 +257,13 @@ function LampCorner({
       className="absolute bottom-44 left-4 z-20 h-52 w-52 sm:left-8 sm:h-64 sm:w-64 lg:left-14 lg:h-80 lg:w-80"
       aria-hidden="true"
     >
-      <ThreeFrame transparent className="h-full w-full" fallback={<div />}>
+      <ThreeFrame
+        transparent
+        lights={false}
+        camera={LAMP_CAMERA}
+        className="h-full w-full"
+        fallback={<div />}
+      >
         <Lamp isOn={isOn} onToggle={onToggle} />
       </ThreeFrame>
     </div>
