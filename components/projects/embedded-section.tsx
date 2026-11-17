@@ -50,10 +50,15 @@ export function EmbeddedSection({ t }: EmbeddedSectionProps) {
           className="relative h-[340px] border border-ink bg-paper md:h-[440px]"
           aria-hidden="true"
           initial={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
+          // With reduced motion the preference only arrives after mount, by
+          // which time the hidden initial state is applied, so settle it
+          // instantly rather than leaving the panel invisible.
           animate={
-            inView && !reduceMotion ? { opacity: 1, scale: 1 } : undefined
+            inView || reduceMotion ? { opacity: 1, scale: 1 } : undefined
           }
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={
+            reduceMotion ? { duration: 0 } : { duration: 0.6, ease: "easeOut" }
+          }
         >
           {inView ? <EmbeddedHardwareCanvas /> : <EmbeddedDiagram />}
         </motion.div>
