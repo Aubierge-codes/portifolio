@@ -11,9 +11,16 @@ import { EmbeddedDiagram } from "@/components/projects/embedded-diagram";
 
 const FLOOR = -0.5;
 /** Signal order, left to right: read -> compute -> actuate. */
-const ARDUINO: [number, number, number] = [-1.45, 0, 0.45];
-const PI: [number, number, number] = [0.2, 0, 0.5];
-const ARM: [number, number, number] = [1.5, 0, -0.55];
+const ARDUINO: [number, number, number] = [-1.38, 0, 0.32];
+const PI: [number, number, number] = [0.05, 0, 0.42];
+const ARM: [number, number, number] = [1.5, 0, -0.42];
+
+/**
+ * Display scales that give the three pieces an even visual weight. The models
+ * are built at true size, where the arm would dwarf the boards; these bring
+ * each to roughly 1.1-1.5 units across.
+ */
+const SCALE = { arduino: 1.55, pi: 1.3, arm: 0.78 };
 
 export function EmbeddedHardwareCanvas() {
   return (
@@ -24,47 +31,51 @@ export function EmbeddedHardwareCanvas() {
     >
       <ModelStage
         floor={FLOOR}
-        cameraPosition={[0, 2.5, 7.4]}
-        cameraTarget={[0, 0.25, 0]}
-        cameraFov={32}
+        cameraDirection={[0, 0.36, 1]}
+        cameraTarget={[0, FLOOR + 0.55, 0.1]}
+        cameraFov={28}
+        subject={{ width: 4.2, height: 1.7 }}
         shadowScale={10}
-        shadowOpacity={0.3}
+        shadowOpacity={0.36}
       >
-        <ScrollTilt yaw={0.26} pitch={0.05} lift={0.14}>
-          <group position={[0, FLOOR, -0.1]}>
+        <ScrollTilt yaw={0.22} pitch={0.04} lift={0.1}>
+          <group position={[0, FLOOR, 0]}>
             {/* Laid out as the signal actually flows: the microcontroller
                 reads, hands data to the computing board, which drives the
                 physical output. Spaced so each stays readable on its own. */}
             <group position={ARDUINO} name="microcontroller">
-              <Turntable period={54} sweep={0.3}>
-                <Float amplitude={0.028} period={7} offset={0.1}>
-                  <ArduinoModel />
+              <Turntable period={54} sweep={0.22}>
+                <Float amplitude={0.02} period={7} offset={0.1}>
+                  <ArduinoModel scale={SCALE.arduino} />
                 </Float>
               </Turntable>
             </group>
             <group position={PI} name="compute">
-              <Turntable period={46} sweep={0.26} offset={0.5}>
-                <Float amplitude={0.032} period={6.2} offset={0.55} tilt={0.02}>
-                  <RaspberryPiModel />
+              <Turntable period={46} sweep={0.2} offset={0.5}>
+                <Float
+                  amplitude={0.024}
+                  period={6.2}
+                  offset={0.55}
+                  tilt={0.015}
+                >
+                  <RaspberryPiModel scale={SCALE.pi} />
                 </Float>
               </Turntable>
             </group>
             <group position={ARM} name="output">
-              <Turntable period={70} sweep={0.2} offset={0.25}>
-                <RobotArmModel />
-              </Turntable>
+              <RobotArmModel scale={SCALE.arm} />
             </group>
 
             <DataLink
-              from={[ARDUINO[0] + 0.3, 0.16, ARDUINO[2]]}
-              to={[PI[0] - 0.32, 0.16, PI[2]]}
-              sag={0.14}
+              from={[ARDUINO[0] + 0.48, 0.06, ARDUINO[2] - 0.1]}
+              to={[PI[0] - 0.54, 0.06, PI[2] - 0.05]}
+              sag={0.08}
               speed={0.34}
             />
             <DataLink
-              from={[PI[0] + 0.1, 0.18, PI[2] - 0.22]}
-              to={[ARM[0] + 0.22, 0.3, ARM[2] + 0.2]}
-              sag={0.12}
+              from={[PI[0] + 0.4, 0.15, PI[2] - 0.32]}
+              to={[ARM[0] - 0.42, 0.06, ARM[2] + 0.12]}
+              sag={0.08}
               packets={1}
               speed={0.26}
             />

@@ -19,11 +19,14 @@ export type TranslationKey =
   | "work.eyebrow"
   | "work.title"
   | "work.copy"
+  | "work.hint"
+  | "work.goTo"
+  | "project.details"
+  | "project.close"
   | "project.problem"
   | "project.role"
   | "project.decision"
   | "project.outcome"
-  | "project.technology"
   | "process.eyebrow"
   | "process.title"
   | "process.copy"
@@ -63,32 +66,30 @@ export type TranslationKey =
   | "project.team"
   | "project.mentor"
   | "project.coach"
-  | "project.status"
   | "project.context"
-  | "papers.learn"
-  | "papers.build"
-  | "papers.apply"
-  | "papers.grow"
   | "form.sent";
 
-export type ProjectSize = "feature" | "large" | "medium" | "small";
-
-export type Project = {
-  id: string;
-  name: string;
+/** Per-locale copy for a project. Kept short: the 3D chapter does the talking. */
+export type ProjectText = {
+  /** One line, 12 words or fewer. */
+  summary: string;
   alsoKnownAs?: string;
-  category: string;
-  size: ProjectSize;
+  /** Details panel only. */
   problem: string;
   role: string;
   decision: string;
   outcome: string;
-  technologies: string[];
+  context?: string;
+};
+
+export type Project = ProjectText & {
+  id: string;
+  name: string;
+  /** Three or four. */
+  tags: string[];
   team?: string[];
   mentor?: string;
   coach?: string;
-  context?: string;
-  status?: string;
   links?: {
     label: string;
     href: string;

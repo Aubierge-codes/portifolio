@@ -19,7 +19,7 @@ type UseModelInteractionOptions = {
 
 /**
  * Shared hover/press/cursor behavior for small decorative or interactive
- * GLB accents: settles to baseScale, bumps slightly on hover, gives a
+ * 3D accents: settles to baseScale, bumps slightly on hover, gives a
  * subtle press-and-settle pulse on click, and swaps the cursor to a
  * pointer while hovered. Keeps this logic out of every individual model
  * component (Lamp, Laptop, Arduino, Raspberry Pi, Robot Arm all use it).

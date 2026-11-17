@@ -1,12 +1,14 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
+import type { WebGLRenderer } from "three";
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { SceneErrorBoundary } from "@/components/three/scene-error-boundary";
+import { hasWebGL } from "@/lib/webgl";
 
 type ThreeFrameProps = {
   children: React.ReactNode;
@@ -16,7 +18,22 @@ type ThreeFrameProps = {
   transparent?: boolean;
   /** Skip the default ambient/directional pair so the scene can light itself. */
   lights?: boolean;
+  /** Starting camera, for scenes framed differently from the wide strips. */
+  camera?: { position: [number, number, number]; fov: number };
 };
+
+const DEFAULT_CAMERA = {
+  position: [0, 1.1, 4.2] as [number, number, number],
+  fov: 38
+};
+
+/**
+ * Reading back every shader's compile log forces a GPU sync and, on some
+ * drivers, prints harmless precision notes. Keep it in development only.
+ */
+export function tuneRenderer({ gl }: { gl: WebGLRenderer }) {
+  gl.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
+}
 
 /** How far outside the viewport a scene starts rendering, so it's ready on arrival. */
 const PRELOAD_MARGIN = "500px 0px";
@@ -26,12 +43,15 @@ export function ThreeFrame({
   className,
   fallback,
   transparent = false,
-  lights = true
+  lights = true,
+  camera = DEFAULT_CAMERA
 }: ThreeFrameProps) {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
   const host = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
+  // Assumed until checked after mount, so server and client markup agree.
+  const [webgl, setWebgl] = useState(true);
 
   /**
    * Only run a WebGL context while the frame is near the viewport.
@@ -46,6 +66,7 @@ export function ThreeFrame({
    * there's nothing for hydration to disagree about.
    */
   useEffect(() => {
+    setWebgl(hasWebGL());
     const el = host.current;
     if (!el || typeof IntersectionObserver === "undefined") {
       setNear(true);
@@ -61,7 +82,7 @@ export function ThreeFrame({
 
   // The hook reports false until mounted, so this branch can't desync
   // the first render from the server's markup.
-  if (reduceMotion) {
+  if (reduceMotion || !webgl) {
     return <div className={className}>{fallback}</div>;
   }
 
@@ -70,7 +91,7 @@ export function ThreeFrame({
       {near ? (
         <SceneErrorBoundary fallback={fallback}>
           <Canvas
-            camera={{ position: [0, 1.1, 4.2], fov: 38 }}
+            camera={camera}
             // Phones pay for every extra pixel twice over: high device ratios
             // multiply the work, and they have the least GPU to do it with.
             // Capping the ratio and dropping MSAA there costs little at the size
@@ -81,6 +102,7 @@ export function ThreeFrame({
               alpha: true,
               powerPreference: "high-performance"
             }}
+            onCreated={tuneRenderer}
           >
             {transparent ? null : (
               <color attach="background" args={["#ffffff"]} />

@@ -1,174 +1,285 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
-import { MODEL_PATHS } from "@/components/three/model-config";
 import {
   AdditiveBlending,
-  Color,
+  CatmullRomCurve3,
+  CylinderGeometry,
+  LatheGeometry,
+  MeshBasicMaterial,
+  MeshPhysicalMaterial,
+  SphereGeometry,
+  SpriteMaterial,
+  TubeGeometry,
+  Vector2,
+  Vector3,
   type Group,
-  type Mesh,
-  type MeshBasicMaterial,
-  type MeshStandardMaterial,
   type PointLight
 } from "three";
+import { useModelInteraction } from "@/hooks/use-model-interaction";
+import { canvasTexture, materials, MM } from "@/components/three/hardware/kit";
+import { StudioLighting } from "@/components/three/studio-lighting";
 
 type LampProps = {
   isOn: boolean;
   onToggle: () => void;
 };
 
-const WARM_COLOR = "#ffcf8a";
-const BULB_LOCAL_POSITION: [number, number, number] = [0, 0.72, 0.61];
-const MODEL_SCALE = 1.3;
-const MODEL_POSITION: [number, number, number] = [0, -0.575, -0.524];
+/*
+ * A contemporary street lamp, in millimetres: plinth, tapered pole, a
+ * shepherd's-crook arm and a shallow dome head with a frosted diffuser.
+ * Origin is the foot of the pole at ground level; the head reaches toward +x.
+ */
 
-const ON_LIGHT_INTENSITY = 5;
-const ON_EMISSIVE_INTENSITY = 2.2;
-const HOVER_STANDBY_EMISSIVE = 0.3;
-const GLOW_OPACITY_INNER = 0.28;
-const GLOW_OPACITY_OUTER = 0.14;
-const TRANSITION_SPEED = 4.5; // ~1/TRANSITION_SPEED sec time constant, settles within the 400-800ms window
-const SETTLE_SPEED = 10;
+const WARM = "#ffcf8a";
+const HEAD: [number, number, number] = [840, 3960, 0];
+/** Display scale: brings the ~4.1 m lamp to ~2.5 scene units. */
+const DISPLAY = 0.06;
+/** Shift so the asymmetric silhouette sits centred on the camera's axis. */
+const OFFSET: [number, number, number] = [-0.3, -1.24, 0];
 
-function isBulbOrGlassMaterial(material: MeshStandardMaterial) {
-  const name = material.name?.toLowerCase() ?? "";
-  return (
-    name.includes("bulb") ||
-    name.includes("glass") ||
-    name.includes("light") ||
-    name.includes("emission")
-  );
+const ON_LIGHT = 4.5;
+const ON_EMISSIVE = 2.4;
+const STANDBY_EMISSIVE = 0.3;
+const GLOW_INNER = 0.6;
+const GLOW_OUTER = 0.22;
+const POOL = 0.55;
+const TRANSITION = 4.5; // ~220 ms time constant; settles inside 400-800 ms
+
+/** Raycastable but never drawn. */
+const HIT = new MeshBasicMaterial({ colorWrite: false, depthWrite: false });
+
+let geometries: {
+  plinth: LatheGeometry;
+  pole: CylinderGeometry;
+  arm: TubeGeometry;
+  shade: LatheGeometry;
+  diffuser: CylinderGeometry;
+  bulb: SphereGeometry;
+} | null = null;
+
+function lampGeometry() {
+  geometries ??= {
+    plinth: new LatheGeometry(
+      [
+        new Vector2(0, 0),
+        new Vector2(140, 0),
+        new Vector2(140, 30),
+        new Vector2(112, 62),
+        new Vector2(88, 360),
+        new Vector2(66, 400),
+        new Vector2(0, 400)
+      ],
+      40
+    ),
+    pole: new CylinderGeometry(40, 56, 3300, 32, 1, true).translate(
+      0,
+      400 + 1650,
+      0
+    ),
+    arm: new TubeGeometry(
+      new CatmullRomCurve3([
+        new Vector3(0, 3640, 0),
+        new Vector3(0, 3950, 0),
+        new Vector3(90, 4125, 0),
+        new Vector3(320, 4185, 0),
+        new Vector3(620, 4140, 0),
+        new Vector3(HEAD[0], HEAD[1] + 92, 0)
+      ]),
+      56,
+      26,
+      14
+    ),
+    shade: new LatheGeometry(
+      [
+        new Vector2(0, 98),
+        new Vector2(130, 92),
+        new Vector2(232, 58),
+        new Vector2(274, 14),
+        new Vector2(280, 0),
+        new Vector2(262, 0),
+        new Vector2(226, 42),
+        new Vector2(128, 74),
+        new Vector2(0, 80)
+      ],
+      48
+    ),
+    diffuser: new CylinderGeometry(256, 256, 6, 48),
+    bulb: new SphereGeometry(52, 20, 14)
+  };
+  return geometries;
 }
 
+/** Soft pool of light on the ground, drawn once. */
+const poolTexture = canvasTexture(256, 256, (ctx, w, h) => {
+  const gradient = ctx.createRadialGradient(
+    w / 2,
+    h / 2,
+    0,
+    w / 2,
+    h / 2,
+    w / 2
+  );
+  gradient.addColorStop(0, "rgba(255, 207, 138, 1)");
+  gradient.addColorStop(0.4, "rgba(255, 207, 138, 0.35)");
+  gradient.addColorStop(1, "rgba(255, 207, 138, 0)");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, w, h);
+});
+
 export function Lamp({ isOn, onToggle }: LampProps) {
-  const { scene } = useGLTF(MODEL_PATHS.streetLamp);
   const groupRef = useRef<Group>(null);
   const lightRef = useRef<PointLight>(null);
-  const glowInnerRef = useRef<Mesh>(null);
-  const glowOuterRef = useRef<Mesh>(null);
-  const emissiveMaterials = useRef<MeshStandardMaterial[]>([]);
-  const [hovered, setHovered] = useState(false);
-  const pressRef = useRef(1);
+  const geometry = lampGeometry();
 
-  useEffect(() => {
-    const found: MeshStandardMaterial[] = [];
-    scene.traverse((child) => {
-      const mesh = child as Mesh;
-      if (!mesh.isMesh) return;
-      const material = mesh.material as MeshStandardMaterial;
-      if (material && isBulbOrGlassMaterial(material)) {
-        material.emissive = new Color(WARM_COLOR);
-        material.emissiveIntensity = 0;
-        found.push(material);
-      }
+  const { hovered, handlePointerOver, handlePointerOut, handleClick } =
+    useModelInteraction(groupRef, {
+      baseScale: MM * DISPLAY,
+      hoverScale: 1.03,
+      onClick: onToggle
     });
-    emissiveMaterials.current = found;
-  }, [scene]);
 
-  useEffect(() => {
-    document.body.style.cursor = hovered ? "pointer" : "auto";
-    return () => {
-      document.body.style.cursor = "auto";
-    };
-  }, [hovered]);
+  // Everything that changes with the switch is owned by this lamp, so
+  // toggling it never touches the shared materials.
+  const owned = useMemo(
+    () => ({
+      diffuser: new MeshPhysicalMaterial({
+        color: "#f4efe6",
+        roughness: 0.55,
+        emissive: WARM,
+        emissiveIntensity: 0
+      }),
+      bulb: new MeshPhysicalMaterial({
+        color: "#fff6e8",
+        roughness: 0.2,
+        emissive: WARM,
+        emissiveIntensity: 0
+      }),
+      // Soft radial sprites rather than spheres, so the halo has no edge.
+      glowInner: new SpriteMaterial({
+        map: poolTexture(),
+        transparent: true,
+        opacity: 0,
+        blending: AdditiveBlending,
+        depthWrite: false
+      }),
+      glowOuter: new SpriteMaterial({
+        map: poolTexture(),
+        transparent: true,
+        opacity: 0,
+        blending: AdditiveBlending,
+        depthWrite: false
+      }),
+      pool: new MeshBasicMaterial({
+        map: poolTexture(),
+        transparent: true,
+        opacity: 0,
+        blending: AdditiveBlending,
+        depthWrite: false
+      })
+    }),
+    []
+  );
+  useEffect(
+    () => () => Object.values(owned).forEach((material) => material.dispose()),
+    [owned]
+  );
 
   useFrame((_, delta) => {
-    const lerpAmt = 1 - Math.exp(-TRANSITION_SPEED * delta);
-    const standby = hovered && !isOn ? HOVER_STANDBY_EMISSIVE : 0;
-    const targetEmissive = isOn ? ON_EMISSIVE_INTENSITY : standby;
-    const targetLight = isOn ? ON_LIGHT_INTENSITY : 0;
-    const targetGlowInner = isOn ? GLOW_OPACITY_INNER : 0;
-    const targetGlowOuter = isOn ? GLOW_OPACITY_OUTER : 0;
+    const k = 1 - Math.exp(-TRANSITION * delta);
+    const standby = hovered && !isOn ? STANDBY_EMISSIVE : 0;
+    const emissive = isOn ? ON_EMISSIVE : standby;
+    const ease = (value: number, target: number) =>
+      value + (target - value) * k;
 
-    emissiveMaterials.current.forEach((material) => {
-      material.emissiveIntensity +=
-        (targetEmissive - material.emissiveIntensity) * lerpAmt;
-    });
-
+    owned.diffuser.emissiveIntensity = ease(
+      owned.diffuser.emissiveIntensity,
+      emissive
+    );
+    owned.bulb.emissiveIntensity = ease(owned.bulb.emissiveIntensity, emissive);
+    owned.glowInner.opacity = ease(
+      owned.glowInner.opacity,
+      isOn ? GLOW_INNER : 0
+    );
+    owned.glowOuter.opacity = ease(
+      owned.glowOuter.opacity,
+      isOn ? GLOW_OUTER : 0
+    );
+    owned.pool.opacity = ease(owned.pool.opacity, isOn ? POOL : 0);
     if (lightRef.current) {
-      lightRef.current.intensity +=
-        (targetLight - lightRef.current.intensity) * lerpAmt;
-    }
-
-    const innerMaterial = glowInnerRef.current?.material as
-      MeshBasicMaterial | undefined;
-    if (innerMaterial) {
-      innerMaterial.opacity +=
-        (targetGlowInner - innerMaterial.opacity) * lerpAmt;
-    }
-    const outerMaterial = glowOuterRef.current?.material as
-      MeshBasicMaterial | undefined;
-    if (outerMaterial) {
-      outerMaterial.opacity +=
-        (targetGlowOuter - outerMaterial.opacity) * lerpAmt;
-    }
-
-    const settleAmt = Math.min(1, delta * SETTLE_SPEED);
-    pressRef.current += (1 - pressRef.current) * settleAmt;
-    if (groupRef.current) {
-      const targetScale = MODEL_SCALE * pressRef.current * (hovered ? 1.03 : 1);
-      groupRef.current.scale.x +=
-        (targetScale - groupRef.current.scale.x) * settleAmt;
-      groupRef.current.scale.y = groupRef.current.scale.x;
-      groupRef.current.scale.z = groupRef.current.scale.x;
+      lightRef.current.intensity = ease(
+        lightRef.current.intensity,
+        isOn ? ON_LIGHT : 0
+      );
     }
   });
 
-  const handleClick = (event: ThreeEvent<MouseEvent>) => {
-    event.stopPropagation();
-    pressRef.current = 0.93;
-    onToggle();
-  };
-
-  const handlePointerOver = (event: ThreeEvent<PointerEvent>) => {
-    event.stopPropagation();
-    setHovered(true);
-  };
-
-  const handlePointerOut = () => setHovered(false);
+  const onClick = (event: ThreeEvent<MouseEvent>) => handleClick?.(event);
+  const below: [number, number, number] = [HEAD[0], HEAD[1] - 60, HEAD[2]];
 
   return (
-    <group
-      ref={groupRef}
-      position={MODEL_POSITION}
-      scale={MODEL_SCALE}
-      onClick={handleClick}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-    >
-      <primitive object={scene} />
-      <pointLight
-        ref={lightRef}
-        position={BULB_LOCAL_POSITION}
-        intensity={0}
-        color={WARM_COLOR}
-        distance={6}
-        decay={2}
-      />
-      <mesh ref={glowInnerRef} position={BULB_LOCAL_POSITION}>
-        <sphereGeometry args={[0.16, 16, 16]} />
-        <meshBasicMaterial
-          color={WARM_COLOR}
-          transparent
-          opacity={0}
-          blending={AdditiveBlending}
-          depthWrite={false}
-        />
-      </mesh>
-      <mesh ref={glowOuterRef} position={BULB_LOCAL_POSITION}>
-        <sphereGeometry args={[0.32, 16, 16]} />
-        <meshBasicMaterial
-          color={WARM_COLOR}
-          transparent
-          opacity={0}
-          blending={AdditiveBlending}
-          depthWrite={false}
-        />
-      </mesh>
-    </group>
+    <>
+      <StudioLighting intensity={0.7} shadows={false} />
+      <group position={OFFSET}>
+        <group
+          ref={groupRef}
+          scale={MM * DISPLAY}
+          onClick={onClick}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
+        >
+          {/* Invisible hit areas: the pole alone is a few pixels wide, too
+              thin a target to click or tap reliably. */}
+          <mesh position={[0, 2000, 0]} material={HIT}>
+            <boxGeometry args={[420, 4000, 420]} />
+          </mesh>
+          <mesh position={[HEAD[0] - 120, HEAD[1], 0]} material={HIT}>
+            <boxGeometry args={[900, 500, 600]} />
+          </mesh>
+          <mesh geometry={geometry.plinth} material={materials().graphite} />
+          <mesh geometry={geometry.pole} material={materials().graphite} />
+          <mesh geometry={geometry.arm} material={materials().graphite} />
+          <group position={HEAD}>
+            <mesh geometry={geometry.shade} material={materials().graphite} />
+            <mesh
+              geometry={geometry.diffuser}
+              material={owned.diffuser}
+              position={[0, 4, 0]}
+            />
+            <mesh
+              geometry={geometry.bulb}
+              material={owned.bulb}
+              position={[0, 40, 0]}
+            />
+          </group>
+          <sprite
+            material={owned.glowInner}
+            position={below}
+            scale={[760, 760, 1]}
+          />
+          <sprite
+            material={owned.glowOuter}
+            position={below}
+            scale={[1800, 1800, 1]}
+          />
+          <mesh
+            material={owned.pool}
+            position={[HEAD[0], 4, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            <planeGeometry args={[2400, 2400]} />
+          </mesh>
+          <pointLight
+            ref={lightRef}
+            position={below}
+            intensity={0}
+            color={WARM}
+            distance={4}
+            decay={2}
+          />
+        </group>
+      </group>
+    </>
   );
 }
-
-useGLTF.preload(MODEL_PATHS.streetLamp);

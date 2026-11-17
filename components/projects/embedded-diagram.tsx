@@ -14,7 +14,7 @@ const nodes = [
 /**
  * Abstract node diagram used as the fallback for EmbeddedHardwareCanvas:
  * shown while the 3D bundle loads, when prefers-reduced-motion is set, and
- * whenever WebGL/the GLB scene can't render.
+ * whenever WebGL or the 3D scene can't render.
  */
 export function EmbeddedDiagram() {
   const reduceMotion = useReducedMotion();

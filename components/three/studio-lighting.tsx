@@ -10,8 +10,8 @@ type StudioLightingProps = {
 };
 
 /**
- * Three-point studio rig shared by the GLB product scenes (hardware bench,
- * laptop). Key light from front-right for form, cooler fill from the left to
+ * Three-point studio rig shared by the product scenes (hardware bench,
+ * laptop, lamp). Key light from front-right for form, cooler fill from the left to
  * keep shadow sides from going black, and a rim from behind to separate the
  * model from the white panel. Paired with SceneEnvironment so metallic
  * materials have something to reflect.

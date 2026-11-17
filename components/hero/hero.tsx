@@ -10,6 +10,7 @@ import { HeroFigure } from "@/components/hero/hero-figure";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import type { TranslationKey } from "@/types/content";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useSiteEntered } from "@/lib/site-ready";
 
 const HeroCanvas = dynamic(
   () => import("@/components/three/hero-canvas").then((mod) => mod.HeroCanvas),
@@ -32,6 +33,8 @@ type Phase = "enter" | "run" | "look" | "kick" | "cta" | "rest";
 export function Hero({ t }: HeroProps) {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
+  // The intro waits for the loader to lift, so it plays where it can be seen.
+  const entered = useSiteEntered();
   const [phase, setPhase] = useState<Phase>(reduceMotion ? "rest" : "enter");
   const { scrollY } = useScroll();
   const sceneY = useTransform(scrollY, [0, 480], [0, 18]);
@@ -42,6 +45,7 @@ export function Hero({ t }: HeroProps) {
       setPhase("rest");
       return;
     }
+    if (!entered) return;
     const timers = [
       window.setTimeout(() => setPhase("run"), 420),
       window.setTimeout(() => setPhase("look"), 2400),
@@ -50,7 +54,7 @@ export function Hero({ t }: HeroProps) {
       window.setTimeout(() => setPhase("rest"), 4300)
     ];
     return () => timers.forEach(clearTimeout);
-  }, [reduceMotion]);
+  }, [reduceMotion, entered]);
 
   return (
     <section

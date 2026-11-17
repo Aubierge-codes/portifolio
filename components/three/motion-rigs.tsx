@@ -5,7 +5,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import type { Group } from "three";
 
 /**
- * Motion rigs for the GLB product scenes. These live inside ThreeFrame's
+ * Motion rigs for the product scenes. These live inside ThreeFrame's
  * Canvas, which already swaps to a static fallback when the visitor prefers
  * reduced motion — so nothing in here runs in that case and no extra guard
  * is needed.

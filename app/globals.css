@@ -16,6 +16,8 @@
 }
 
 html {
+  /* framer-motion measures scroll-linked elements against this. */
+  position: relative;
   scroll-behavior: smooth;
   background: var(--paper);
   color: var(--ink);
