@@ -11,7 +11,7 @@ type SceneErrorBoundaryProps = {
 type SceneErrorBoundaryState = { failed: boolean };
 
 /**
- * Contains failures inside a 3D scene — a GLB that 404s or fails to decode,
+ * Contains failures inside a 3D scene — a shader that fails to compile,
  * a browser with WebGL disabled, a lost context during setup — so they swap
  * that one scene for its static fallback instead of unmounting the whole page.
  */
