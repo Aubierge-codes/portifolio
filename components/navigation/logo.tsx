@@ -5,6 +5,10 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
+/** The squiggle mark, drawn in a 100 x 100 box around a centre dot at (50, 50). */
+export const LOGO_PATH =
+  "M28 50 C 15 32, 15 68, 28 50 C 42 32, 58 68, 72 50 C 85 32, 85 68, 72 50 C 58 32, 42 68, 28 50 Z";
+
 type LogoProps = {
   className?: string;
   size?: number;
@@ -49,7 +53,7 @@ export function Logo({ className, size = 40 }: LogoProps) {
         className="overflow-visible"
       >
         <motion.path
-          d="M28 50 C 15 32, 15 68, 28 50 C 42 32, 58 68, 72 50 C 85 32, 85 68, 72 50 C 58 32, 42 68, 28 50 Z"
+          d={LOGO_PATH}
           stroke="#111110"
           strokeWidth="6"
           strokeLinecap="round"
