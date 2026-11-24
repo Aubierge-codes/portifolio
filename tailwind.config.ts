@@ -12,7 +12,8 @@ const config: Config = {
       },
       fontFamily: {
         heading: ["var(--font-bricolage)", "sans-serif"],
-        body: ["var(--font-dm-sans)", "sans-serif"]
+        body: ["var(--font-dm-sans)", "sans-serif"],
+        mono: ["var(--font-dm-mono)", "ui-monospace", "monospace"]
       }
     }
   },
