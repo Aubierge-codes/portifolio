@@ -16,6 +16,7 @@ import { useFrame } from "@react-three/fiber";
 import type { Group } from "three";
 import type { TranslationKey } from "@/types/content";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { playSwitch } from "@/lib/sound";
 
 /**
  * Frames the ~2.5-unit lamp, foot to head, in its square corner canvas. R3F
@@ -42,6 +43,10 @@ export function ContactSection({ t }: ContactSectionProps) {
   const [hit, setHit] = useState(false);
   const [sent, setSent] = useState(false);
   const [isLampOn, setIsLampOn] = useState(false);
+  const toggleLamp = () => {
+    playSwitch();
+    setIsLampOn((value) => !value);
+  };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -119,10 +124,7 @@ export function ContactSection({ t }: ContactSectionProps) {
                   className="h-full w-full"
                   fallback={<div />}
                 >
-                  <Lamp
-                    isOn={isLampOn}
-                    onToggle={() => setIsLampOn((value) => !value)}
-                  />
+                  <Lamp isOn={isLampOn} onToggle={() => toggleLamp()} />
                 </ThreeFrame>
               </div>
             ) : null}
@@ -192,7 +194,7 @@ export function ContactSection({ t }: ContactSectionProps) {
 
       <button
         type="button"
-        onClick={() => setIsLampOn((value) => !value)}
+        onClick={() => toggleLamp()}
         aria-pressed={isLampOn}
         className="sr-only"
       >
@@ -200,10 +202,7 @@ export function ContactSection({ t }: ContactSectionProps) {
       </button>
 
       {isStackedLayout ? null : (
-        <LampCorner
-          isOn={isLampOn}
-          onToggle={() => setIsLampOn((value) => !value)}
-        />
+        <LampCorner isOn={isLampOn} onToggle={() => toggleLamp()} />
       )}
       <ContactCanvas isMobile={isMobile} />
     </section>
