@@ -3,25 +3,18 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { BouncingBall } from "@/components/motion/bouncing-ball";
 import { SpringButton } from "@/components/motion/spring-button";
 import { AnimatedText } from "@/components/motion/animated-text";
-import { HeroFigure } from "@/components/hero/hero-figure";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import type { TranslationKey } from "@/types/content";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import { useSiteEntered } from "@/lib/site-ready";
+import { useHeroReady, useSiteEntered } from "@/lib/site-ready";
+import { cn } from "@/lib/utils";
 
 const HeroCanvas = dynamic(
   () => import("@/components/three/hero-canvas").then((mod) => mod.HeroCanvas),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-full items-end justify-center pb-2">
-        <HeroFigure pose="idle" carry="laptop" className="w-20" />
-      </div>
-    )
-  }
+  // The poster still behind the canvas covers the load.
+  { ssr: false, loading: () => null }
 );
 
 type HeroProps = {
@@ -35,6 +28,7 @@ export function Hero({ t }: HeroProps) {
   const isMobile = useIsMobile();
   // The intro waits for the loader to lift, so it plays where it can be seen.
   const entered = useSiteEntered();
+  const heroReady = useHeroReady();
   const [phase, setPhase] = useState<Phase>(reduceMotion ? "rest" : "enter");
   const { scrollY } = useScroll();
   const sceneY = useTransform(scrollY, [0, 480], [0, 18]);
@@ -90,21 +84,28 @@ export function Hero({ t }: HeroProps) {
             <SpringButton href="#about" variant="secondary">
               {t("hero.secondary")}
             </SpringButton>
-            {phase === "cta" || phase === "rest" ? (
-              <span className="absolute -right-2 top-full mt-6 hidden sm:block">
-                <BouncingBall animate={phase === "rest"} />
-              </span>
-            ) : null}
           </div>
         </div>
       </div>
 
+      {/* The workstation: full-bleed behind the copy on wide screens, below it
+          on phones. A Blender still of the same scene shows until the live
+          scene has drawn, and stays for reduced motion or no WebGL. */}
       <motion.div
-        className="pointer-events-none relative z-0 -mt-6 h-[240px] md:h-[300px] lg:h-[340px]"
+        className="pointer-events-none relative z-0 mt-2 h-[46svh] lg:absolute lg:inset-0 lg:mt-0 lg:h-auto"
         style={reduceMotion ? undefined : { y: sceneY }}
         aria-hidden="true"
       >
-        <HeroCanvas phase={phase} isMobile={isMobile} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/posters/hero.jpg"
+          alt=""
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover object-[70%_60%] transition-opacity duration-700 lg:object-[30%_50%]",
+            heroReady && !reduceMotion ? "opacity-0" : "opacity-100"
+          )}
+        />
+        <HeroCanvas isMobile={isMobile} />
       </motion.div>
     </section>
   );
