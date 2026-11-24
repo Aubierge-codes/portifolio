@@ -78,16 +78,27 @@ export function AboutSection({ t, achievements }: AboutSectionProps) {
       </Reveal>
       <div className="mt-16">
         <p className="eyebrow mb-6 text-maroon">{t("achievements.title")}</p>
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          {achievements.map((item) => (
+        {/* Exhibition rail: native horizontal scroll with snap, no scroll-jacking.
+            Entries are exactly the verified list in data/translations.ts. */}
+        <ol
+          className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-4 [scrollbar-width:thin]"
+          aria-label={t("achievements.title")}
+        >
+          {achievements.map((item, i) => (
             <li
               key={item}
-              className="border-l border-maroon pl-3 text-sm leading-6 text-ink/80"
+              tabIndex={0}
+              className="flex min-h-[168px] w-[232px] shrink-0 snap-start flex-col justify-between border border-ink/10 bg-[#f4f1ec] p-5 outline-offset-2"
             >
-              {item}
+              <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-maroon">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="font-heading text-[19px] leading-snug text-ink">
+                {item}
+              </span>
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
     </section>
   );
