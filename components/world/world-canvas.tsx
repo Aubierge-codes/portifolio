@@ -30,13 +30,9 @@ import {
   UmucoSet,
   VeloraSet
 } from "@/components/world/scenes-a";
-import {
-  BookstoreSet,
-  JavaSet,
-  KinetiqSet,
-  WeatherSet,
-  ZeroBiteSet
-} from "@/components/world/scenes-b";
+import { BookstoreSet, JavaSet, WeatherSet } from "@/components/world/scenes-b";
+import { KinetiqSet } from "@/components/world/kinetiq";
+import { ZeroBiteSet } from "@/components/world/zero-bite";
 
 const SETS: Record<string, () => React.JSX.Element> = {
   heringress: HerIngressSet,
@@ -259,7 +255,9 @@ function World({
 
     // Only the sets near the camera draw at all.
     sets.current.forEach((group, idx) => {
-      if (group) group.visible = Math.abs(idx - f) < 1.05;
+      // A neighbour shows only once the camera starts travelling toward it, so
+      // big sets (the Weather sky) never bleed into the one being viewed.
+      if (group) group.visible = Math.abs(idx - f) < 0.72;
     });
   });
 
