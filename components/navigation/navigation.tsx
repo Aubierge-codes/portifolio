@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LanguageSwitcher } from "@/components/navigation/language-switcher";
+import { SoundToggle } from "@/components/navigation/sound-toggle";
 import { Logo } from "@/components/navigation/logo";
 import { SpringButton } from "@/components/motion/spring-button";
 import { cn } from "@/lib/utils";
@@ -141,6 +142,7 @@ export function Navigation({ locale, setLocale, t }: NavigationProps) {
               ))}
             </div>
             <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+              <SoundToggle label={t("nav.sound")} />
               <LanguageSwitcher
                 locale={locale}
                 setLocale={setLocale}
