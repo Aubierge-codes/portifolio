@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Concept board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500&family=DM+Mono&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* Open as board.html?c=A, ?c=B or ?c=C. Each concept overlays its real
+     typography and palette on the Blender render of the same workstation. */
+  :root { --bg:#fff; --ink:#030303; --muted:#4a4844; --accent:#6e1f24; --signal:#eb5a3c; --line:rgba(3,3,3,.14); }
+  [data-c="A"] { --bg:#070708; --ink:#f2efe8; --muted:rgba(242,239,232,.62); --line:rgba(242,239,232,.18); }
+  [data-c="C"] { --bg:#d9d4cc; --ink:#151413; --muted:#4a4844; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--bg); color:var(--ink); font-family:"DM Sans",sans-serif; width:1600px; height:900px; overflow:hidden; position:relative; }
+  /* Shifted right so the left 40 % of the frame belongs to the type. */
+  .render { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:translateX(230px) scale(1.04); transform-origin:right center; }
+  /* Editorial wash so the type owns the left of the frame. */
+  .wash { position:absolute; inset:0; background:linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 82%, transparent) 30%, transparent 52%); }
+  [data-c="A"] .wash { background:linear-gradient(90deg, rgba(7,7,8,.95) 0%, rgba(7,7,8,.6) 32%, transparent 55%); }
+  nav { position:absolute; top:0; left:0; right:0; height:76px; display:flex; align-items:center; justify-content:space-between; padding:0 96px; border-bottom:1px solid var(--line); }
+  .brand { display:flex; align-items:center; gap:12px; font-family:"Bricolage Grotesque"; font-size:24px; }
+  .links { display:flex; gap:36px; font-size:14px; font-weight:500; color:var(--muted); }
+  .cta { border:1px solid var(--ink); padding:12px 20px; font-size:14px; font-weight:500; }
+  .copy { position:absolute; left:96px; top:250px; width:640px; }
+  .eyebrow { font-family:"DM Mono"; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+  [data-c="A"] .eyebrow { color:#c98a8e; }
+  h1 { font-family:"Bricolage Grotesque"; font-weight:500; font-size:80px; line-height:.98; letter-spacing:-.02em; margin-top:22px; }
+  .line { font-size:18px; color:var(--muted); margin-top:26px; }
+  .btns { display:flex; gap:14px; margin-top:34px; }
+  .btn { padding:15px 22px; font-size:15px; font-weight:500; border:1px solid var(--ink); }
+  .btn.solid { background:var(--ink); color:var(--bg); }
+  .label { position:absolute; right:40px; top:96px; font-family:"DM Mono"; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); text-align:right; }
+  .swatches { position:absolute; left:96px; bottom:44px; display:flex; gap:10px; align-items:flex-end; }
+  .sw { width:64px; }
+  .sw i { display:block; height:40px; border:1px solid var(--line); }
+  .sw span { display:block; font-family:"DM Mono"; font-size:10px; margin-top:6px; color:var(--muted); }
+  .hot { position:absolute; display:flex; align-items:center; gap:8px; font-family:"DM Mono"; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); }
+  .hot b { width:10px; height:10px; border-radius:50%; border:1.5px solid var(--ink); }
+</style>
+</head>
+<body>
+  <img class="render" id="render" alt="" />
+  <div class="wash"></div>
+  <nav>
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 100 100" fill="none"><path d="M28 50 C 15 32, 15 68, 28 50 C 42 32, 58 68, 72 50 C 85 32, 85 68, 72 50 C 58 32, 42 68, 28 50 Z" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="#EB5A3C"/></svg>
+      Aubierge.
+    </div>
+    <div class="links"><span>Work</span><span>Lab</span><span>Process</span><span>About</span><span>Contact</span></div>
+    <div class="cta">View Work</div>
+  </nav>
+  <div class="copy">
+    <p class="eyebrow">Software · AI · Embedded Systems</p>
+    <h1>I build software that turns ideas into useful experiences.</h1>
+    <p class="line">Developer at Rwanda Coding Academy.</p>
+    <div class="btns"><span class="btn solid">View My Work</span><span class="btn">About Me</span></div>
+  </div>
+  <p class="label" id="label"></p>
+  <div class="swatches" id="swatches"></div>
+  <div id="hotspots"></div>
+<script>
+  const c = new URLSearchParams(location.search).get("c") || "B";
+  document.body.dataset.c = c;
+  document.getElementById("render").src = `hero-concept-${c}.png`;
+  const concepts = {
+    A: ["Concept A · Cinematic Technology World", ["#070708","#141316","#2B2D31","#C9CBCE","#F2EFE8","#6E1F24","#EB5A3C"]],
+    B: ["Concept B · Premium Editorial Engineering · recommended", ["#FFFFFF","#F4F1EC","#E7E2D9","#030303","#4A4844","#C9CBCE","#6E1F24","#EB5A3C"]],
+    C: ["Concept C · Immersive Creative Laboratory", ["#D9D4CC","#CFC9BF","#8A6A4F","#151413","#2B2D31","#6E1F24","#EB5A3C"]]
+  };
+  const [label, hexes] = concepts[c];
+  document.getElementById("label").textContent = label;
+  document.getElementById("swatches").innerHTML = hexes.map(h => `<div class="sw"><i style="background:${h}"></i><span>${h}</span></div>`).join("");
+  // Honest hotspots: only real, separately identifiable parts.
+  const spots = [["ATmega328P", 1120, 755], ["Articulated arm · 5 joints", 1330, 200]];
+  document.getElementById("hotspots").innerHTML = spots.map(([t, x, y]) => `<div class="hot" style="left:${x}px;top:${y}px"><b></b>${t}</div>`).join("");
+</script>
+</body>
+</html>
