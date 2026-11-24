@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { DetailsPanel } from "@/components/world/details-panel";
 import { ProjectMeta } from "@/components/world/project-meta";
 import type { Locale, Project, TranslationKey } from "@/types/content";
+import { worldState, type RiskLayer } from "@/components/world/world-state";
 
 const WorldCanvas = dynamic(
   () => import("@/components/world/world-canvas").then((m) => m.WorldCanvas),
@@ -132,7 +133,7 @@ function WorkStage({ projects, t, onDetails }: BranchProps) {
           aria-hidden="true"
         />
 
-        <div className="section-shell relative flex h-full flex-col justify-between pb-10 pt-24 md:pb-14 md:pt-28">
+        <div className="section-shell pointer-events-none relative flex h-full flex-col justify-between pb-10 pt-24 md:pb-14 md:pt-28">
           <div>
             <p className="eyebrow text-maroon">{t("work.eyebrow")}</p>
             <h2 id="work-title" className="sr-only">
@@ -145,7 +146,7 @@ function WorkStage({ projects, t, onDetails }: BranchProps) {
             </p>
           </div>
 
-          <div className="max-w-[440px]" aria-live="polite">
+          <div className="pointer-events-auto max-w-[440px]" aria-live="polite">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={project.id}
@@ -163,6 +164,7 @@ function WorkStage({ projects, t, onDetails }: BranchProps) {
                   t={t}
                   onDetails={() => onDetails(project)}
                 />
+                <ChapterExtras id={project.id} t={t} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -211,6 +213,57 @@ function WorkStage({ projects, t, onDetails }: BranchProps) {
         </AnimatePresence>
       </div>
     </section>
+  );
+}
+
+/** Chapter-specific controls and notes, beside the 3D scene they drive. */
+function ChapterExtras({
+  id,
+  t
+}: {
+  id: string;
+  t: (key: TranslationKey) => string;
+}) {
+  const [layer, setLayer] = useState<RiskLayer>(worldState.zeroBiteLayer);
+  if (id === "kinetiq") {
+    return (
+      <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.12em] text-ink/55">
+        {t("work.tapTiles")}
+      </p>
+    );
+  }
+  if (id !== "zero-bite") return null;
+  const choose = (l: RiskLayer) => {
+    worldState.zeroBiteLayer = l;
+    setLayer(l);
+  };
+  return (
+    <div className="mt-4">
+      <fieldset className="flex flex-wrap items-center gap-2">
+        <legend className="mb-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink/55">
+          {t("work.layer")}
+        </legend>
+        {(["rain", "temp", "risk"] as RiskLayer[]).map((l) => (
+          <button
+            key={l}
+            type="button"
+            aria-pressed={layer === l}
+            onClick={() => choose(l)}
+            className={cn(
+              "min-h-9 border px-3 font-mono text-[11px] uppercase tracking-[0.12em]",
+              layer === l
+                ? "border-ink bg-ink text-paper"
+                : "border-ink/25 bg-paper/70 hover:border-ink"
+            )}
+          >
+            {t(`work.${l}` as TranslationKey)}
+          </button>
+        ))}
+      </fieldset>
+      <p className="mt-3 max-w-[380px] text-[13px] leading-5 text-ink/60">
+        {t("work.riskNote")}
+      </p>
+    </div>
   );
 }
 
