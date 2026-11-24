@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
+import { Bricolage_Grotesque, DM_Mono, DM_Sans } from "next/font/google";
 import { SITE_NAME } from "@/lib/site";
 import "./globals.css";
 
@@ -7,6 +7,14 @@ const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   weight: ["500"],
   variable: "--font-bricolage",
+  display: "swap"
+});
+
+/** Annotations: hotspot labels, counters, specs. */
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-dm-mono",
   display: "swap"
 });
 
@@ -47,7 +55,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${dmSans.variable}`}>
+    <html
+      lang="en"
+      className={`${bricolage.variable} ${dmSans.variable} ${dmMono.variable}`}
+    >
       <body className="font-body">
         {/* Without JavaScript nothing would ever lift the loader. */}
         <noscript>
