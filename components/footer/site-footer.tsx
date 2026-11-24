@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { githubUrl } from "@/data/projects";
+import { CC_BY_URL, modelCredits } from "@/data/credits";
 import { Logo } from "@/components/navigation/logo";
 import { LanguageSwitcher } from "@/components/navigation/language-switcher";
 import { LineCharacter } from "@/components/characters/line-character";
@@ -65,6 +66,33 @@ export function SiteFooter({ locale, setLocale, t }: SiteFooterProps) {
           <p>© Aubierge Umurerwa</p>
           <p>{t("footer.built")}</p>
         </div>
+        <p className="mt-4 max-w-[900px] text-xs leading-5 text-ink/50">
+          {t("footer.credits")}:{" "}
+          {modelCredits.map((credit, i) => (
+            <span key={credit.source}>
+              {i ? " · " : ""}
+              <a
+                href={credit.source}
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-ink/20 underline-offset-2 hover:decoration-ink"
+              >
+                {credit.title}
+              </a>{" "}
+              {credit.author}
+            </span>
+          ))}
+          {". "}
+          <a
+            href={CC_BY_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="underline decoration-ink/20 underline-offset-2 hover:decoration-ink"
+          >
+            CC BY 4.0
+          </a>{" "}
+          ({t("footer.modified")}).
+        </p>
       </div>
       <motion.div
         className="pointer-events-none absolute bottom-2 right-0 w-20"
