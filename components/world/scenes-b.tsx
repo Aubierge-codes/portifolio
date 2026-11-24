@@ -14,15 +14,10 @@ import {
   type Group,
   type LineSegments,
   type Mesh,
-  type MeshStandardMaterial,
   type Sprite
 } from "three";
-import { ArduinoModel } from "@/components/three/arduino-model";
-import { RaspberryPiModel } from "@/components/three/raspberry-pi-model";
-import { RobotArmModel } from "@/components/three/robot-arm-model";
-import { Mosquito } from "@/components/three/mosquito";
 import { roundedBox, unitBox } from "@/components/three/hardware/kit";
-import { CAST, Person, strideRate } from "@/components/world/person";
+import { CAST, Person } from "@/components/world/person";
 import {
   Bookshelf,
   Chair,
@@ -40,15 +35,13 @@ const MAROON = "#6e1f24";
 const CORAL = "#eb5a3c";
 const INK = "#151413";
 
-/** Hardware models take a display scale; 0.1 brings their millimetres to metres. */
-const TRUE_SIZE = 0.1;
 
 // ---------------------------------------------------------------------------
 // 06 Zero Bite: a village at dusk, a mosquito in the foreground, and a Raspberry
 // Pi sending risk alerts out to a phone.
 // ---------------------------------------------------------------------------
 
-function House({
+export function House({
   position,
   rotation = 0,
   width = 2.4
@@ -127,7 +120,7 @@ function House({
   );
 }
 
-function SignalRings({
+export function SignalRings({
   from,
   to
 }: {
@@ -171,7 +164,7 @@ function SignalRings({
   );
 }
 
-function Hover({
+export function Hover({
   children,
   radius = 0.25,
   speed = 1
@@ -194,276 +187,20 @@ function Hover({
   return <group ref={ref}>{children}</group>;
 }
 
-export function ZeroBiteSet() {
-  const earth = useMemo(
-    () =>
-      new MeshPhysicalMaterial({
-        color: "#a98663",
-        roughness: 1,
-        map: surface().concrete.map
-      }),
-    []
-  );
-  useLayoutEffect(() => () => earth.dispose(), [earth]);
-  return (
-    <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} material={earth} receiveShadow>
-        <circleGeometry args={[11, 64]} />
-      </mesh>
-      <House position={[-3.2, 0, -2.6]} rotation={0.35} />
-      <House position={[1.6, 0, -3.6]} rotation={-0.2} width={2.8} />
-      <House position={[4.6, 0, -1.2]} rotation={-0.9} width={2} />
-      {[
-        [-1.4, -2.2],
-        [3.4, -2.6],
-        [-4.6, -0.4],
-        [0.2, -2.8]
-      ].map(([x, z], i) => (
-        <group key={i} position={[x, 0, z]}>
-          <Plant
-            scale={3.2 + (i % 2) * 0.6}
-            seed={i + 30}
-            pot={false}
-            sway={2}
-          />
-        </group>
-      ))}
-      {/* Field station: a Raspberry Pi in an open case on a post. */}
-      <group position={[-0.6, 0, 0.4]}>
-        <mesh
-          geometry={unitBox()}
-          material={surface().woodDark}
-          position={[0, 0.5, 0]}
-          scale={[0.08, 1, 0.08]}
-          castShadow
-        />
-        <mesh
-          geometry={roundedBox(0.5, 0.06, 0.4, 0.015)}
-          material={surface().ceramic}
-          position={[0, 1.02, 0]}
-          castShadow
-        />
-        <group position={[0, 1.05, 0]}>
-          <RaspberryPiModel scale={TRUE_SIZE * 2.2} />
-        </group>
-        <mesh position={[0.2, 1.3, -0.15]}>
-          <cylinderGeometry args={[0.006, 0.006, 0.5, 8]} />
-          <meshPhysicalMaterial color={INK} roughness={0.4} />
-        </mesh>
-      </group>
-      <SignalRings from={[-0.4, 1.55, 0.25]} to={[1.45, 1.25, 0.75]} />
-      <group position={[1.7, 0, 0.85]} rotation={[0, -2.2, 0]}>
-        <Person look={CAST.eric} pose="read" holding="tablet" phase={0.8} />
-      </group>
-      <group position={[1.7, 0, 0.85]}>
-        <mesh position={[0, 0.23, 0]}>
-          <boxGeometry args={[0.42, 0.46, 0.42]} />
-          <meshPhysicalMaterial color="#6d5340" roughness={0.9} />
-        </mesh>
-      </group>
-      {/* The mosquito, mid-air between the houses: the reason the system exists. */}
-      <group position={[1.1, 1.75, 1.2]}>
-        <Hover radius={0.3} speed={1.3}>
-          <Mosquito scale={1.1} />
-        </Hover>
-      </group>
-      <Dust
-        count={160}
-        spread={[10, 4, 8]}
-        color="#ffd9a8"
-        size={0.04}
-        opacity={0.45}
-      />
-    </group>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// 07 KinetiQ: footsteps on piezo tiles charging a light, read out on the bench
-// by the boards and the arm.
-// ---------------------------------------------------------------------------
-
-const TILE_X = [-2.4, -1.6, -0.8, 0, 0.8];
-
-function PiezoPath() {
-  const walker = useRef<Group>(null);
-  const tiles = useRef<(MeshStandardMaterial | null)[]>([]);
-  const bulb = useRef<MeshStandardMaterial>(null);
-  const charge = useRef(0);
-  const span = TILE_X[TILE_X.length - 1] - TILE_X[0] + 1.2;
-  const duration = 7;
-
-  useFrame(({ clock }, delta) => {
-    const raw = (clock.getElapsedTime() % (duration * 2)) / duration;
-    const forward = raw < 1;
-    const t = forward ? raw : 2 - raw;
-    const x = TILE_X[0] - 0.6 + t * span;
-    if (walker.current) {
-      walker.current.position.x = x;
-      walker.current.rotation.y = forward ? Math.PI / 2 : -Math.PI / 2;
-    }
-    TILE_X.forEach((tx, i) => {
-      const m = tiles.current[i];
-      if (!m) return;
-      const on = Math.abs(x - tx) < 0.35 ? 1 : 0;
-      m.emissiveIntensity +=
-        (on * 2.2 - m.emissiveIntensity) * Math.min(1, delta * 8);
-      if (on) charge.current = Math.min(1, charge.current + delta * 0.6);
-    });
-    charge.current = Math.max(0.15, charge.current - delta * 0.12);
-    if (bulb.current) bulb.current.emissiveIntensity = charge.current * 4;
-  });
-
-  return (
-    <group position={[0, 0, 1.2]}>
-      {TILE_X.map((x, i) => (
-        <group key={x} position={[x, 0, 0]}>
-          <mesh
-            geometry={roundedBox(0.7, 0.04, 0.7, 0.01)}
-            material={surface().ink}
-            position={[0, 0.02, 0]}
-            receiveShadow
-          />
-          <mesh position={[0, 0.045, 0]}>
-            <boxGeometry args={[0.6, 0.012, 0.6]} />
-            <meshStandardMaterial
-              ref={(m) => {
-                tiles.current[i] = m;
-              }}
-              color="#3a3f46"
-              emissive={CORAL}
-              emissiveIntensity={0}
-              roughness={0.5}
-            />
-          </mesh>
-        </group>
-      ))}
-      <group ref={walker}>
-        <Person
-          look={CAST.nadia}
-          pose="walk"
-          speed={strideRate(span / duration)}
-        />
-      </group>
-      {/* The light the steps are charging. */}
-      <group position={[1.8, 0, 0]}>
-        <mesh position={[0, 0.8, 0]} castShadow>
-          <cylinderGeometry args={[0.02, 0.03, 1.6, 12]} />
-          <meshPhysicalMaterial color={INK} roughness={0.4} metalness={0.5} />
-        </mesh>
-        <mesh position={[0, 1.66, 0]}>
-          <sphereGeometry args={[0.1, 24, 16]} />
-          <meshStandardMaterial
-            ref={bulb}
-            color="#fff8ee"
-            emissive="#ffcf8a"
-            emissiveIntensity={1}
-          />
-        </mesh>
-      </group>
-    </group>
-  );
-}
-
-function ChartScreen() {
-  const map = useCanvasTexture(640, 400, (ctx, w, h) => {
-    ctx.fillStyle = "#fbfaf8";
-    ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = INK;
-    ctx.font = "600 30px sans-serif";
-    ctx.fillText("Energy harvested", 36, 56);
-    ctx.strokeStyle = "rgba(21,20,19,0.1)";
-    for (let y = 110; y < h - 30; y += 60) {
-      ctx.beginPath();
-      ctx.moveTo(36, y);
-      ctx.lineTo(w - 36, y);
-      ctx.stroke();
-    }
-    ctx.strokeStyle = MAROON;
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-    for (let i = 0; i <= 40; i++) {
-      const x = 36 + (i / 40) * (w - 72);
-      const y = h - 50 - (i / 40) * 210 - Math.sin(i * 1.3) * 18;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-  });
-  return (
-    <group position={[0.5, 1.22, -0.55]} rotation={[-0.08, -0.25, 0]}>
-      <mesh
-        geometry={roundedBox(0.7, 0.45, 0.03, 0.01)}
-        material={surface().ink}
-      />
-      <mesh position={[0, 0, 0.016]}>
-        <planeGeometry args={[0.66, 0.41]} />
-        <meshStandardMaterial
-          color="#000"
-          emissive="#fff"
-          emissiveMap={map}
-          emissiveIntensity={1.1}
-        />
-      </mesh>
-    </group>
-  );
-}
-
-export function KinetiqSet() {
-  const s = surface();
-  return (
-    <group>
-      <Ground radius={8} material="concrete" />
-      {/* Workbench with the boards and the arm. */}
-      <group position={[0, 0, -0.6]}>
-        <mesh
-          geometry={roundedBox(2.4, 0.06, 0.9, 0.012)}
-          material={s.wood}
-          position={[0, 0.88, 0]}
-          castShadow
-          receiveShadow
-        />
-        {[-1.1, 1.1].map((x) => (
-          <mesh
-            key={x}
-            geometry={unitBox()}
-            material={s.steel}
-            position={[x, 0.44, 0]}
-            scale={[0.05, 0.88, 0.8]}
-            castShadow
-          />
-        ))}
-        <group position={[-0.75, 0.91, 0.1]}>
-          <ArduinoModel scale={TRUE_SIZE * 2.4} />
-        </group>
-        <group position={[-0.2, 0.91, 0.15]}>
-          <RaspberryPiModel scale={TRUE_SIZE * 2.4} />
-        </group>
-        <group position={[0.75, 0.91, 0.05]}>
-          <RobotArmModel scale={TRUE_SIZE * 2.6} />
-        </group>
-        <ChartScreen />
-      </group>
-      <PiezoPath />
-      <Dust count={110} spread={[7, 3, 6]} />
-    </group>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // 08 Weather: sky dome, drifting clouds, sun on one side, rain on the other.
 // ---------------------------------------------------------------------------
 
 function Sky() {
   const geometry = useMemo(() => {
-    const g = new SphereGeometry(60, 48, 24);
+    const g = new SphereGeometry(32, 48, 24);
     const pos = g.getAttribute("position");
     const colors = new Float32Array(pos.count * 3);
     const top = new Color("#7ea6cf");
     const horizon = new Color("#eef2f3");
     const c = new Color();
     for (let i = 0; i < pos.count; i++) {
-      const y = Math.max(0, pos.getY(i) / 60);
+      const y = Math.max(0, pos.getY(i) / 32);
       c.copy(horizon).lerp(top, Math.pow(y, 0.6));
       colors.set([c.r, c.g, c.b], i * 3);
     }
